@@ -60,8 +60,6 @@ static PyObject * c_module(PyObject *self, PyObject *args) {
     /* this is just like DECREF, but doesn't crash if the argument is NULL. */
     Py_XDECREF(array);
 
-    //Py_DECREF(list_object);
-    //Py_DECREF(array_python_object);
     Py_RETURN_NONE;
 }
 
