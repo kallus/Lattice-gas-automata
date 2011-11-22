@@ -45,25 +45,21 @@ class LatticeModel(object):
                     self.cells_next[row, col] &= 0b1011
                     #assert((self.cells_next[row, col_minus_1] & 0b0001) == 0)
                     self.cells_next[row, col_minus_1] |= 0b0001
-                    #self.cells_next[row, col_minus_1] |= 0b0100
                 # →
                 if (self.cells[row, col] & 0b0001) <> 0:
                     self.cells_next[row, col] &= 0b1110
                     #assert((self.cells_next[row, col_plus_1] & 0b0100) == 0)
                     self.cells_next[row, col_plus_1] |= 0b0100
-                    #self.cells_next[row, col_plus_1] |= 0b1000
                 # ↓
                 if (self.cells[row, col] & 0b1000) <> 0:
                     self.cells_next[row, col] &= 0b0111
                     #assert((self.cells_next[row_plus_1, col] & 0b0010) == 0)
                     self.cells_next[row_plus_1, col] |= 0b0010
-                    #self.cells_next[row_plus_1, col] |= 0b0001
                 # ↑
                 if (self.cells[row, col] & 0b0010) <> 0:
                     self.cells_next[row, col] &= 0b1101
                     #assert((self.cells_next[row_minus_1, col] & 0b1000) == 0)
                     self.cells_next[row_minus_1, col] |= 0b1000
-                    #self.cells_next[row_minus_1, col] |= 0b0010
 
         self.cells[:, :] = 0
         for row in xrange(self.size):

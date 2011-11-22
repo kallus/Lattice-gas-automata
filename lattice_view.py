@@ -27,7 +27,7 @@ class LatticeView(QtGui.QWidget):
         timer.start(timer_delay)
 
         self.setLayout(layout)
-        self.setWindowTitle(self.tr("SIR model"))
+        self.setWindowTitle(self.tr("Lattice gas"))
 
     def update_model(self):
         self.lattice_model.update()
