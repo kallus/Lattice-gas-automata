@@ -49,12 +49,6 @@ class LatticeModel(object):
                     # no collision.
                     continue
                 elif self.cells[row, col] == 5:
-                    #  .
-                    # → .
-                    #  .
-                    # no collision.
-                    continue
-                elif self.cells[row, col] == 5:
                     #  ↓
                     # . .
                     #  ↑
