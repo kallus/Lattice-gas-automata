@@ -1,11 +1,11 @@
 import numpy as np
 import c_module
 
-matrix = np.zeros((3, 3), dtype=np.int64)
+matrix = np.zeros((3, 3), dtype=np.int)
 matrix[0, :] = [0, 0, 0]
-matrix[1, :] = [0, 1, 0]
+matrix[1, :] = [0, 2, 0]
 matrix[2, :] = [0, 0, 0]
-matrix_temp = np.zeros((3, 3), dtype=np.int64)
+matrix_temp = np.zeros((3, 3), dtype=np.int)
 matrix_temp[0, :] = [0, 0, 0]
 matrix_temp[1, :] = [0, 0, 0]
 matrix_temp[2, :] = [0, 0, 0]

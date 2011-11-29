@@ -22,6 +22,33 @@ int on_border(int W, int H, int x, int y) {
   return 0;
 }
 
+int on_corner(int W, int H, int x, int y) {
+  if ((x == 0 || x == W-1) && (y == 0 || y == H-1)) {
+    return 1;
+  }
+
+  return 0;
+}
+
+int which_corner(int W, int H, int x, int y) {
+  if (y == 0 && x == 0) return 1;
+  if (y == 0 && x == W-1) return 2;
+  if (y == H-1 && x == W-1) return 3;
+  if (x == 0 && y == H-1) return 4;
+  fprintf(stderr, "unexpected in which_corner");
+  return 0;
+}
+
+int which_border(int W, int H, int x, int y) {
+  if (y == 0) return 1;
+  if (x == W-1) return 2;
+  if (y == H-1) return 3;
+  if (x == 0) return 4;
+  fprintf(stderr, "unexpected in which_border");
+  return 0;
+}
+
+
 static PyObject * c_module(PyObject *self, PyObject *args) {
     PyObject *array_python_object;
     PyObject *array_python_object_temp;
@@ -47,7 +74,7 @@ static PyObject * c_module(PyObject *self, PyObject *args) {
 
     // read from array, write to array_temp
     // collision step
-    int iRow, iCol;
+    int iRow, iCol, corner, border;
     int H = array->dimensions[0];
     int W = array->dimensions[1];
     for (iRow = 0; iRow < H; ++iRow) {
@@ -72,18 +99,60 @@ static PyObject * c_module(PyObject *self, PyObject *args) {
 
     // read from array_temp, write to array
     // move step
-    for (iRow = 0; iRow < array->dimensions[0]; ++iRow) {
-        for (iCol = 0; iCol < array->dimensions[1]; ++iCol) {
+    for (iRow = 0; iRow < H; ++iRow) {
+        for (iCol = 0; iCol < W; ++iCol) {
             long *data = PyArray_GETPTR2(array, iRow, iCol);
 
-            if (!on_border(array->dimensions[0], array->dimensions[1], iRow, iCol)) {
+            if (!on_border(H, W, iRow, iCol)) {
               long *n = PyArray_GETPTR2(array_temp, iRow-1, iCol);
               long *e = PyArray_GETPTR2(array_temp, iRow, iCol+1);
               long *s = PyArray_GETPTR2(array_temp, iRow+1, iCol);
               long *w = PyArray_GETPTR2(array_temp, iRow, iCol-1);
               (*data) = move(*n,*e,*s,*w);
             } else { // on border
-              (*data) = 0;
+              if (on_corner(H, W, iRow, iCol)) {
+                corner = which_corner(H, W, iRow, iCol);
+                if (corner == 1) { // NW
+                  long *e = PyArray_GETPTR2(array_temp, iRow, iCol+1);
+                  long *s = PyArray_GETPTR2(array_temp, iRow+1, iCol);
+                  (*data) = move(0,*e,*s,0);
+                } else if (corner == 2) { // NE
+                  long *s = PyArray_GETPTR2(array_temp, iRow+1, iCol);
+                  long *w = PyArray_GETPTR2(array_temp, iRow, iCol-1);
+                  (*data) = move(0,0,*s,*w);
+                } else if (corner == 3) { // SE
+                  long *n = PyArray_GETPTR2(array_temp, iRow-1, iCol);
+                  long *w = PyArray_GETPTR2(array_temp, iRow, iCol-1);
+                  (*data) = move(*n,0,0,*w);
+                } else { // SW
+                  long *n = PyArray_GETPTR2(array_temp, iRow-1, iCol);
+                  long *e = PyArray_GETPTR2(array_temp, iRow, iCol+1);
+                  (*data) = move(*n,*e,0,0);
+                }
+              } else { // on border, not on corner
+                border = which_border(H, W, iRow, iCol);
+                if (border == 1) { // north
+                  long *e = PyArray_GETPTR2(array_temp, iRow, iCol+1);
+                  long *s = PyArray_GETPTR2(array_temp, iRow+1, iCol);
+                  long *w = PyArray_GETPTR2(array_temp, iRow, iCol-1);
+                  (*data) = move(0,*e,*s,*w);
+                } else if (border == 2) { // east
+                  long *n = PyArray_GETPTR2(array_temp, iRow-1, iCol);
+                  long *s = PyArray_GETPTR2(array_temp, iRow+1, iCol);
+                  long *w = PyArray_GETPTR2(array_temp, iRow, iCol-1);
+                  (*data) = move(*n,0,*s,*w);
+                } else if (border == 3) { // south
+                  long *n = PyArray_GETPTR2(array_temp, iRow-1, iCol);
+                  long *e = PyArray_GETPTR2(array_temp, iRow, iCol+1);
+                  long *w = PyArray_GETPTR2(array_temp, iRow, iCol-1);
+                  (*data) = move(*n,*e,0,*w);
+                } else { // west
+                  long *n = PyArray_GETPTR2(array_temp, iRow-1, iCol);
+                  long *e = PyArray_GETPTR2(array_temp, iRow, iCol+1);
+                  long *s = PyArray_GETPTR2(array_temp, iRow+1, iCol);
+                  (*data) = move(*n,*e,*s,0);
+                }
+              }
             }
         }
     }
