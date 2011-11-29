@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import random
 import numpy as np
+import c_module
 
 N_STATES = 16
 class LatticeModel(object):
@@ -18,7 +19,21 @@ class LatticeModel(object):
             #self.cells[row, col] = random.randint(0, N_STATES - 1)
 
     def update(self):
+        c_module.c_module(self.cells, self.cells_next)
+        # n_particles = 0
+        # n_particles += (self.cells == 0b0001).sum()
+        # n_particles += (self.cells == 0b0010).sum()
+        # n_particles += (self.cells == 0b0100).sum()
+        # n_particles += (self.cells == 0b1000).sum()
+        # n_particles += (self.cells == 0b0011).sum()*2
+        # n_particles += (self.cells == 0b0101).sum()*2
+        # n_particles += (self.cells == 0b1001).sum()*2
+        # n_particles += (self.cells == 0b0110).sum()*2
+        # n_particles += (self.cells == 0b1010).sum()*2
+        # n_particles += (self.cells == 0b1100).sum()*2
+        
         # propagation step.
+        return
         self.cells_next[:, :] = self.cells
         for row in xrange(self.size):
             if row == 0:
@@ -73,6 +88,7 @@ class LatticeModel(object):
                     self.cells[row, col] |= 0b0001
                 elif (self.cells_next[row, col] & 0b0001) == 0b0001:
                     self.cells[row, col] |= 0b0100
+
                 if (self.cells_next[row, col] & 0b1010) == 0b1010:
                     self.cells[row, col] |= 0b0101
                 elif (self.cells_next[row, col] & 0b1000) == 0b1000:

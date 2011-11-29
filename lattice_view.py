@@ -37,12 +37,17 @@ class LatticeView(QtGui.QWidget):
         
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
-    size = 100
-    model = LatticeModel(size, 50*50)
-    model.cells[0:(2*size/5), :] = 0
-    model.cells[(3*size/5):size, :] = 0
-    model.cells[:, 0:(2*size/5)] = 0
-    model.cells[:, (3*size/5):size] = 0
+    size = 140
+    model = LatticeModel(size, size*size/2)
+    model.cells[1*size/2:size, 0:size/2] = 0
+    model.cells[0, :] = 0
+    model.cells[size - 1, :] = 0
+    model.cells[:, 0] = 0
+    model.cells[:, size - 1] = 0
+#    model.cells[0:(2*size/5), :] = 0
+#    model.cells[(3*size/5):size, :] = 0
+#    model.cells[:, 0:(2*size/5)] = 0
+#    model.cells[:, (3*size/5):size] = 0
 #    model.cells[0, 1] = 0b0001
 #    model.cells[0, 9] = 0b0100
     view = LatticeView(model, 10)
