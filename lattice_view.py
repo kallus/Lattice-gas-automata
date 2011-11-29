@@ -30,15 +30,16 @@ class LatticeView(QtGui.QWidget):
         self.setWindowTitle(self.tr("Lattice gas"))
 
     def update_model(self):
-        self.lattice_model.update()
+        for x in xrange(20):
+            self.lattice_model.update()
         self.lattice_widget.update()
         self.time_label.setText(self.tr("Time " + str(self.time)))
         self.time += 1
         
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
-    size = 140
-    model = LatticeModel(size, size*size/2)
+    size = 600
+    model = LatticeModel(size, size*size)
     model.cells[1*size/2:size, 0:size/2] = 0
     model.cells[0, :] = 0
     model.cells[size - 1, :] = 0

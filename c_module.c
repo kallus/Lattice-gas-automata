@@ -11,10 +11,11 @@ long move(long n, long e, long s, long w) {
 }
 
 long reverse(long x) {
-  return (x << 2) + (x >> 2);
+  x = (x << 2) + (x >> 2);
+  return x & 15;
 }
 
-int on_border(int W, int H, int x, int y) {
+long on_border(long H, long W, long y, long x) {
   if (x == 0 || y == 0 || x == W-1 || y == H-1) {
     return 1;
   }
@@ -22,7 +23,7 @@ int on_border(int W, int H, int x, int y) {
   return 0;
 }
 
-int on_corner(int W, int H, int x, int y) {
+long on_corner(long H, long W, long y, long x) {
   if ((x == 0 || x == W-1) && (y == 0 || y == H-1)) {
     return 1;
   }
@@ -30,7 +31,7 @@ int on_corner(int W, int H, int x, int y) {
   return 0;
 }
 
-int which_corner(int W, int H, int x, int y) {
+long which_corner(long H, long W, long y, long x) {
   if (y == 0 && x == 0) return 1;
   if (y == 0 && x == W-1) return 2;
   if (y == H-1 && x == W-1) return 3;
@@ -39,7 +40,7 @@ int which_corner(int W, int H, int x, int y) {
   return 0;
 }
 
-int which_border(int W, int H, int x, int y) {
+long which_border(long H, long W, long y, long x) {
   if (y == 0) return 1;
   if (x == W-1) return 2;
   if (y == H-1) return 3;
@@ -74,21 +75,21 @@ static PyObject * c_module(PyObject *self, PyObject *args) {
 
     // read from array, write to array_temp
     // collision step
-    int iRow, iCol, corner, border;
-    int H = array->dimensions[0];
-    int W = array->dimensions[1];
-    int particle_count = 0;
+    long iRow, iCol, corner, border;
+    long H = array->dimensions[0];
+    long W = array->dimensions[1];
+    /* long particle_count = 0; */
     for (iRow = 0; iRow < H; ++iRow) {
         for (iCol = 0; iCol < W; ++iCol) {
             long *data = PyArray_GETPTR2(array, iRow, iCol);
             long *data_temp = PyArray_GETPTR2(array_temp, iRow, iCol);
 
-            int data_copy = *data;
-            int ic;
-            for(ic = 0; ic < 4; ic++) {
-              if (data_copy % 2 == 1) particle_count++;
-              data_copy = data_copy >> 1;
-            }
+            /* long data_copy = *data; */
+            /* long ic; */
+            /* for(ic = 0; ic < 4; ic++) { */
+            /*   if (data_copy % 2 == 1) particle_count++; */
+            /*   data_copy = data_copy >> 1; */
+            /* } */
 
             // cell collision
             if (!on_border(H, W, iRow, iCol)) {
@@ -104,14 +105,13 @@ static PyObject * c_module(PyObject *self, PyObject *args) {
             }
         }
     }
-    fprintf(stdout,"particles: %d\n", particle_count);
+//    fprintf(stdout,"particles: %d\n", particle_count);
 
     // read from array_temp, write to array
     // move step
     for (iRow = 0; iRow < H; ++iRow) {
         for (iCol = 0; iCol < W; ++iCol) {
             long *data = PyArray_GETPTR2(array, iRow, iCol);
-
             if (!on_border(H, W, iRow, iCol)) {
               long *n = PyArray_GETPTR2(array_temp, iRow-1, iCol);
               long *e = PyArray_GETPTR2(array_temp, iRow, iCol+1);
@@ -170,13 +170,11 @@ static PyObject * c_module(PyObject *self, PyObject *args) {
     Py_XDECREF(array);
     Py_XDECREF(array_temp);
 
-    //Py_DECREF(list_object);
-    //Py_DECREF(array_python_object);
     Py_RETURN_NONE;
 }
 
 static PyMethodDef C_Module_Methods[] = {
-    /* function name, function pointer, always METH_VARARGS (could be KEYWORDS too), documentation string. */
+    /* function name, function polonger, always METH_VARARGS (could be KEYWORDS too), documentation string. */
     { "c_module", c_module, METH_VARARGS, "C module example function." },
     { NULL, NULL, 0, NULL } /* list terminator. */
 };

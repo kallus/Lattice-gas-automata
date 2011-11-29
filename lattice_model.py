@@ -15,11 +15,12 @@ class LatticeModel(object):
             while self.cells[row, col] <> 0:
                 row = random.randint(0, lattice_size - 1)
                 col = random.randint(0, lattice_size - 1)
-            self.cells[row, col] = random.choice([0b0000, 0b0100, 0b1000, 0b0001, 0b0010])
+            self.cells[row, col] = random.choice([0b0100, 0b1000, 0b0001, 0b0010]) #0b0000, 
             #self.cells[row, col] = random.randint(0, N_STATES - 1)
 
     def update(self):
         c_module.c_module(self.cells, self.cells_next)
+        return
         # n_particles = 0
         # n_particles += (self.cells == 0b0001).sum()
         # n_particles += (self.cells == 0b0010).sum()
@@ -31,9 +32,14 @@ class LatticeModel(object):
         # n_particles += (self.cells == 0b0110).sum()*2
         # n_particles += (self.cells == 0b1010).sum()*2
         # n_particles += (self.cells == 0b1100).sum()*2
-        
+        # n_particles += (self.cells == 0b0111).sum()*3
+        # n_particles += (self.cells == 0b1011).sum()*3
+        # n_particles += (self.cells == 0b1101).sum()*3
+        # n_particles += (self.cells == 0b1110).sum()*3
+        # n_particles += (self.cells == 0b1111).sum()*4
+        # print n_particles
+
         # propagation step.
-        return
         self.cells_next[:, :] = self.cells
         for row in xrange(self.size):
             if row == 0:
