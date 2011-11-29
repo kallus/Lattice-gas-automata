@@ -1,0 +1,2 @@
+#! /bin/bash
+python setup.py build && cp build/lib.macosx-10.6-universal-2.6/c_module.so . && python jonatans_lattice_test.py
