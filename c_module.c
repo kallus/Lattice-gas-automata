@@ -77,10 +77,18 @@ static PyObject * c_module(PyObject *self, PyObject *args) {
     int iRow, iCol, corner, border;
     int H = array->dimensions[0];
     int W = array->dimensions[1];
+    int particle_count = 0;
     for (iRow = 0; iRow < H; ++iRow) {
         for (iCol = 0; iCol < W; ++iCol) {
             long *data = PyArray_GETPTR2(array, iRow, iCol);
             long *data_temp = PyArray_GETPTR2(array_temp, iRow, iCol);
+
+            int data_copy = *data;
+            int ic;
+            for(ic = 0; ic < 4; ic++) {
+              if (data_copy % 2 == 1) particle_count++;
+              data_copy = data_copy >> 1;
+            }
 
             // cell collision
             if (!on_border(H, W, iRow, iCol)) {
@@ -96,6 +104,7 @@ static PyObject * c_module(PyObject *self, PyObject *args) {
             }
         }
     }
+    fprintf(stdout,"particles: %d\n", particle_count);
 
     // read from array_temp, write to array
     // move step
