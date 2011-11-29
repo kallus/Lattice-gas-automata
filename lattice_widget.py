@@ -6,7 +6,7 @@ class LatticeWidget(QtGui.QWidget):
         self.lattice_model = lattice_model
 
     def paintEvent(self, event):
-        painter = QtGui.painter()
+        painter = QtGui.QPainter()
         diameter = (self.width() / float(self.lattice_model.size))
         
         painter.begin(self)
@@ -18,6 +18,9 @@ class LatticeWidget(QtGui.QWidget):
                 if self.lattice_model.cells[row, col] <> 0:
                     painter.begin(self)
                     painter.setRenderHint(QtGui.QPainter.Antialiasing, True)
+                    w_x = diameter/2.0 + (float(col) / self.lattice_model.size)*self.width()
+                    w_y = diameter/2.0 + (float(row) / self.lattice_model.size)*self.height()
+                    painter.translate(w_x, w_y)
                     pen = painter.pen()
                     pen.setColor(QtCore.Qt.black)
                     pen.setBrush(QtCore.Qt.black)
