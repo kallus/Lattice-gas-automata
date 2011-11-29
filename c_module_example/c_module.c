@@ -23,7 +23,7 @@ static PyObject * c_module(PyObject *self, PyObject *args) {
     /* PyArray_XYZ specifies the data type.
        The first 2 is the minimum dimension of the array. 2 means two-dimensional array, ie. a matrix.
        The second 2 is the maximum dimension. Here we always require a matrix, so it's also 2. */
-    array = (PyArrayObject *)PyArray_ContiguousFromAny(array_python_object, PyArray_DOUBLE, 2, 2);
+    array = (PyArrayObject *)PyArray_ContiguousFromAny(array_python_object, PyArray_LONG, 2, 2);
     if (array == NULL) {
         fprintf(stderr, "Invalid array object.\n");
         /* make sure we remove our refererences to the python objects we have before returning. */
@@ -36,7 +36,7 @@ static PyObject * c_module(PyObject *self, PyObject *args) {
     for (iRow = 0; iRow < array->dimensions[0]; ++iRow) {
         for (iCol = 0; iCol < array->dimensions[1]; ++iCol) {
             /* GETPTR2 is a macro to get a pointer to the given element, taking memory layout etc. into account. */
-            double *data = PyArray_GETPTR2(array, iRow, iCol);
+            long *data = PyArray_GETPTR2(array, iRow, iCol);
             printf("row %i col %i = %f\n", iRow, iCol, *data);
             /* we can only add Python objects to a Python list, so we need to create a PyDouble object from
                the raw double in the array. */
@@ -53,7 +53,7 @@ static PyObject * c_module(PyObject *self, PyObject *args) {
             }
 
             /* however, the numpy array memory is shared, so changes will be noticed on the Python side. */
-            (*data) *= double_number;
+            (*data) *= 2;//double_number;
         }
     }
 
