@@ -3,7 +3,7 @@ import c_module
 
 matrix = np.zeros((3, 3), dtype=np.int)
 matrix[0, :] = [0, 0, 0]
-matrix[1, :] = [0, 2, 0]
+matrix[1, :] = [0, 3, 0]
 matrix[2, :] = [0, 0, 0]
 matrix_temp = np.zeros((3, 3), dtype=np.int)
 matrix_temp[0, :] = [0, 0, 0]

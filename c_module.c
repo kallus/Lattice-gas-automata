@@ -1,6 +1,11 @@
 #include "Python.h"
 #include "numpy/arrayobject.h"
 
+long mod(long n, long k) {
+  if(n<0) return k+n;
+  return n % k;
+}
+
 long move(long n, long e, long s, long w) {
   long ret = 0;
   if(n % 2 == 1) ret += 1;
@@ -105,18 +110,19 @@ static PyObject * c_module(PyObject *self, PyObject *args) {
 	      }*/
         }
     }
-//    fprintf(stdout,"particles: %d\n", particle_count);
-
+    
+    //    fprintf(stdout,"particles: %d\n", particle_count);
+    
     // read from array_temp, write to array
     // move step
     for (iRow = 0; iRow < H; ++iRow) {
         for (iCol = 0; iCol < W; ++iCol) {
             long *data = PyArray_GETPTR2(array, iRow, iCol);
             //if (!on_border(H, W, iRow, iCol)) {
-              long *n = PyArray_GETPTR2(array_temp, iRow-1 % H, iCol);
-              long *e = PyArray_GETPTR2(array_temp, iRow, iCol+1 % W);
-              long *s = PyArray_GETPTR2(array_temp, iRow+1 % H, iCol);
-              long *w = PyArray_GETPTR2(array_temp, iRow, iCol-1 % W);
+	    long *n = PyArray_GETPTR2(array_temp, mod(iRow-1, H), iCol);
+	    long *e = PyArray_GETPTR2(array_temp, iRow, mod(iCol+1, W));
+	    long *s = PyArray_GETPTR2(array_temp, mod(iRow+1,H), iCol);
+	    long *w = PyArray_GETPTR2(array_temp, iRow, mod(iCol-1,W));
               (*data) = move(*n,*e,*s,*w);
 	      /*} else { // on border
               if (on_corner(H, W, iRow, iCol)) {
