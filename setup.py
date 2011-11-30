@@ -13,7 +13,7 @@ conf['OPT'] = "-fwrapv -Os -Wall -Wstrict-prototypes -O3 -march=core2"
 # python setup.py build
 # cp build/<something>/c_module.so .
 # python c_module_example.py
-module = Extension('hex', sources = ['hex.c'])
+module = Extension('c_module', sources = ['c_module.c'])
 setup(name = 'C module example',
       version = '1.0',
       ext_modules = [module],
