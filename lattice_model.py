@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import random
 import numpy as np
-import c_module
+import hex
 
 N_STATES = 16
 class LatticeModel(object):
@@ -19,7 +19,7 @@ class LatticeModel(object):
             #self.cells[row, col] = random.randint(0, N_STATES - 1)
 
     def update(self):
-        c_module.c_module(self.cells, self.cells_next)
+        hex.hex(self.cells, self.cells_next)
         return
         # n_particles = 0
         # n_particles += (self.cells == 0b0001).sum()
