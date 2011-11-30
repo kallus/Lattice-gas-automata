@@ -28,3 +28,11 @@ print("T_temp=2")
 print(str(matrix_temp))
 print("T=2")
 print(str(matrix))
+
+c_module.c_module(matrix, matrix_temp)
+
+print("T_temp=3")
+print(str(matrix_temp))
+print("T=3")
+print(str(matrix))
+
