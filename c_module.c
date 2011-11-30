@@ -92,7 +92,7 @@ static PyObject * c_module(PyObject *self, PyObject *args) {
             /* } */
 
             // cell collision
-            if (!on_border(H, W, iRow, iCol)) {
+            /*if (!on_border(H, W, iRow, iCol)) {*/
               if (*data == 5) {
                 (*data_temp) = 10;
               } else if (*data == 10) {
@@ -100,9 +100,9 @@ static PyObject * c_module(PyObject *self, PyObject *args) {
               } else {
                 (*data_temp) = *data;
               }
-            } else { // on border or corner
+	      /*} else { // on border or corner
               (*data_temp) = reverse(*data);
-            }
+	      }*/
         }
     }
 //    fprintf(stdout,"particles: %d\n", particle_count);
@@ -112,13 +112,13 @@ static PyObject * c_module(PyObject *self, PyObject *args) {
     for (iRow = 0; iRow < H; ++iRow) {
         for (iCol = 0; iCol < W; ++iCol) {
             long *data = PyArray_GETPTR2(array, iRow, iCol);
-            if (!on_border(H, W, iRow, iCol)) {
-              long *n = PyArray_GETPTR2(array_temp, iRow-1, iCol);
-              long *e = PyArray_GETPTR2(array_temp, iRow, iCol+1);
-              long *s = PyArray_GETPTR2(array_temp, iRow+1, iCol);
-              long *w = PyArray_GETPTR2(array_temp, iRow, iCol-1);
+            //if (!on_border(H, W, iRow, iCol)) {
+              long *n = PyArray_GETPTR2(array_temp, iRow-1 % H, iCol);
+              long *e = PyArray_GETPTR2(array_temp, iRow, iCol+1 % W);
+              long *s = PyArray_GETPTR2(array_temp, iRow+1 % H, iCol);
+              long *w = PyArray_GETPTR2(array_temp, iRow, iCol-1 % W);
               (*data) = move(*n,*e,*s,*w);
-            } else { // on border
+	      /*} else { // on border
               if (on_corner(H, W, iRow, iCol)) {
                 corner = which_corner(H, W, iRow, iCol);
                 if (corner == 1) { // NW
@@ -161,8 +161,8 @@ static PyObject * c_module(PyObject *self, PyObject *args) {
                   long *s = PyArray_GETPTR2(array_temp, iRow+1, iCol);
                   (*data) = move(*n,*e,*s,0);
                 }
-              }
-            }
+		}
+		}*/
         }
     }
 
