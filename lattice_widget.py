@@ -90,4 +90,4 @@ class LatticeWidget(QtGui.QWidget):
         return QtCore.QSize(200, 200)
 
     def sizeHint(self):
-        return QtCore.QSize(600, 600)
+        return QtCore.QSize(self.lattice_model.size, self.lattice_model.size)

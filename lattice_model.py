@@ -2,10 +2,14 @@
 import random
 import numpy as np
 import hex
+import c_module
 
 N_STATES = 16
+SQUARE_LATTICE = 0
+HEX_LATTICE = 1
 class LatticeModel(object):
-    def __init__(self, lattice_size, n_particles):
+    def __init__(self, lattice_size, n_particles, lattice_type):
+        self.lattice_type = lattice_type
         self.size = lattice_size
         self.cells = np.zeros((self.size, self.size), dtype=np.int)
         self.cells_next = np.zeros((self.size, self.size), dtype=np.int)
@@ -19,7 +23,10 @@ class LatticeModel(object):
             #self.cells[row, col] = random.randint(0, N_STATES - 1)
 
     def update(self):
-        hex.hex(self.cells, self.cells_next)
+        if self.lattice_type == 0:
+            c_module.c_module(self.cells, self.cells_next)
+        elif self.lattice_type == 1:
+            hex.hex(self.cells, self.cells_next)
         return
         # n_particles = 0
         # n_particles += (self.cells == 0b0001).sum()
