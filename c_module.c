@@ -105,9 +105,16 @@ static PyObject * c_module(PyObject *self, PyObject *args) {
               } else {
                 (*data_temp) = *data;
               }
-	      /*} else { // on border or corner
-              (*data_temp) = reverse(*data);
-	      }*/
+
+	      if(false){//check if nodeType(iRow,iCol)==1
+		(*data_temp) = reverse(*data);
+	      }
+	      if(false){//check if nodeType(iRow,iCol)==2
+		(*data_temp) = 32;
+	      }
+	      if(false){//check if nodeType(iRow,iCol)==3
+		(*data_temp) = 0;
+	      }
         }
     }
     
