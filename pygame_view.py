@@ -20,7 +20,8 @@ class PygameViewSquare(object):
     def update(self):
         #print "update"
 #        self.pixmap[0:20, :, :] = 255
-        self.lattice_model.update()
+        for i in xrange(100):
+            self.lattice_model.update()
         #print self.lattice_model.cells
         self.pixmap.fill(255)
         if self.lattice_model.lattice_type == 0:    
@@ -128,8 +129,8 @@ class PygameViewSquare(object):
 
 if __name__ == "__main__":
     print "main"
-    size = 500
-    model = LatticeModel(size, size*size, 1)
+    size = 1100
+    model = LatticeModel(size, size*size, 0)
 
     model.cells[1*size/2:size, 0:size/2] = 0
     view = PygameViewSquare(model, 10)
