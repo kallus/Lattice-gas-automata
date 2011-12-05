@@ -100,6 +100,10 @@ static PyObject * update4(PyObject *self, PyObject *args) {
     if (array == NULL || array_temp == NULL || node_types == NULL) {
         fprintf(stderr, "Invalid array object.\n");
         /* make sure we remove our refererences to the python objects we have before returning. */
+        Py_XDECREF(array);
+        Py_XDECREF(array_temp);
+        Py_XDECREF(node_types);
+
         Py_DECREF(array_python_object);
         Py_DECREF(array_python_object_temp);
         Py_DECREF(node_types_python_object);
@@ -157,6 +161,11 @@ static PyObject * update4(PyObject *self, PyObject *args) {
     /* this is just like DECREF, but doesn't crash if the argument is NULL. */
     Py_XDECREF(array);
     Py_XDECREF(array_temp);
+    Py_XDECREF(node_types);
+
+    Py_DECREF(array_python_object);
+    Py_DECREF(array_python_object_temp);
+    Py_DECREF(node_types_python_object);
 
     Py_RETURN_NONE;
 }

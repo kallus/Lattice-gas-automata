@@ -10,14 +10,11 @@ SQUARE_LATTICE = 0
 HEX_LATTICE = 1
 class LatticeModel(object):
     def __init__(self, node_types, fraction_random_nodes, lattice_type):
-
-        assert(node_types.shape[0] == node_types.shape[1])
-
         self.node_types = node_types
         self.lattice_type = lattice_type
-        self.size = node_types.shape[0]
-        self.cells = np.zeros((self.size, self.size), dtype=np.int)
-        self.cells_next = np.zeros((self.size, self.size), dtype=np.int)
+        self.shape = node_types.shape
+        self.cells = np.zeros(self.shape, dtype=np.int)
+        self.cells_next = np.zeros(self.shape, dtype=np.int)
 
         #initialize particles only where there is not a wall
         n_non_wall_nodes = sum(sum(node_types != pngnodes.WALL))
@@ -26,8 +23,8 @@ class LatticeModel(object):
         for i in xrange(n_random_nodes):
             allowed = False
             while not allowed:
-                row = random.randint(0, self.size - 1)
-                col = random.randint(0, self.size - 1)
+                row = random.randint(0, self.shape[0] - 1)
+                col = random.randint(0, self.shape[1] - 1)
                 allowed = ((pngnodes.WALL != node_types[row, col]) and 0 == self.cells[row, col])
             
             

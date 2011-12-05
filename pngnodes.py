@@ -28,9 +28,9 @@ def read(filename):
 		for j in range(width):
 			pixel = 3*j+numpy.arange(3) #RGB triplet for pixel (i,j)
 			if all(0 == imageRGB8[i,pixel]): #pixel is black
-				nodes[j,i] = WALL
+				nodes[i,j] = WALL
 			else:
-				nodes[j,i] = FREE_SPACE
+				nodes[i,j] = FREE_SPACE
 			
 
-	return nodes
+	return nodes.T
