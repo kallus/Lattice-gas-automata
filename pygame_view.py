@@ -20,8 +20,7 @@ class PygameViewSquare(object):
     def update(self):
         #print "update"
 #        self.pixmap[0:20, :, :] = 255
-        for i in xrange(100):
-            self.lattice_model.update()
+        self.lattice_model.update()
         #print self.lattice_model.cells
         self.pixmap.fill(255)
         if self.lattice_model.lattice_type == 0:    
@@ -44,76 +43,76 @@ class PygameViewSquare(object):
 
             self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b1111)*255
         elif self.lattice_model.lattice_type == 1:
-#            self.pixmap[:, :, 0] -= (self.lattice_model.cells != 0b000000)*255
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b100000)*128
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b010000)*128
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b001000)*128
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b000100)*128
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b000010)*128
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b000001)*128
+            self.pixmap[:, :, 0] -= (self.lattice_model.cells != 0b000000)*255
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b100000)*128
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b010000)*128
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b001000)*128
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b000100)*128
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b000010)*128
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b000001)*128
 
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b110000)*154
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b101000)*154
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b100100)*154
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b100010)*154
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b100001)*154
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b000001)*154
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b011000)*154
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b010100)*154
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b010010)*154
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b010001)*154
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b001100)*154
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b001010)*154
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b001001)*154
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b000110)*154
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b000101)*154
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b000011)*154
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b110000)*154
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b101000)*154
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b100100)*154
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b100010)*154
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b100001)*154
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b000001)*154
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b011000)*154
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b010100)*154
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b010010)*154
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b010001)*154
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b001100)*154
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b001010)*154
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b001001)*154
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b000110)*154
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b000101)*154
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b000011)*154
 
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b111000)*179
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b110100)*179
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b110010)*179
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b110001)*179
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b101100)*179
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b101010)*179
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b101001)*179
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b100110)*179
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b100101)*179
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b100011)*179
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b011100)*179
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b011010)*179
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b011001)*179
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b010110)*179
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b010101)*179
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b010011)*179
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b001110)*179
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b001101)*179
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b001011)*179
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b000111)*179
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b111000)*179
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b110100)*179
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b110010)*179
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b110001)*179
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b101100)*179
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b101010)*179
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b101001)*179
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b100110)*179
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b100101)*179
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b100011)*179
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b011100)*179
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b011010)*179
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b011001)*179
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b010110)*179
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b010101)*179
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b010011)*179
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b001110)*179
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b001101)*179
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b001011)*179
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b000111)*179
 
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b111100)*205
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b111010)*205
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b111001)*205
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b110110)*205
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b110101)*205
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b110011)*205
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b101110)*205
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b101101)*205
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b101011)*205
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b100111)*205
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b011110)*205
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b011101)*205
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b011011)*205
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b010111)*205
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b001111)*205
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b111100)*205
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b111010)*205
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b111001)*205
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b110110)*205
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b110101)*205
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b110011)*205
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b101110)*205
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b101101)*205
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b101011)*205
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b100111)*205
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b011110)*205
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b011101)*205
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b011011)*205
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b010111)*205
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b001111)*205
 
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b111110)*230
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b111101)*230
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b111011)*230
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b110111)*230
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b101111)*230
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b011111)*230
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b111110)*230
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b111101)*230
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b111011)*230
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b110111)*230
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b101111)*230
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b011111)*230
 
-            self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b111111)*255
+            # self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b111111)*255
 
 #        scipy.ndimage.filters.gaussian_filter(self.pixmap[:, :, 0], 1.75, output=self.pixmap[:, :, 1])
         self.pixmap[:, :, 1] = self.pixmap[:, :, 0]
@@ -130,7 +129,7 @@ class PygameViewSquare(object):
 if __name__ == "__main__":
     print "main"
     size = 1100
-    model = LatticeModel(size, size*size, 0)
+    model = LatticeModel(size, size*size, 1)
 
     model.cells[1*size/2:size, 0:size/2] = 0
     view = PygameViewSquare(model, 10)
