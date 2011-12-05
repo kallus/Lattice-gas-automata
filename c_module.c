@@ -134,7 +134,7 @@ static PyObject * update4(PyObject *self, PyObject *args) {
 	      (*data_temp) = reverse4(*data);
 	    }
 	    else if(*node == 2){
-	      (*data_temp) = 32;
+	      (*data_temp) = 15;
 	    }
 	    else if(*node == 3){
 	      (*data_temp) = 0;
@@ -214,19 +214,23 @@ static PyObject * update4(PyObject *self, PyObject *args) {
 static PyObject * update6(PyObject *self, PyObject *args) {
     PyObject *array_python_object;
     PyObject *array_python_object_temp;
+    PyObject *node_type_python_object;
 
-    if (!PyArg_ParseTuple(args, "OO",
+    if (!PyArg_ParseTuple(args, "OOO",
             &array_python_object,
-            &array_python_object_temp)) {
+	    &array_python_object_temp,
+	    &node_type_python_object)) {
         fprintf(stderr, "Failed to parse arguments.\n");
         Py_RETURN_NONE;
     }
 
     PyArrayObject *array;
     PyArrayObject *array_temp;
+    PyArrayObject *node_type;
     array = (PyArrayObject *)PyArray_ContiguousFromAny(array_python_object, PyArray_LONG, 2, 2);
     array_temp = (PyArrayObject *)PyArray_ContiguousFromAny(array_python_object_temp, PyArray_LONG, 2, 2);
-    if (array == NULL || array_temp == NULL) {
+    node_type = (PyArrayObject *)PyArray_ContiguousFromAny(node_type_python_object, PyArray_LONG, 2, 2);
+    if (array == NULL || array_temp == NULL || node_type == NULL) {
         fprintf(stderr, "Invalid array object.\n");
         /* make sure we remove our refererences to the python objects we have before returning. */
         Py_DECREF(array_python_object);
@@ -272,6 +276,7 @@ static PyObject * update6(PyObject *self, PyObject *args) {
 
             long *data = PyArray_GETPTR2(array, iRow, iCol);
             long *data_temp = PyArray_GETPTR2(array_temp, iRow, iCol);
+	    long *node = PyArray_GETPTR2(node_type, iRow, iCol);
 
             /* long data_copy = *data; */
             /* long ic; */
@@ -281,15 +286,26 @@ static PyObject * update6(PyObject *self, PyObject *args) {
             /* } */
 
             // cell collision
-            if (!on_border(H, W, iRow, iCol)) {
-              if (collide[*data] == 0) {
-                (*data_temp) = *data;
-              } else {
-                (*data_temp) = collide[*data];
-              }
-            } else { // on border or corner
-              (*data_temp) = reverse6(*data);
-            }
+	    if(*node == 0){
+	      //if (!on_border(H, W, iRow, iCol)) {
+		if (collide[*data] == 0) {
+		  (*data_temp) = *data;
+		} else {
+		  (*data_temp) = collide[*data];
+		}
+		//} else { // on border or corner
+		//(*data_temp) = reverse6(*data);
+		//}
+	    }
+	    else if(*node == 1){//Wall
+	      (*data_temp) = reverse6(*data);
+	    }
+	    else if(*node == 2){//Source
+	      (*data_temp) = 63;
+	    }
+	    else if(*node == 3){//Sink
+	      (*data_temp) = 0;
+	    }
         }
     }
 //    fprintf(stdout,"particles: %d\n", particle_count);

@@ -10,22 +10,33 @@ class LatticeModel(object):
     def __init__(self, lattice_size, n_particles, lattice_type):
         self.lattice_type = lattice_type
         self.size = lattice_size
-        self.cells = np.zeros((self.size, self.size), dtype=np.int)
         self.cells_next = np.zeros((self.size, self.size), dtype=np.int)
-        for i in xrange(n_particles):
-            row = random.randint(0, lattice_size - 1)
-            col = random.randint(0, lattice_size - 1)
-            while self.cells[row, col] <> 0:
-                row = random.randint(0, lattice_size - 1)
-                col = random.randint(0, lattice_size - 1)
-            self.cells[row, col] = random.choice([0b0100, 0b1000, 0b0001, 0b0010]) #0b0000, 
-            #self.cells[row, col] = random.randint(0, N_STATES - 1)
+        self.node_type = np.zeros((self.size, self.size), dtype=np.int)
+
+        # initialize cells randomly
+        self.cells_temp = np.random.rand(self.size, self.size)
+        if lattice_type == SQUARE_LATTICE:
+          possible_directions = 4;
+        else:
+          possible_directions = 6;
+        initial_density = 0.2;
+        for i in xrange(possible_directions):
+          self.cells_temp = np.where(self.cells_temp < (i+1)*1.0/possible_directions, 2**i, self.cells_temp)
+        self.cells_temp = np.int_(self.cells_temp)
+        mask = np.random.rand(self.size, self.size)
+        mask = np.where(mask < initial_density, 1, 0)
+        self.cells_temp = np.where(mask == 1, self.cells_temp, 0)
+        self.cells_temp[0,:] = 0;
+        self.cells_temp[:,0] = 0;
+        self.cells_temp[self.size-1,:] = 0;
+        self.cells_temp[:,self.size-1] = 0;
+        self.cells = np.array(self.cells_temp, dtype=np.int)
 
     def update(self):
         if self.lattice_type == 0:
-            c_module.update4(self.cells, self.cells_next)
+            c_module.update4(self.cells, self.cells_next, self.node_type)
         elif self.lattice_type == 1:
-            c_module.update6(self.cells, self.cells_next)
+            c_module.update6(self.cells, self.cells_next, self.node_type)
         return
         # n_particles = 0
         # n_particles += (self.cells == 0b0001).sum()
