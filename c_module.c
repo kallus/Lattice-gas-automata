@@ -6,12 +6,12 @@
 #define FREE_SPACE 0
 #define WALL 1
 
--inline long mod(long n, long k) {
+inline long mod(long n, long k) {
   if(n<0) return k+n;
   return n % k;
 }
 
--inline long move4(long n, long e, long s, long w) {
+inline long move4(long n, long e, long s, long w) {
   long ret = 0;
   if(n % 2 == 1) ret += 1;
   if((e>>1) % 2 == 1) ret += 2;
@@ -20,12 +20,12 @@
   return ret;
 }
 
--inline long reverse4(long x) {
+inline long reverse4(long x) {
   x = (x << 2) + (x >> 2);
   return x & 15;
 }
 
--inline long move6(long nw, long ne, long e, long se, long sw, long w) {
+inline long move6(long nw, long ne, long e, long se, long sw, long w) {
   long ret = 0;
   if(ne % 2 == 1) ret += 1;
   if((e>>1) % 2 == 1) ret += 2;
@@ -36,12 +36,12 @@
   return ret;
 }
 
--inline long reverse6(long x) {
+inline long reverse6(long x) {
   x = (x << 3) + (x >> 3);
   return x & 63;
 }
 
--inline long on_border(long H, long W, long y, long x) {
+inline long on_border(long H, long W, long y, long x) {
   if (x == 0 || y == 0 || x == W-1 || y == H-1) {
     return 1;
   }
@@ -49,7 +49,7 @@
   return 0;
 }
 
--inline long on_corner(long H, long W, long y, long x) {
+inline long on_corner(long H, long W, long y, long x) {
   if ((x == 0 || x == W-1) && (y == 0 || y == H-1)) {
     return 1;
   }
@@ -57,7 +57,7 @@
   return 0;
 }
 
--inline long which_corner(long H, long W, long y, long x) {
+inline long which_corner(long H, long W, long y, long x) {
   if (y == 0 && x == 0) return 1;
   if (y == 0 && x == W-1) return 2;
   if (y == H-1 && x == W-1) return 3;
@@ -66,7 +66,7 @@
   return 0;
 }
 
--inline long which_border(long H, long W, long y, long x) {
+inline long which_border(long H, long W, long y, long x) {
   if (y == 0) return 1;
   if (x == W-1) return 2;
   if (y == H-1) return 3;
