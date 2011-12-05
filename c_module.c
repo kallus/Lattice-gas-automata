@@ -128,13 +128,13 @@ static PyObject * update4(PyObject *self, PyObject *args) {
 		(*data_temp) = *data;
 	      }
 	    }
-	    else if(node == 1){//check if nodeType(iRow,iCol)==1
+	    else if(node == 1){
 	      (*data_temp) = reverse(*data);
 	    }
-	    else if(node == 2){//check if nodeType(iRow,iCol)==2
+	    else if(node == 2){
 	      (*data_temp) = 32;
 	    }
-	    else if(node == 3){//check if nodeType(iRow,iCol)==3
+	    else if(node == 3){
 	      (*data_temp) = 0;
 	    }
         }
