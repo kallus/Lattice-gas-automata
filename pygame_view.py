@@ -3,6 +3,7 @@ import numpy as np
 import pygame
 import scipy.ndimage
 from lattice_model import LatticeModel
+import pngnodes
 
 class PygameViewSquare(object):
     def __init__(self, lattice_model, delay):
@@ -128,9 +129,15 @@ class PygameViewSquare(object):
 
 if __name__ == "__main__":
     print "main"
-    size = 1100
-    model = LatticeModel(size, size*size, 1)
+    
+    node_types = pngnodes.read('400-1.png')
+    height = node_types.shape[0]
+    width = node_types.shape[1]
 
-    model.cells[1*size/2:size, 0:size/2] = 0
+    density = 0.5
+
+    model = LatticeModel(node_types, density, 0)
+
+    model.cells[0:height/2, 0:width/2] = 0
     view = PygameViewSquare(model, 10)
 
