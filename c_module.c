@@ -58,23 +58,28 @@ long which_border(long H, long W, long y, long x) {
 static PyObject * c_module(PyObject *self, PyObject *args) {
     PyObject *array_python_object;
     PyObject *array_python_object_temp;
+    PyObject *node_type_python_object;
 
-    if (!PyArg_ParseTuple(args, "OO",
-            &array_python_object,
-            &array_python_object_temp)) {
+    if (!PyArg_ParseTuple(args, "OOO",
+	 &array_python_object,
+	 &array_python_object_temp,
+	 &node_type_python_object)) {
         fprintf(stderr, "Failed to parse arguments.\n");
         Py_RETURN_NONE;
     }
 
     PyArrayObject *array;
     PyArrayObject *array_temp;
+    PyArrayObject *node_type;
     array = (PyArrayObject *)PyArray_ContiguousFromAny(array_python_object, PyArray_LONG, 2, 2);
     array_temp = (PyArrayObject *)PyArray_ContiguousFromAny(array_python_object_temp, PyArray_LONG, 2, 2);
-    if (array == NULL || array_temp == NULL) {
+    node_type = (PyArrayObject *)PyArray_ContiguousFromAny(node_type_python_object, PyArray_LONG, 2, 2);
+    if (array == NULL || array_temp == NULL || node_type == NULL) {
         fprintf(stderr, "Invalid array object.\n");
         /* make sure we remove our refererences to the python objects we have before returning. */
         Py_DECREF(array_python_object);
         Py_DECREF(array_python_object_temp);
+	Py_DECREF(node_type_python_object);
         Py_RETURN_NONE; /* returns None to the Python side, of course. */
     }
 
