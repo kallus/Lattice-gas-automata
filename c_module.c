@@ -109,7 +109,7 @@ static PyObject * update4(PyObject *self, PyObject *args) {
         for (iCol = 0; iCol < W; ++iCol) {
             long *data = PyArray_GETPTR2(array, iRow, iCol);
             long *data_temp = PyArray_GETPTR2(array_temp, iRow, iCol);
-
+	    long *node = PyArray_GETPTR2(node_type, iRow, iCol);
             /* long data_copy = *data; */
             /* long ic; */
             /* for(ic = 0; ic < 4; ic++) { */
@@ -119,23 +119,24 @@ static PyObject * update4(PyObject *self, PyObject *args) {
 
             // cell collision
             /*if (!on_border(H, W, iRow, iCol)) {*/
-              if (*data == 5) {
-                (*data_temp) = 10;
-              } else if (*data == 10) {
-                (*data_temp) = 5;
-              } else {
-                (*data_temp) = *data;
-              }
-
-	      if(false){//check if nodeType(iRow,iCol)==1
-		(*data_temp) = reverse(*data);
+	    if (node == 0){
+	      if (*data == 5) {
+		(*data_temp) = 10;
+	      } else if (*data == 10) {
+		(*data_temp) = 5;
+	      } else {
+		(*data_temp) = *data;
 	      }
-	      if(false){//check if nodeType(iRow,iCol)==2
-		(*data_temp) = 32;
-	      }
-	      if(false){//check if nodeType(iRow,iCol)==3
-		(*data_temp) = 0;
-	      }
+	    }
+	    else if(node == 1){
+	      (*data_temp) = reverse(*data);
+	    }
+	    else if(node == 2){
+	      (*data_temp) = 32;
+	    }
+	    else if(node == 3){
+	      (*data_temp) = 0;
+	    }
         }
     }
     
