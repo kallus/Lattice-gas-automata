@@ -99,14 +99,6 @@ static PyObject * update4(PyObject *self, PyObject *args) {
     node_types = (PyArrayObject *)PyArray_ContiguousFromAny(node_types_python_object, PyArray_LONG, 2, 2);
     if (array == NULL || array_temp == NULL || node_types == NULL) {
         fprintf(stderr, "Invalid array object.\n");
-        /* make sure we remove our refererences to the python objects we have before returning. */
-        Py_XDECREF(array);
-        Py_XDECREF(array_temp);
-        Py_XDECREF(node_types);
-
-        Py_DECREF(array_python_object);
-        Py_DECREF(array_python_object_temp);
-        Py_DECREF(node_types_python_object);
         Py_RETURN_NONE; /* returns None to the Python side, of course. */
     }
 
@@ -163,9 +155,11 @@ static PyObject * update4(PyObject *self, PyObject *args) {
     Py_XDECREF(array_temp);
     Py_XDECREF(node_types);
 
-    Py_DECREF(array_python_object);
-    Py_DECREF(array_python_object_temp);
-    Py_DECREF(node_types_python_object);
+    // I have no good explanation for why this is bad, but it is.
+    // don't do it. doesn't seem to be leaking memory, either. /wjoel
+//    Py_DECREF(array_python_object);
+//    Py_DECREF(array_python_object_temp);
+//    Py_DECREF(node_types_python_object);
 
     Py_RETURN_NONE;
 }
@@ -193,10 +187,6 @@ static PyObject * update6(PyObject *self, PyObject *args) {
     node_types = (PyArrayObject *)PyArray_ContiguousFromAny(node_types_python_object, PyArray_LONG, 2, 2);
     if (array == NULL || array_temp == NULL || node_types == NULL) {
         fprintf(stderr, "Invalid array object.\n");
-        /* make sure we remove our refererences to the python objects we have before returning. */
-        Py_DECREF(array_python_object);
-        Py_DECREF(array_python_object_temp);
-        Py_DECREF(node_types_python_object);
         Py_RETURN_NONE; /* returns None to the Python side, of course. */
     }
 
@@ -289,6 +279,7 @@ static PyObject * update6(PyObject *self, PyObject *args) {
     /* this is just like DECREF, but doesn't crash if the argument is NULL. */
     Py_XDECREF(array);
     Py_XDECREF(array_temp);
+    Py_XDECREF(node_types);
 
     Py_RETURN_NONE;
 }
