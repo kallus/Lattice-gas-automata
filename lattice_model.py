@@ -12,6 +12,7 @@ class LatticeModel(object):
         self.size = lattice_size
         self.cells = np.zeros((self.size, self.size), dtype=np.int)
         self.cells_next = np.zeros((self.size, self.size), dtype=np.int)
+        self.node_type = np.zeros((self.size, self.size), dtype=np.int)
         for i in xrange(n_particles):
             row = random.randint(0, lattice_size - 1)
             col = random.randint(0, lattice_size - 1)
@@ -23,9 +24,9 @@ class LatticeModel(object):
 
     def update(self):
         if self.lattice_type == 0:
-            c_module.update4(self.cells, self.cells_next)
+            c_module.update4(self.cells, self.cells_next, self.node_type)
         elif self.lattice_type == 1:
-            c_module.update6(self.cells, self.cells_next)
+            c_module.update6(self.cells, self.cells_next, self.node_type)
         return
         # n_particles = 0
         # n_particles += (self.cells == 0b0001).sum()
