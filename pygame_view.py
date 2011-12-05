@@ -42,7 +42,8 @@ class PygameViewSquare(object):
             self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b1110)*223
 
             self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b1111)*255
-        elif self.lattice_lattice.type == 1:
+        elif self.lattice_model.lattice_type == 1:
+#            self.pixmap[:, :, 0] -= (self.lattice_model.cells != 0b000000)*255
             self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b100000)*128
             self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b010000)*128
             self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b001000)*128
@@ -113,7 +114,8 @@ class PygameViewSquare(object):
 
             self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b111111)*255
 
-        scipy.ndimage.filters.gaussian_filter(self.pixmap[:, :, 0], 0.75, output=self.pixmap[:, :, 1])
+#        scipy.ndimage.filters.gaussian_filter(self.pixmap[:, :, 0], 1.75, output=self.pixmap[:, :, 1])
+        self.pixmap[:, :, 1] = self.pixmap[:, :, 0]
         self.pixmap[:, :, 0] = self.pixmap[:, :, 1]
         self.pixmap[:, :, 2] = self.pixmap[:, :, 1]
 
@@ -127,7 +129,7 @@ class PygameViewSquare(object):
 if __name__ == "__main__":
     print "main"
     size = 500
-    model = LatticeModel(size, size*size, 0)
+    model = LatticeModel(size, size*size, 1)
 
     model.cells[1*size/2:size, 0:size/2] = 0
     view = PygameViewSquare(model, 10)

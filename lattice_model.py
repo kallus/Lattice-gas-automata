@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import random
 import numpy as np
-import hex
 import c_module
 
 N_STATES = 16
@@ -24,9 +23,9 @@ class LatticeModel(object):
 
     def update(self):
         if self.lattice_type == 0:
-            c_module.c_module(self.cells, self.cells_next)
+            c_module.update4(self.cells, self.cells_next)
         elif self.lattice_type == 1:
-            hex.hex(self.cells, self.cells_next)
+            c_module.update6(self.cells, self.cells_next)
         return
         # n_particles = 0
         # n_particles += (self.cells == 0b0001).sum()
