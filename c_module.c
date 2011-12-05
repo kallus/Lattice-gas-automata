@@ -1,12 +1,13 @@
+//#include <omp.h>
 #include "Python.h"
 #include "numpy/arrayobject.h"
 
-long mod(long n, long k) {
+inline long mod(long n, long k) {
   if(n<0) return k+n;
   return n % k;
 }
 
-long move4(long n, long e, long s, long w) {
+inline long move4(long n, long e, long s, long w) {
   long ret = 0;
   if(n % 2 == 1) ret += 1;
   if((e>>1) % 2 == 1) ret += 2;
@@ -15,12 +16,12 @@ long move4(long n, long e, long s, long w) {
   return ret;
 }
 
-long reverse4(long x) {
+inline long reverse4(long x) {
   x = (x << 2) + (x >> 2);
   return x & 15;
 }
 
-long move6(long nw, long ne, long e, long se, long sw, long w) {
+inline long move6(long nw, long ne, long e, long se, long sw, long w) {
   long ret = 0;
   if(ne % 2 == 1) ret += 1;
   if((e>>1) % 2 == 1) ret += 2;
@@ -31,12 +32,12 @@ long move6(long nw, long ne, long e, long se, long sw, long w) {
   return ret;
 }
 
-long reverse6(long x) {
+inline long reverse6(long x) {
   x = (x << 3) + (x >> 3);
   return x & 63;
 }
 
-long on_border(long H, long W, long y, long x) {
+inline long on_border(long H, long W, long y, long x) {
   if (x == 0 || y == 0 || x == W-1 || y == H-1) {
     return 1;
   }
@@ -44,7 +45,7 @@ long on_border(long H, long W, long y, long x) {
   return 0;
 }
 
-long on_corner(long H, long W, long y, long x) {
+inline long on_corner(long H, long W, long y, long x) {
   if ((x == 0 || x == W-1) && (y == 0 || y == H-1)) {
     return 1;
   }
@@ -52,7 +53,7 @@ long on_corner(long H, long W, long y, long x) {
   return 0;
 }
 
-long which_corner(long H, long W, long y, long x) {
+inline long which_corner(long H, long W, long y, long x) {
   if (y == 0 && x == 0) return 1;
   if (y == 0 && x == W-1) return 2;
   if (y == H-1 && x == W-1) return 3;
@@ -61,7 +62,7 @@ long which_corner(long H, long W, long y, long x) {
   return 0;
 }
 
-long which_border(long H, long W, long y, long x) {
+inline long which_border(long H, long W, long y, long x) {
   if (y == 0) return 1;
   if (x == W-1) return 2;
   if (y == H-1) return 3;
@@ -105,6 +106,7 @@ static PyObject * update4(PyObject *self, PyObject *args) {
     long H = array->dimensions[0];
     long W = array->dimensions[1];
     /* long particle_count = 0; */
+    #pragma omp parallel for shared(array, array_temp, H, W, iRow) private (iCol)
     for (iRow = 0; iRow < H; ++iRow) {
         for (iCol = 0; iCol < W; ++iCol) {
             long *data = PyArray_GETPTR2(array, iRow, iCol);
@@ -119,7 +121,7 @@ static PyObject * update4(PyObject *self, PyObject *args) {
 
             // cell collision
             /*if (!on_border(H, W, iRow, iCol)) {*/
-	    if (node == 0){
+	    if (*node == 0){
 	      if (*data == 5) {
 		(*data_temp) = 10;
 	      } else if (*data == 10) {
@@ -128,13 +130,13 @@ static PyObject * update4(PyObject *self, PyObject *args) {
 		(*data_temp) = *data;
 	      }
 	    }
-	    else if(node == 1){
-	      (*data_temp) = reverse(*data);
+	    else if(*node == 1){
+	      (*data_temp) = reverse4(*data);
 	    }
-	    else if(node == 2){
+	    else if(*node == 2){
 	      (*data_temp) = 32;
 	    }
-	    else if(node == 3){
+	    else if(*node == 3){
 	      (*data_temp) = 0;
 	    }
         }
@@ -144,6 +146,7 @@ static PyObject * update4(PyObject *self, PyObject *args) {
     
     // read from array_temp, write to array
     // move step
+    #pragma omp parallel for shared(array, array_temp, H, W, iRow) private (iCol)
     for (iRow = 0; iRow < H; ++iRow) {
         for (iCol = 0; iCol < W; ++iCol) {
             long *data = PyArray_GETPTR2(array, iRow, iCol);
@@ -263,8 +266,10 @@ static PyObject * update6(PyObject *self, PyObject *args) {
     collide[36] =  9;
 
     /* long particle_count = 0; */
+    #pragma omp parallel for shared(array, array_temp, H, W, iRow) private (iCol)
     for (iRow = 0; iRow < H; ++iRow) {
         for (iCol = 0; iCol < W; ++iCol) {
+
             long *data = PyArray_GETPTR2(array, iRow, iCol);
             long *data_temp = PyArray_GETPTR2(array_temp, iRow, iCol);
 
@@ -283,7 +288,7 @@ static PyObject * update6(PyObject *self, PyObject *args) {
                 (*data_temp) = collide[*data];
               }
             } else { // on border or corner
-              (*data_temp) = reverse4(*data);
+              (*data_temp) = reverse6(*data);
             }
         }
     }
@@ -291,6 +296,8 @@ static PyObject * update6(PyObject *self, PyObject *args) {
 
     // read from array_temp, write to array
     // move step
+// shared(array, array_temp, H, W) private (iRow, iCol)
+    #pragma omp parallel for shared(array, array_temp, H, W, iRow) private (iCol)
     for (iRow = 0; iRow < H; ++iRow) {
         for (iCol = 0; iCol < W; ++iCol) {
             long *data = PyArray_GETPTR2(array, iRow, iCol);
