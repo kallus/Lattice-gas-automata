@@ -1,12 +1,14 @@
 //#include <omp.h>
 #include "Python.h"
 #include "numpy/arrayobject.h"
+#include "stdlib.h"
 
 //Constants for node types
 #define FREE_SPACE 0
 #define WALL -1
 #define SOURCE -2
 #define SINK -3
+#define PROB 0.1
 
 inline long mod(long n, long k) {
   if(n<0) return k+n;
@@ -133,7 +135,10 @@ static PyObject * update4(PyObject *self, PyObject *args) {
 	    
 	    //Source
 	    if (SOURCE == *node_type) {
-	      (*data_temp) = 15;
+	      double rand = drand48();
+	      if(rand < PROB){
+		(*data_temp) = 15;
+	      }
 	    }
 
 	    //Sink
@@ -173,28 +178,30 @@ static PyObject * update4(PyObject *self, PyObject *args) {
     Py_RETURN_NONE;
 }
 
-
 static PyObject * update6(PyObject *self, PyObject *args) {
     PyObject *array_python_object;
     PyObject *array_python_object_temp;
     PyObject *node_types_python_object;
+    PyObject *cell_colors_python_object;
 
-    if (!PyArg_ParseTuple(args, "OOO",
+    if (!PyArg_ParseTuple(args, "OOOO",
             &array_python_object,
             &array_python_object_temp,
-            &node_types_python_object)) {
+            &node_types_python_object,
+            &cell_colors_python_object)) {
         fprintf(stderr, "Failed to parse arguments.\n");
         Py_RETURN_NONE;
     }
 
     PyArrayObject *array;
     PyArrayObject *array_temp;
-
     PyArrayObject *node_types;
+    PyArrayObject *cell_colors;
     array = (PyArrayObject *)PyArray_ContiguousFromAny(array_python_object, PyArray_LONG, 2, 2);
     array_temp = (PyArrayObject *)PyArray_ContiguousFromAny(array_python_object_temp, PyArray_LONG, 2, 2);
     node_types = (PyArrayObject *)PyArray_ContiguousFromAny(node_types_python_object, PyArray_LONG, 2, 2);
-    if (array == NULL || array_temp == NULL || node_types == NULL) {
+    cell_colors = (PyArrayObject *)PyArray_ContiguousFromAny(cell_colors_python_object, PyArray_UINT8, 2, 2);
+    if (array == NULL || array_temp == NULL || node_types == NULL || cell_colors == NULL) {
         fprintf(stderr, "Invalid array object.\n");
         Py_RETURN_NONE; /* returns None to the Python side, of course. */
     }
@@ -252,7 +259,10 @@ static PyObject * update6(PyObject *self, PyObject *args) {
 	    
 	    //Source
 	    if (SOURCE == *node_type) {
-	      (*data_temp) = 63;
+	      double rand = drand48();
+	      if(rand < PROB) {
+		(*data_temp) = 63;
+	      }
 	    }
 
 	    //Sink
@@ -264,10 +274,11 @@ static PyObject * update6(PyObject *self, PyObject *args) {
     
     // MOVEMENT
     // read from array_temp, write to array
-    #pragma omp parallel for shared(array, array_temp, H, W, iRow) private (iCol)
+    #pragma omp parallel for shared(array, array_temp, cell_colors, H, W, iRow) private (iCol)
     for (iRow = 0; iRow < H; ++iRow) {
         for (iCol = 0; iCol < W; ++iCol) {
             long *data = PyArray_GETPTR2(array, iRow, iCol);
+            unsigned char *cell_color = PyArray_GETPTR2(cell_colors, iRow, iCol);
 
             //Periodic boundary conditions:
 
@@ -289,6 +300,13 @@ static PyObject * update6(PyObject *self, PyObject *args) {
               long *w = PyArray_GETPTR2(array_temp, iRow, mod(iCol-1, W));
               (*data) = move6(*nw,*ne,*e,*se,*sw,*w);
             }
+
+            /* "You are not expected to understand this." */
+            long magic = *data;
+            magic = magic - ((magic >> 1) & 0x55555555);
+            magic = (magic & 0x33333333) + ((magic >> 2) & 0x33333333);
+            magic = (((magic + (magic >> 4)) & 0x0F0F0F0F) * 0x01010101) >> 24;
+            (*cell_color) = magic*42;
         }
     }
 
@@ -296,6 +314,7 @@ static PyObject * update6(PyObject *self, PyObject *args) {
     Py_XDECREF(array);
     Py_XDECREF(array_temp);
     Py_XDECREF(node_types);
+    Py_XDECREF(cell_colors);
 
     Py_RETURN_NONE;
 }
