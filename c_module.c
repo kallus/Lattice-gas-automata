@@ -4,9 +4,9 @@
 
 //Constants for node types
 #define FREE_SPACE 0
-#define WALL 1
-#define SOURCE 2
-#define SINK 3
+#define WALL -1
+#define SOURCE -2
+#define SINK -3
 
 inline long mod(long n, long k) {
   if(n<0) return k+n;
