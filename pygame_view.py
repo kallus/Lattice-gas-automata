@@ -168,7 +168,7 @@ if __name__ == "__main__":
 
     density = 0.5
 
-    model = LatticeModel(node_types, density, 1, 0)
+    model = LatticeModel(node_types, density, 1, 100)
 
 #    model.cells[0:height*5/6, 0:width*5/6] = 0
 #    model.cells[:, width*5/9:] = 0

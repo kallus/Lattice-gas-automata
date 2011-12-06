@@ -193,16 +193,16 @@ static PyObject * update4(PyObject *self, PyObject *args) {
 }
 
 static const unsigned char random_table1[] = { 32, 16, 8, 4, 2, 1 };
-static const int size_random1 = sizeof(random_table1)/sizeof(random_table1[0]);
+static const int size_random1 = sizeof(random_table1)/sizeof(random_table1[0]) + 1;
 static const unsigned char random_table2[] = { 48, 40, 36, 34, 33, 24, 20, 18, 17, 12, 10, 9, 6, 5, 3 };
-static const int size_random2 = sizeof(random_table2)/sizeof(random_table2[0]);
+static const int size_random2 = sizeof(random_table2)/sizeof(random_table2[0]) + 1;
 static const unsigned char random_table3[] = { 56, 52, 50, 49, 44, 42, 41, 38, 37, 35, 28, 26, 25, 22,
                                                21, 19, 14, 13, 11, 7 };
-static const int size_random3 = sizeof(random_table3)/sizeof(random_table3[0]);
+static const int size_random3 = sizeof(random_table3)/sizeof(random_table3[0]) + 1;
 static const unsigned char random_table4[] = { 60, 58, 57, 54, 53, 51, 46, 45, 43, 39, 30, 29, 27, 23, 15 };
-static const int size_random4 = sizeof(random_table4)/sizeof(random_table4[0]);
+static const int size_random4 = sizeof(random_table4)/sizeof(random_table4[0]) + 1;
 static const unsigned char random_table5[] = { 62, 61, 59, 55, 47, 31 };
-static const int size_random5 = sizeof(random_table5)/sizeof(random_table5[0]);
+static const int size_random5 = sizeof(random_table5)/sizeof(random_table5[0]) + 1;
 
 static PyObject * update6(PyObject *self, PyObject *args) {
     PyObject *array_python_object;
@@ -343,6 +343,7 @@ static PyObject * update6(PyObject *self, PyObject *args) {
 
                 //Temperature
                 if (magic != 0 && magic != 6) {
+//                    temp_r = rand()/((double)RAND_MAX);
                     long this_temp_r = iCol * iRow * temp_r * magic + iCol + iRow + temp_r;
                     if (this_temp_r % 100000 < temperature) {
 //                if ((((int)(iCol * iRow * temp_r) *  * 100) % 100) == 1) {
