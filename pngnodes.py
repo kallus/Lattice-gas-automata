@@ -33,4 +33,4 @@ def read(filename):
 				nodes[i,j] = FREE_SPACE
 			
 
-	return nodes.T
+	return nodes

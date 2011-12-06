@@ -123,6 +123,7 @@ class PygameView(object):
         #print self.pixmap
         arr = np.asarray(self.pixmap)
         self.screen.fill((255, 255, 255))
+        arr.transpose()
         pygame.surfarray.blit_array(self.screen, arr)
         pygame.display.update()
         pygame.display.flip()
