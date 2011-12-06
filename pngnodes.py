@@ -29,13 +29,15 @@ def read(filename):
 		for j in range(width):
 			pixel = 3*j+numpy.arange(3) #indices for RGB triplet for pixel (i,j)
 			rgb = imageRGB8[i, pixel]
-			if all(abs(rgb - rgb[0]) < 20): #pixel is gray (or black or white)
+			if all(rgb > 250): #user probably meant to paint white
+				nodes[i,j] = 0 #probability zero
+			elif all(abs(rgb - rgb[0]) < 20): #pixel is gray (or black or white)
 				nodes[i,j] = 255 - rgb[0] #0 (black) is probability zero, 255 (white) is probability one
-			elif all(rgb <= rgb[0]): #red
+			elif all(rgb[0] - rgb[1:2] > 50): #significantly red
 				nodes[i,j] = SINK
-			elif all(rgb <= rgb[1]): #green
+			elif rgb[1] - rgb[0] > 50 and rgb[1] - rgb[2] > 50: #significantly green
 				nodes[i,j] = SOURCE
-			elif all(rgb <= rgb[2]): #blue
+			elif all(rgb[2] - rgb[0:1] > 50): #significantly blue
 				nodes[i,j] = WALL
 			else:
 				raise ValueError('Unexpected pixel value r={0}, g={1}, b={2}'.format(rgb[0], rgb[1], rgb[2]))
