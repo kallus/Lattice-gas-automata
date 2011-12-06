@@ -120,6 +120,25 @@ static PyObject * update4(PyObject *self, PyObject *args) {
             long *data_temp = PyArray_GETPTR2(array_temp, iRow, iCol);
             long *node_type = PyArray_GETPTR2(node_types, iRow, iCol);
 
+	    //Source
+	    if (SOURCE == *node_type) {
+              double r = rand()/((double)RAND_MAX);
+	      if(r < PROB) {
+                  int n = random() % 16;
+                  (*data_temp) |= n;
+	      }
+	    }
+
+            if ((*data) == 0) {
+                (*data_temp) == 0;
+                continue;
+            }
+
+	    //Sink
+	    if (SINK == *node_type) {
+	      (*data_temp) = 0;
+	    }
+
             // cell collision
             if (*data == 5) {
               (*data_temp) = 10;
@@ -133,20 +152,6 @@ static PyObject * update4(PyObject *self, PyObject *args) {
             if (WALL == *node_type) {
               (*data_temp) = reverse4(*data_temp);
             }
-	    
-	    //Source
-	    if (SOURCE == *node_type) {
-              double r = rand()/((double)RAND_MAX);
-	      if(r < PROB) {
-                  int n = random() % 16;
-                  (*data_temp) |= n;
-	      }
-	    }
-
-	    //Sink
-	    if (SINK == *node_type) {
-	      (*data_temp) = 0;
-	    }
         }
     }
             
