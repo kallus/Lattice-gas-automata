@@ -13,6 +13,7 @@ class PygameView(object):
         self.fps = 30
         self.lattice_model = lattice_model
         self.pixmap = np.ones((lattice_model.shape[0], lattice_model.shape[1], 3), dtype=np.uint8)
+        self.transpose = np.zeros((lattice_model.shape[1], lattice_model.shape[0], 3), dtype=np.uint8)
         pygame.display.init()
         self.screen = pygame.display.set_mode([lattice_model.shape[1], lattice_model.shape[0]])
 #        tick_time = clock.tick(fps)
@@ -144,11 +145,10 @@ class PygameView(object):
         arr[:, :, 1] -= self.lattice_model.cell_colors
         arr[:, :, 2] -= self.lattice_model.cell_colors
 
-        transpose = np.zeros((arr.shape[1], arr.shape[0], arr.shape[2]), np.uint8)
-        transpose[:, :, 0] = arr[:, :, 0].T
-        transpose[:, :, 1] = arr[:, :, 1].T
-        transpose[:, :, 2] = arr[:, :, 2].T
-        pygame.surfarray.blit_array(self.screen, transpose)
+        self.transpose[:, :, 0] = arr[:, :, 0].T
+        self.transpose[:, :, 1] = arr[:, :, 1].T
+        self.transpose[:, :, 2] = arr[:, :, 2].T
+        pygame.surfarray.blit_array(self.screen, self.transpose)
 
         pygame.display.update()
         pygame.display.flip()
