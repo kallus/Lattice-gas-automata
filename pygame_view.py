@@ -13,7 +13,7 @@ class PygameView(object):
         self.lattice_model = lattice_model
         self.pixmap = np.ones((lattice_model.shape[0], lattice_model.shape[1], 3), dtype=np.uint8)
         pygame.display.init()
-        self.screen = pygame.display.set_mode([lattice_model.shape[0], lattice_model.shape[1]])
+        self.screen = pygame.display.set_mode([lattice_model.shape[1], lattice_model.shape[0]])
 #        tick_time = clock.tick(fps)
         pygame.display.set_caption("Lattice gas")
         self.wallmap = np.ones((lattice_model.shape[0], lattice_model.shape[1], 3), dtype=np.uint8)
@@ -141,10 +141,12 @@ class PygameView(object):
         arr[:, :, 1] -= self.lattice_model.cell_colors
         arr[:, :, 2] -= self.lattice_model.cell_colors
 
-        arr[:, :, 0] = arr[:, :, 0].T
-        arr[:, :, 1] = arr[:, :, 1].T
-        arr[:, :, 2] = arr[:, :, 2].T
-        pygame.surfarray.blit_array(self.screen, arr)
+        transpose = np.zeros((arr.shape[1], arr.shape[0], arr.shape[2]), np.uint8)
+        transpose[:, :, 0] = arr[:, :, 0].T
+        transpose[:, :, 1] = arr[:, :, 1].T
+        transpose[:, :, 2] = arr[:, :, 2].T
+        print transpose.shape
+        pygame.surfarray.blit_array(self.screen, transpose)
 
         pygame.display.update()
         pygame.display.flip()
@@ -152,7 +154,7 @@ class PygameView(object):
 if __name__ == "__main__":
     print "main"
     
-    node_types = pngnodes.read('700-1.png')
+    node_types = pngnodes.read('400-800-pipe.png')
     height = node_types.shape[0]
     width = node_types.shape[1]
 
