@@ -130,6 +130,9 @@ class PygameView(object):
         #print self.pixmap
         arr = np.asarray(self.pixmap)
         self.screen.fill((255, 255, 255))
+        arr[:, :, 0] = arr[:, :, 0].T
+        arr[:, :, 1] = arr[:, :, 1].T
+        arr[:, :, 2] = arr[:, :, 2].T
         pygame.surfarray.blit_array(self.screen, arr)
 
         # show walls
@@ -148,7 +151,7 @@ if __name__ == "__main__":
 
     model = LatticeModel(node_types, density, 1)
 
-    model.cells[0:height*5/6, 0:width*5/6] = 0
+#    model.cells[0:height*5/6, 0:width*5/6] = 0
 #    model.cells[:, width*5/9:] = 0
     view = PygameView(model, 10)
 
