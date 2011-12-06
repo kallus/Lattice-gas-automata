@@ -127,6 +127,9 @@ class PygameView(object):
 #        self.pixmap[:, :, 1] = self.pixmap[:, :, 0]
         self.pixmap[:, :, 2] = self.pixmap[:, :, 1]
 
+        # show walls
+        pygame.surfarray.blit_array(self.screen, self.wallmap)
+
         #print self.pixmap
         arr = np.asarray(self.pixmap)
         self.screen.fill((255, 255, 255))
@@ -135,8 +138,6 @@ class PygameView(object):
         arr[:, :, 2] = arr[:, :, 2].T
         pygame.surfarray.blit_array(self.screen, arr)
 
-        # show walls
-        pygame.surfarray.blit_array(self.screen, self.wallmap)
         pygame.display.update()
         pygame.display.flip()
 
