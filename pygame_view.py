@@ -16,6 +16,13 @@ class PygameView(object):
         self.screen = pygame.display.set_mode([lattice_model.shape[0], lattice_model.shape[1]])
 #        tick_time = clock.tick(fps)
         pygame.display.set_caption("Lattice gas")
+        self.wallmap = np.ones((lattice_model.shape[0], lattice_model.shape[1], 3), dtype=np.uint8)
+        self.wallmap.fill(255)
+        for i in xrange(lattice_model.shape[0]):
+          for j in xrange(lattice_model.shape[1]):
+            if lattice_model.node_types[i,j]==pngnodes.WALL:
+              for k in xrange(3):
+                self.wallmap[i,j,k] = 100
         while True:
             self.update()
 
@@ -124,6 +131,9 @@ class PygameView(object):
         arr = np.asarray(self.pixmap)
         self.screen.fill((255, 255, 255))
         pygame.surfarray.blit_array(self.screen, arr)
+
+        # show walls
+        pygame.surfarray.blit_array(self.screen, self.wallmap)
         pygame.display.update()
         pygame.display.flip()
 
