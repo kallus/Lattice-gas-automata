@@ -21,8 +21,9 @@ class PygameView(object):
         for i in xrange(lattice_model.shape[0]):
           for j in xrange(lattice_model.shape[1]):
             if lattice_model.node_types[i,j]==pngnodes.WALL:
-              for k in xrange(3):
-                self.wallmap[i,j,k] = 100
+              self.wallmap[i,j,0] = 12
+              self.wallmap[i,j,1] = 82
+              self.wallmap[i,j,2] = 232
         while True:
             self.update()
 
