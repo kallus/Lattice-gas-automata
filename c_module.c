@@ -31,19 +31,26 @@ inline long reverse4(long x) {
 }
 
 inline long move6(long nw, long ne, long e, long se, long sw, long w) {
-  long ret = 0;
-  if(ne % 2 == 1) ret += 1;
-  if((e>>1) % 2 == 1) ret += 2;
-  if((se>>2) % 2 == 1) ret += 4;
-  if((sw>>3) % 2 == 1) ret += 8;
-  if((w>>4) % 2 == 1) ret += 16;
-  if((nw>>5) % 2 == 1) ret += 32;
-  return ret;
+  return ((ne & 1)
+      | (e & 2)
+      | (se & 4)
+      | (sw & 8)
+      | (w & 16)
+      | (nw & 32));
+  /* long ret = 0; */
+  /* if(ne % 2 == 1) ret += 1; */
+  /* if((e>>1) % 2 == 1) ret += 2; */
+  /* if((se>>2) % 2 == 1) ret += 4; */
+  /* if((sw>>3) % 2 == 1) ret += 8; */
+  /* if((w>>4) % 2 == 1) ret += 16; */
+  /* if((nw>>5) % 2 == 1) ret += 32; */
+  /* return ret; */
 }
 
 inline long reverse6(long x) {
-  x = (x << 3) + (x >> 3);
-  return x & 63;
+    return (((x << 3) + (x >> 3)) & 63);
+//  x = (x << 3) + (x >> 3);
+//  return x & 63;
 }
 
 inline long on_border(long H, long W, long y, long x) {
@@ -130,7 +137,7 @@ static PyObject * update4(PyObject *self, PyObject *args) {
 	    }
 
             if ((*data) == 0) {
-                (*data_temp) == 0;
+                (*data_temp) = 0;
                 continue;
             }
 
@@ -185,17 +192,31 @@ static PyObject * update4(PyObject *self, PyObject *args) {
     Py_RETURN_NONE;
 }
 
+static const unsigned char random_table1[] = { 32, 16, 8, 4, 2, 1 };
+static const int size_random1 = sizeof(random_table1)/sizeof(random_table1[0]);
+static const unsigned char random_table2[] = { 48, 40, 36, 34, 33, 24, 20, 18, 17, 12, 10, 9, 6, 5, 3 };
+static const int size_random2 = sizeof(random_table2)/sizeof(random_table2[0]);
+static const unsigned char random_table3[] = { 56, 52, 50, 49, 44, 42, 41, 38, 37, 35, 28, 26, 25, 22,
+                                               21, 19, 14, 13, 11, 7 };
+static const int size_random3 = sizeof(random_table3)/sizeof(random_table3[0]);
+static const unsigned char random_table4[] = { 60, 58, 57, 54, 53, 51, 46, 45, 43, 39, 30, 29, 27, 23, 15 };
+static const int size_random4 = sizeof(random_table4)/sizeof(random_table4[0]);
+static const unsigned char random_table5[] = { 62, 61, 59, 55, 47, 31 };
+static const int size_random5 = sizeof(random_table5)/sizeof(random_table5[0]);
+
 static PyObject * update6(PyObject *self, PyObject *args) {
     PyObject *array_python_object;
     PyObject *array_python_object_temp;
     PyObject *node_types_python_object;
     PyObject *cell_colors_python_object;
+    long temperature;
 
-    if (!PyArg_ParseTuple(args, "OOOO",
+    if (!PyArg_ParseTuple(args, "OOOOl",
             &array_python_object,
             &array_python_object_temp,
             &node_types_python_object,
-            &cell_colors_python_object)) {
+            &cell_colors_python_object,
+            &temperature)) {
         fprintf(stderr, "Failed to parse arguments.\n");
         Py_RETURN_NONE;
     }
@@ -268,8 +289,10 @@ static PyObject * update6(PyObject *self, PyObject *args) {
 	    if (SOURCE == *node_type) {
               double r = rand()/((double)RAND_MAX);
 	      if(r < PROB) {
-                  int n = random() % 64;
-                  (*data_temp) |= n;
+                  int n = rand() % 64;
+                  //int n = rand() % 6;
+                  // (*data_temp) |= (1 << n);
+                  (*data_temp) = n;
 	      }
 	    }
 
@@ -282,14 +305,15 @@ static PyObject * update6(PyObject *self, PyObject *args) {
     
     // MOVEMENT
     // read from array_temp, write to array
-    #pragma omp parallel for shared(array, array_temp, cell_colors, H, W, iRow) private (iCol)
+#pragma omp parallel for shared(array, array_temp, cell_colors, H, W, iRow) private (iCol)
     for (iRow = 0; iRow < H; ++iRow) {
+        double temp_r = rand()/((double)RAND_MAX);
         for (iCol = 0; iCol < W; ++iCol) {
             long *data = PyArray_GETPTR2(array, iRow, iCol);
             unsigned char *cell_color = PyArray_GETPTR2(cell_colors, iRow, iCol);
+            long *node_type = PyArray_GETPTR2(node_types, iRow, iCol);
 
             //Periodic boundary conditions:
-
             if (iRow % 2 == 0) { // even row
               long *nw = PyArray_GETPTR2(array_temp, mod(iRow-1, H), mod(iCol-1, W));
               long *ne = PyArray_GETPTR2(array_temp, mod(iRow-1, H), iCol);
@@ -309,12 +333,42 @@ static PyObject * update6(PyObject *self, PyObject *args) {
               (*data) = move6(*nw,*ne,*e,*se,*sw,*w);
             }
 
-            /* "You are not expected to understand this." */
-            long magic = *data;
-            magic = magic - ((magic >> 1) & 0x55555555);
-            magic = (magic & 0x33333333) + ((magic >> 2) & 0x33333333);
-            magic = (((magic + (magic >> 4)) & 0x0F0F0F0F) * 0x01010101) >> 24;
-            (*cell_color) = magic*42;
+            /* Count the number of bits set. "You are not expected to understand this." */
+            if (*node_type != WALL) {
+                long magic = *data;
+                magic = magic - ((magic >> 1) & 0x55555555);
+                magic = (magic & 0x33333333) + ((magic >> 2) & 0x33333333);
+                magic = (((magic + (magic >> 4)) & 0x0F0F0F0F) * 0x01010101) >> 24;
+                (*cell_color) = magic*42;  /* 42 is approximately 255/6 */
+
+                //Temperature
+                if (magic != 0 && magic != 6) {
+                    long this_temp_r = iCol * iRow * temp_r * magic + iCol + iRow + temp_r;
+                    if (this_temp_r % 100000 < temperature) {
+//                if ((((int)(iCol * iRow * temp_r) *  * 100) % 100) == 1) {
+                        switch (magic) {
+                        case 1:
+                            (*data) = random_table1[this_temp_r % size_random1];
+                            break;
+                        case 2:
+                            (*data) = random_table2[this_temp_r % size_random2];
+                            break;
+                        case 3:
+                            (*data) = random_table3[this_temp_r % size_random3];
+                            break;
+                        case 4:
+                            (*data) = random_table4[this_temp_r % size_random4];
+                            break;
+                        case 5:
+                            (*data) = random_table5[this_temp_r % size_random5];
+                            break;
+                        default:
+                            fprintf(stderr, "Bad magic %lu :(\n", magic);
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
 

@@ -9,10 +9,11 @@ N_STATES_HEX = 2**6
 SQUARE_LATTICE = 0
 HEX_LATTICE = 1
 class LatticeModel(object):
-    def __init__(self, node_types, fraction_random_nodes, lattice_type):
+    def __init__(self, node_types, fraction_random_nodes, lattice_type, temperature):
         self.node_types = node_types
         self.lattice_type = lattice_type
         self.shape = node_types.shape
+        self.temperature = temperature;
         self.cells = np.zeros(self.shape, dtype=np.int)
         self.cells_next = np.zeros(self.shape, dtype=np.int)
         self.cell_colors = np.zeros((self.shape[0], self.shape[1]), dtype=np.uint8)
@@ -40,5 +41,6 @@ class LatticeModel(object):
         if self.lattice_type == SQUARE_LATTICE:
             c_module.update4(self.cells, self.cells_next, self.node_types, self.cell_colors)
         elif self.lattice_type == HEX_LATTICE:
-            c_module.update6(self.cells, self.cells_next, self.node_types, self.cell_colors)
+            c_module.update6(self.cells, self.cells_next, self.node_types, self.cell_colors,
+                             self.temperature)
         return

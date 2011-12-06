@@ -1,3 +1,4 @@
+import os
 import sys
 import numpy as np
 import pygame
@@ -30,6 +31,7 @@ class PygameView(object):
     def update(self):
         #print "update"
 #        self.pixmap[0:20, :, :] = 255
+#        for i in xrange(10):
         self.lattice_model.update()
         #print self.lattice_model.cells
         self.pixmap.fill(255)
@@ -124,7 +126,8 @@ class PygameView(object):
 
 #             self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b111111)*255
 
-#        scipy.ndimage.filters.gaussian_filter(self.pixmap[:, :, 0], 0.75, output=self.pixmap[:, :, 1])
+#        scipy.ndimage.filters.gaussian_filter(self.lattice_model.cell_colors, 0.75,
+#                                              output=self.lattice_model.cell_colors)
 #        self.pixmap[:, :, 1] = self.pixmap[:, :, 0]
 #        self.pixmap[:, :, 1] = self.pixmap[:, :, 0]
 #        self.pixmap[:, :, 2] = self.pixmap[:, :, 1]
@@ -152,14 +155,20 @@ class PygameView(object):
 
 if __name__ == "__main__":
     print "main"
+
+    if len(sys.argv) != 2:
+        print("Please specify map file.")
+        exit(1)
+    elif os.path.isfile(sys.argv[1]) == False:
+        print("Map file name %s is not valid" % (sys.argv[1],))
     
-    node_types = pngnodes.read('chambers.png')
+    node_types = pngnodes.read(sys.argv[1])
     height = node_types.shape[0]
     width = node_types.shape[1]
 
     density = 0.5
 
-    model = LatticeModel(node_types, density, 1)
+    model = LatticeModel(node_types, density, 1, 0)
 
 #    model.cells[0:height*5/6, 0:width*5/6] = 0
 #    model.cells[:, width*5/9:] = 0
