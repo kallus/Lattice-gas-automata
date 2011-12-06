@@ -34,10 +34,11 @@ class PygameView(object):
         #print "update"
 #        self.pixmap[0:20, :, :] = 255
 #        start = time.time()
-#        for i in xrange(500):
+#        nsteps = 30
+#        for i in xrange(nsteps):
         self.lattice_model.update()
 #        stop = time.time()
-#        print("executed 100 steps in %f milliseconds" % (stop - start,))
+#        print("executed %i steps in %f milliseconds" % (nsteps, stop - start,))
 #        exit(1)
         #print self.lattice_model.cells
         self.pixmap.fill(255)

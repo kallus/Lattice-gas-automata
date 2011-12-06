@@ -305,31 +305,53 @@ static PyObject * update6(PyObject *self, PyObject *args) {
     
     // MOVEMENT
     // read from array_temp, write to array
-#pragma omp parallel for shared(array, array_temp, cell_colors, H, W, iRow) private (iCol)
+    #pragma omp parallel for shared(array, array_temp, cell_colors, H, W, iRow) private (iCol)
     for (iRow = 0; iRow < H; ++iRow) {
         double temp_r = rand()/((double)RAND_MAX);
         long *data = PyArray_GETPTR2(array, iRow, 0);
         long *node_type = PyArray_GETPTR2(node_types, iRow, 0);
+        long mod_iRowM1 = mod(iRow-1, H);
+        long mod_iRowP1 = mod(iRow+1, H);
+
         unsigned char *cell_color = PyArray_GETPTR2(cell_colors, iRow, 0);
         for (iCol = 0; iCol < W; ++iCol, ++data, ++cell_color, ++node_type) {
-            //Periodic boundary conditions:
-            if (iRow % 2 == 0) { // even row
-              long *nw = PyArray_GETPTR2(array_temp, mod(iRow-1, H), mod(iCol-1, W));
-              long *ne = PyArray_GETPTR2(array_temp, mod(iRow-1, H), iCol);
-              long *e = PyArray_GETPTR2(array_temp, iRow, mod(iCol+1, W));
-              long *se = PyArray_GETPTR2(array_temp, mod(iRow+1, H), iCol);
-              long *sw = PyArray_GETPTR2(array_temp, mod(iRow+1, H), mod(iCol-1, W));
-              long *w = PyArray_GETPTR2(array_temp, iRow, mod(iCol-1, W));
-              (*data) = move6(*nw,*ne,*e,*se,*sw,*w);
-            } else { // odd row
-              
-              long *nw = PyArray_GETPTR2(array_temp, mod(iRow-1, H), iCol);
-              long *ne = PyArray_GETPTR2(array_temp, mod(iRow-1, H), mod(iCol+1, W));
-              long *e = PyArray_GETPTR2(array_temp, iRow, mod(iCol+1, W));
-              long *se = PyArray_GETPTR2(array_temp, mod(iRow+1, H), mod(iCol+1, W));
-              long *sw = PyArray_GETPTR2(array_temp, mod(iRow+1, H), iCol);
-              long *w = PyArray_GETPTR2(array_temp, iRow, mod(iCol-1, W));
-              (*data) = move6(*nw,*ne,*e,*se,*sw,*w);
+            if (iCol == 0 || iCol == W) {
+                //Periodic boundary conditions:
+                if (iRow % 2 == 0) { // even row
+                    long *nw = PyArray_GETPTR2(array_temp, mod_iRowM1, mod(iCol-1, W));
+                    long *ne = PyArray_GETPTR2(array_temp, mod_iRowM1, iCol);
+                    long *e = PyArray_GETPTR2(array_temp, iRow, mod(iCol+1, W));
+                    long *se = PyArray_GETPTR2(array_temp, mod_iRowP1, iCol);
+                    long *sw = PyArray_GETPTR2(array_temp, mod_iRowP1, mod(iCol-1, W));
+                    long *w = PyArray_GETPTR2(array_temp, iRow, mod(iCol-1, W));
+                    (*data) = move6(*nw,*ne,*e,*se,*sw,*w);
+                } else { // odd row
+                    long *nw = PyArray_GETPTR2(array_temp, mod_iRowM1, iCol);
+                    long *ne = PyArray_GETPTR2(array_temp, mod_iRowM1, mod(iCol+1, W));
+                    long *e = PyArray_GETPTR2(array_temp, iRow, mod(iCol+1, W));
+                    long *se = PyArray_GETPTR2(array_temp, mod_iRowP1, mod(iCol+1, W));
+                    long *sw = PyArray_GETPTR2(array_temp, mod_iRowP1, iCol);
+                    long *w = PyArray_GETPTR2(array_temp, iRow, mod(iCol-1, W));
+                    (*data) = move6(*nw,*ne,*e,*se,*sw,*w);
+                }
+            } else {
+                if ((iRow & 2) == 0) {
+                    long *nw = PyArray_GETPTR2(array_temp, mod_iRowM1, iCol-1);
+                    long *ne = PyArray_GETPTR2(array_temp, mod_iRowM1, iCol);
+                    long *e = PyArray_GETPTR2(array_temp, iRow, iCol+1);
+                    long *se = PyArray_GETPTR2(array_temp, mod_iRowP1, iCol);
+                    long *sw = PyArray_GETPTR2(array_temp, mod_iRowP1, iCol-1);
+                    long *w = PyArray_GETPTR2(array_temp, iRow, iCol-1);
+                    (*data) = move6(*nw,*ne,*e,*se,*sw,*w);
+                } else {
+                    long *nw = PyArray_GETPTR2(array_temp, mod_iRowM1, iCol);
+                    long *ne = PyArray_GETPTR2(array_temp, mod_iRowM1, iCol+1);
+                    long *e = PyArray_GETPTR2(array_temp, iRow, iCol+1);
+                    long *se = PyArray_GETPTR2(array_temp, mod_iRowP1, iCol+1);
+                    long *sw = PyArray_GETPTR2(array_temp, mod_iRowP1, iCol);
+                    long *w = PyArray_GETPTR2(array_temp, iRow, iCol-1);
+                    (*data) = move6(*nw,*ne,*e,*se,*sw,*w);
+                }
             }
 
             /* Count the number of bits set. "You are not expected to understand this." */
@@ -341,7 +363,7 @@ static PyObject * update6(PyObject *self, PyObject *args) {
                 (*cell_color) = magic*42;  /* 42 is approximately 255/6 */
 
                 //Temperature
-                if (magic != 0 && magic != 6) {
+                if (temperature != 0 && magic != 0 && magic != 6) {
 //                    temp_r = rand()/((double)RAND_MAX);
                     long this_temp_r = iCol * iRow * temp_r * magic + iCol + iRow + temp_r;
                     if (this_temp_r % 100000 < temperature) {
