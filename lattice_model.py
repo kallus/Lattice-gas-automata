@@ -17,16 +17,16 @@ class LatticeModel(object):
         self.cells_next = np.zeros(self.shape, dtype=np.int)
 
         # initialize cells randomly
-        self.cells_temp = np.random.rand(self.size, self.size)
+        self.cells_temp = np.random.rand(self.shape[0], self.shape[1])
         if lattice_type == SQUARE_LATTICE:
           possible_directions = 4;
         else:
           possible_directions = 6;
-        initial_density = 0.2;
+        initial_density = 1.0;
         for i in xrange(possible_directions):
           self.cells_temp = np.where(self.cells_temp < (i+1)*1.0/possible_directions, 2**i, self.cells_temp)
         self.cells_temp = np.int_(self.cells_temp)
-        mask = np.random.rand(self.size, self.size)
+        mask = np.random.rand(self.shape[0], self.shape[1])
         mask = np.where(mask < initial_density, 1, 0)
         self.cells_temp = np.where(mask == 1, self.cells_temp, 0)
         self.cells_temp = np.where(node_types == pngnodes.WALL, 0, self.cells_temp)
