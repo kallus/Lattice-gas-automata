@@ -3,8 +3,9 @@ import numpy
 import itertools
 from numpy import zeros
 
-FREE_SPACE = 0
-WALL = 1
+SINK = -3
+SOURCE = -2
+WALL = -1
 
 def read(filename):
 	f = open(filename, 'rb')
@@ -26,11 +27,21 @@ def read(filename):
 
 	for i in range(height):
 		for j in range(width):
-			pixel = 3*j+numpy.arange(3) #RGB triplet for pixel (i,j)
-			if all(0 == imageRGB8[i,pixel]): #pixel is black
+			pixel = 3*j+numpy.arange(3) #indices for RGB triplet for pixel (i,j)
+			rgb = imageRGB8[i, pixel]
+			if all(abs(rgb - rgb[0]) < 20): #pixel is gray (or black or white)
+				nodes[i,j] = 255 - rgb[0] #0 (black) is probability zero, 255 (white) is probability one
+			elif all(rgb <= rgb[0]): #red
+				nodes[i,j] = SINK
+			elif all(rgb <= rgb[1]): #green
+				nodes[i,j] = SOURCE
+			elif all(rgb <= rgb[2]): #blue
 				nodes[i,j] = WALL
 			else:
-				nodes[i,j] = FREE_SPACE
+				raise ValueError('Unexpected pixel value r={0}, g={1}, b={2}'.format(rgb[0], rgb[1], rgb[2]))
+
+
+
 			
 
 	return nodes
