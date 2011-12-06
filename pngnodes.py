@@ -31,7 +31,7 @@ def read(filename):
 			rgb = imageRGB8[i, pixel]
 			if all(rgb > 250): #user probably meant to paint white
 				nodes[i,j] = 0 #probability zero
-			elif all(abs(rgb - rgb[0]) < 20): #pixel is gray (or black or white)
+			elif all(abs(rgb - rgb[0]) < 50): #pixel is gray (or black or white)
 				nodes[i,j] = 255 - rgb[0] #0 (black) is probability zero, 255 (white) is probability one
 			elif all(rgb[0] - rgb[1:2] > 50): #significantly red
 				nodes[i,j] = SINK
