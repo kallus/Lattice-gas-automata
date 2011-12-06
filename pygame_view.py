@@ -145,7 +145,6 @@ class PygameView(object):
         transpose[:, :, 0] = arr[:, :, 0].T
         transpose[:, :, 1] = arr[:, :, 1].T
         transpose[:, :, 2] = arr[:, :, 2].T
-#        print transpose.shape
         pygame.surfarray.blit_array(self.screen, transpose)
 
         pygame.display.update()
