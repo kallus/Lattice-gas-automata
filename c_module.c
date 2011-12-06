@@ -2,13 +2,14 @@
 #include "Python.h"
 #include "numpy/arrayobject.h"
 #include "stdlib.h"
+#include <stdlib.h>
 
 //Constants for node types
 #define FREE_SPACE 0
 #define WALL -1
 #define SOURCE -2
 #define SINK -3
-#define PROB 0.1
+#define PROB 0.8
 
 inline long mod(long n, long k) {
   if(n<0) return k+n;
@@ -135,9 +136,10 @@ static PyObject * update4(PyObject *self, PyObject *args) {
 	    
 	    //Source
 	    if (SOURCE == *node_type) {
-	      double r = rand()/((double)RAND_MAX);
-	      if(r < PROB){
-		    (*data_temp) = 15;
+              double r = rand()/((double)RAND_MAX);
+	      if(r < PROB) {
+                  int n = random() % 16;
+                  (*data_temp) |= n;
 	      }
 	    }
 
@@ -259,9 +261,10 @@ static PyObject * update6(PyObject *self, PyObject *args) {
 	    
 	    //Source
 	    if (SOURCE == *node_type) {
-	      double r = rand()/((double)RAND_MAX);
+              double r = rand()/((double)RAND_MAX);
 	      if(r < PROB) {
-		      (*data_temp) = 63;
+                  int n = random() % 64;
+                  (*data_temp) |= n;
 	      }
 	    }
 
