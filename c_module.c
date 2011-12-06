@@ -2,6 +2,7 @@
 #include "Python.h"
 #include "numpy/arrayobject.h"
 #include "stdlib.h"
+#include <stdlib.h>
 
 //Constants for node types
 #define FREE_SPACE 0
@@ -135,9 +136,10 @@ static PyObject * update4(PyObject *self, PyObject *args) {
 	    
 	    //Source
 	    if (SOURCE == *node_type) {
-	      double rand = drand48();
-	      if(rand < PROB){
-		(*data_temp) = 15;
+              double r = rand()/((double)RAND_MAX);
+	      if(r < PROB) {
+                  int n = random() % 16;
+                  (*data_temp) |= n;
 	      }
 	    }
 
@@ -259,12 +261,10 @@ static PyObject * update6(PyObject *self, PyObject *args) {
 	    
 	    //Source
 	    if (SOURCE == *node_type) {
-	      double rand = drand48();
-	      if(rand < PROB) {
-//                  int bit = lrand48() % 6;
-                  int n = lrand48() % 64;
+              double r = rand()/((double)RAND_MAX);
+	      if(r < PROB) {
+                  int n = random() % 64;
                   (*data_temp) |= n;
-//		(*data_temp) = 63;
 	      }
 	    }
 
