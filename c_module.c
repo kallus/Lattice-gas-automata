@@ -1,12 +1,14 @@
 //#include <omp.h>
 #include "Python.h"
 #include "numpy/arrayobject.h"
+#include "stdlib.h"
 
 //Constants for node types
 #define FREE_SPACE 0
 #define WALL -1
 #define SOURCE -2
 #define SINK -3
+#define PROB 0.1
 
 inline long mod(long n, long k) {
   if(n<0) return k+n;
@@ -133,7 +135,10 @@ static PyObject * update4(PyObject *self, PyObject *args) {
 	    
 	    //Source
 	    if (SOURCE == *node_type) {
-	      (*data_temp) = 15;
+	      double rand = drand48();
+	      if(rand < PROB){
+		(*data_temp) = 15;
+	      }
 	    }
 
 	    //Sink
@@ -252,7 +257,10 @@ static PyObject * update6(PyObject *self, PyObject *args) {
 	    
 	    //Source
 	    if (SOURCE == *node_type) {
-	      (*data_temp) = 63;
+	      double rand = drand48();
+	      if(rand < PROB) {
+		(*data_temp) = 63;
+	      }
 	    }
 
 	    //Sink
