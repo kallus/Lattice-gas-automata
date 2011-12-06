@@ -145,7 +145,7 @@ class PygameView(object):
         transpose[:, :, 0] = arr[:, :, 0].T
         transpose[:, :, 1] = arr[:, :, 1].T
         transpose[:, :, 2] = arr[:, :, 2].T
-        print transpose.shape
+#        print transpose.shape
         pygame.surfarray.blit_array(self.screen, transpose)
 
         pygame.display.update()
@@ -154,7 +154,7 @@ class PygameView(object):
 if __name__ == "__main__":
     print "main"
     
-    node_types = pngnodes.read('400-800-pipe.png')
+    node_types = pngnodes.read('400-800-pipe2.png')
     height = node_types.shape[0]
     width = node_types.shape[1]
 

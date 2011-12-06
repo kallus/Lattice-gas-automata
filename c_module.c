@@ -8,7 +8,7 @@
 #define WALL -1
 #define SOURCE -2
 #define SINK -3
-#define PROB 0.1
+#define PROB 0.8
 
 inline long mod(long n, long k) {
   if(n<0) return k+n;
@@ -261,7 +261,10 @@ static PyObject * update6(PyObject *self, PyObject *args) {
 	    if (SOURCE == *node_type) {
 	      double rand = drand48();
 	      if(rand < PROB) {
-		(*data_temp) = 63;
+//                  int bit = lrand48() % 6;
+                  int n = lrand48() % 64;
+                  (*data_temp) |= n;
+//		(*data_temp) = 63;
 	      }
 	    }
 
