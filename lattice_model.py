@@ -22,15 +22,15 @@ class LatticeModel(object):
           possible_directions = 4;
         else:
           possible_directions = 6;
-        initial_density = 1.0;
+        initial_density = 0.1;
         random_particles = np.multiply(node_types > 0, node_types)
         has_particle = (np.random.randint(0, 255, self.shape) < random_particles)
         for i in xrange(possible_directions):
           self.cells_temp = np.where(self.cells_temp < (i+1)*1.0/possible_directions, 2**i, self.cells_temp)
         self.cells_temp = np.int_(self.cells_temp)
-        mask = has_particle
-#        mask = np.random.rand(self.shape[0], self.shape[1])
-#        mask = np.where(mask < initial_density, 1, 0)
+        #mask = has_particle
+        mask = np.random.rand(self.shape[0], self.shape[1])
+        mask = np.where(mask < initial_density, 1, 0)
         self.cells_temp = np.where(mask == 1, self.cells_temp, 0)
         self.cells_temp = np.where(node_types == pngnodes.WALL, 0, self.cells_temp)
         self.cells = np.array(self.cells_temp, dtype=np.int)
