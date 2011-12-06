@@ -193,16 +193,27 @@ static PyObject * update4(PyObject *self, PyObject *args) {
 }
 
 static const unsigned char random_table1[] = { 32, 16, 8, 4, 2, 1 };
-static const int size_random1 = sizeof(random_table1)/sizeof(random_table1[0]) + 1;
+static const int size_random1 = sizeof(random_table1)/sizeof(random_table1[0]);
 static const unsigned char random_table2[] = { 48, 40, 36, 34, 33, 24, 20, 18, 17, 12, 10, 9, 6, 5, 3 };
-static const int size_random2 = sizeof(random_table2)/sizeof(random_table2[0]) + 1;
+static const int size_random2 = sizeof(random_table2)/sizeof(random_table2[0]);
 static const unsigned char random_table3[] = { 56, 52, 50, 49, 44, 42, 41, 38, 37, 35, 28, 26, 25, 22,
                                                21, 19, 14, 13, 11, 7 };
-static const int size_random3 = sizeof(random_table3)/sizeof(random_table3[0]) + 1;
+static const int size_random3 = sizeof(random_table3)/sizeof(random_table3[0]);
 static const unsigned char random_table4[] = { 60, 58, 57, 54, 53, 51, 46, 45, 43, 39, 30, 29, 27, 23, 15 };
-static const int size_random4 = sizeof(random_table4)/sizeof(random_table4[0]) + 1;
+static const int size_random4 = sizeof(random_table4)/sizeof(random_table4[0]);
 static const unsigned char random_table5[] = { 62, 61, 59, 55, 47, 31 };
-static const int size_random5 = sizeof(random_table5)/sizeof(random_table5[0]) + 1;
+static const int size_random5 = sizeof(random_table5)/sizeof(random_table5[0]);
+
+static const long nSetBits[] = { 
+  0, 1, 1, 2, 1, 2, 2, 3, 
+  1, 2, 2, 3, 2, 3, 3, 4, 
+  1, 2, 2, 3, 2, 3, 3, 4, 
+  2, 3, 3, 4, 3, 4, 4, 5, 
+  1, 2, 2, 3, 2, 3, 3, 4, 
+  2, 3, 3, 4, 3, 4, 4, 5, 
+  2, 3, 3, 4, 3, 4, 4, 5, 
+  3, 4, 4, 5, 4, 5, 5, 6
+};
 
 static PyObject * update6(PyObject *self, PyObject *args) {
     PyObject *array_python_object;
@@ -234,6 +245,25 @@ static PyObject * update6(PyObject *self, PyObject *args) {
         Py_RETURN_NONE; /* returns None to the Python side, of course. */
     }
 
+/*
+    long sanity = 0, iTemp = 0;
+    const int max[] = { 0, size_random1, size_random2, size_random3, size_random4, size_random5 };
+    const unsigned char *tempPtr[] = { 0, random_table1, random_table2, random_table3, random_table4, random_table5 };
+    for (sanity = 1; sanity < 6; sanity++) {
+        unsigned char *ptr = tempPtr[sanity];
+        for (iTemp = 0; iTemp < max[sanity]; iTemp++) {
+            long magic = (long)ptr[iTemp];
+            magic = magic - ((magic >> 1) & 0x55555555);
+            magic = (magic & 0x33333333) + ((magic >> 2) & 0x33333333);
+            magic = (((magic + (magic >> 4)) & 0x0F0F0F0F) * 0x01010101) >> 24;
+            if (magic != sanity) {
+                fprintf(stderr, "unsane magic: index %li, %i, does not have %li bits.\n",
+                    iTemp, (int)ptr[iTemp], sanity);
+                exit(1);
+            }
+        }
+    }
+*/
 
     long iRow, iCol;
     long H = array->dimensions[0];
@@ -356,36 +386,33 @@ static PyObject * update6(PyObject *self, PyObject *args) {
 
             /* Count the number of bits set. "You are not expected to understand this." */
             if (*node_type != WALL) {
-                long magic = *data;
-                magic = magic - ((magic >> 1) & 0x55555555);
-                magic = (magic & 0x33333333) + ((magic >> 2) & 0x33333333);
-                magic = (((magic + (magic >> 4)) & 0x0F0F0F0F) * 0x01010101) >> 24;
-                (*cell_color) = magic*42;  /* 42 is approximately 255/6 */
+#define COLOR_FRACTION6 42
+                (*cell_color) = nSetBits[*data]*COLOR_FRACTION6;
 
                 //Temperature
-                if (temperature != 0 && magic != 0 && magic != 6) {
+                if (temperature != 0 && *cell_color != 0 && *cell_color != (COLOR_FRACTION6*6)) {
 //                    temp_r = rand()/((double)RAND_MAX);
-                    long this_temp_r = iCol * iRow * temp_r * magic + iCol + iRow + temp_r;
+                    long this_temp_r = iCol * iRow * temp_r * *cell_color + iCol + iRow + temp_r;
                     if (this_temp_r % 100000 < temperature) {
 //                if ((((int)(iCol * iRow * temp_r) *  * 100) % 100) == 1) {
-                        switch (magic) {
-                        case 1:
+                        switch (*cell_color) {
+                        case 1*COLOR_FRACTION6:
                             (*data) = random_table1[this_temp_r % size_random1];
                             break;
-                        case 2:
+                        case 2*COLOR_FRACTION6:
                             (*data) = random_table2[this_temp_r % size_random2];
                             break;
-                        case 3:
+                        case 3*COLOR_FRACTION6:
                             (*data) = random_table3[this_temp_r % size_random3];
                             break;
-                        case 4:
+                        case 4*COLOR_FRACTION6:
                             (*data) = random_table4[this_temp_r % size_random4];
                             break;
-                        case 5:
+                        case 5*COLOR_FRACTION6:
                             (*data) = random_table5[this_temp_r % size_random5];
                             break;
                         default:
-                            fprintf(stderr, "Bad magic %lu :(\n", magic);
+                            fprintf(stderr, "Bad magic %lu :(\n", *cell_color);
                             break;
                         }
                     }

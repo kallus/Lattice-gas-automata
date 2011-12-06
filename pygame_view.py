@@ -34,7 +34,7 @@ class PygameView(object):
         #print "update"
 #        self.pixmap[0:20, :, :] = 255
 #        start = time.time()
-#        nsteps = 30
+#        nsteps = 2000
 #        for i in xrange(nsteps):
         self.lattice_model.update()
 #        stop = time.time()
@@ -174,7 +174,7 @@ if __name__ == "__main__":
 
     density = 0.5
 
-    model = LatticeModel(node_types, density, 1, 100)
+    model = LatticeModel(node_types, density, 1, 0)
 
 #    model.cells[0:height*5/6, 0:width*5/6] = 0
 #    model.cells[:, width*5/9:] = 0
