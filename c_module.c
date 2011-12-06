@@ -268,10 +268,10 @@ static PyObject * update6(PyObject *self, PyObject *args) {
     // read from array, write to array_temp
     #pragma omp parallel for shared(array, array_temp, H, W, iRow) private (iCol)
     for (iRow = 0; iRow < H; ++iRow) {
-        for (iCol = 0; iCol < W; ++iCol) {
-            long *data = PyArray_GETPTR2(array, iRow, iCol);
-            long *data_temp = PyArray_GETPTR2(array_temp, iRow, iCol);
-            long *node_type = PyArray_GETPTR2(node_types, iRow, iCol);
+        long *data = PyArray_GETPTR2(array, iRow, 0);
+        long *data_temp = PyArray_GETPTR2(array_temp, iRow, 0);
+        long *node_type = PyArray_GETPTR2(node_types, iRow, 0);
+        for (iCol = 0; iCol < W; ++iCol, ++data, ++data_temp, ++node_type) {
 
             // cell collision            
             if (collide[*data] == 0) {
@@ -308,11 +308,10 @@ static PyObject * update6(PyObject *self, PyObject *args) {
 #pragma omp parallel for shared(array, array_temp, cell_colors, H, W, iRow) private (iCol)
     for (iRow = 0; iRow < H; ++iRow) {
         double temp_r = rand()/((double)RAND_MAX);
-        for (iCol = 0; iCol < W; ++iCol) {
-            long *data = PyArray_GETPTR2(array, iRow, iCol);
-            unsigned char *cell_color = PyArray_GETPTR2(cell_colors, iRow, iCol);
-            long *node_type = PyArray_GETPTR2(node_types, iRow, iCol);
-
+        long *data = PyArray_GETPTR2(array, iRow, 0);
+        long *node_type = PyArray_GETPTR2(node_types, iRow, 0);
+        unsigned char *cell_color = PyArray_GETPTR2(cell_colors, iRow, 0);
+        for (iCol = 0; iCol < W; ++iCol, ++data, ++cell_color, ++node_type) {
             //Periodic boundary conditions:
             if (iRow % 2 == 0) { // even row
               long *nw = PyArray_GETPTR2(array_temp, mod(iRow-1, H), mod(iCol-1, W));

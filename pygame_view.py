@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 import numpy as np
 import pygame
 import pygame.display
@@ -32,8 +33,12 @@ class PygameView(object):
     def update(self):
         #print "update"
 #        self.pixmap[0:20, :, :] = 255
-#        for i in xrange(10):
+#        start = time.time()
+#        for i in xrange(500):
         self.lattice_model.update()
+#        stop = time.time()
+#        print("executed 100 steps in %f milliseconds" % (stop - start,))
+#        exit(1)
         #print self.lattice_model.cells
         self.pixmap.fill(255)
         if self.lattice_model.lattice_type == 0:
