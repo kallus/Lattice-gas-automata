@@ -16,23 +16,21 @@ class LatticeModel(object):
         self.cells = np.zeros(self.shape, dtype=np.int)
         self.cells_next = np.zeros(self.shape, dtype=np.int)
 
-        #initialize particles only where there is not a wall
-        n_non_wall_nodes = sum(sum(node_types != pngnodes.WALL))
-        n_random_nodes = int(round(n_non_wall_nodes * fraction_random_nodes))
-        
-        for i in xrange(n_random_nodes):
-            allowed = False
-            while not allowed:
-                row = random.randint(0, self.shape[0] - 1)
-                col = random.randint(0, self.shape[1] - 1)
-                allowed = ((pngnodes.WALL != node_types[row, col]) and 0 == self.cells[row, col])
-            
-            
-            if SQUARE_LATTICE == self.lattice_type:
-                max_state = N_STATES_SQUARE - 1
-            elif HEX_LATTICE == self.lattice_type:
-                max_state = N_STATES_HEX - 1
-            self.cells[row, col] = random.randint(0, max_state)
+        # initialize cells randomly
+        self.cells_temp = np.random.rand(self.shape[0], self.shape[1])
+        if lattice_type == SQUARE_LATTICE:
+          possible_directions = 4;
+        else:
+          possible_directions = 6;
+        initial_density = 1.0;
+        for i in xrange(possible_directions):
+          self.cells_temp = np.where(self.cells_temp < (i+1)*1.0/possible_directions, 2**i, self.cells_temp)
+        self.cells_temp = np.int_(self.cells_temp)
+        mask = np.random.rand(self.shape[0], self.shape[1])
+        mask = np.where(mask < initial_density, 1, 0)
+        self.cells_temp = np.where(mask == 1, self.cells_temp, 0)
+        self.cells_temp = np.where(node_types == pngnodes.WALL, 0, self.cells_temp)
+        self.cells = np.array(self.cells_temp, dtype=np.int)
 
     def update(self):
         if self.lattice_type == SQUARE_LATTICE:

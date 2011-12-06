@@ -130,7 +130,7 @@ class PygameView(object):
 if __name__ == "__main__":
     print "main"
     
-    node_types = pngnodes.read('600-400-pipe.png')
+    node_types = pngnodes.read('700-1.png')
     height = node_types.shape[0]
     width = node_types.shape[1]
 
