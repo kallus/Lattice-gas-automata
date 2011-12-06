@@ -5,6 +5,8 @@
 //Constants for node types
 #define FREE_SPACE 0
 #define WALL 1
+#define SOURCE 2
+#define SINK 3
 
 inline long mod(long n, long k) {
   if(n<0) return k+n;
@@ -128,9 +130,16 @@ static PyObject * update4(PyObject *self, PyObject *args) {
             if (WALL == *node_type) {
               (*data_temp) = reverse4(*data_temp);
             }
+	    
+	    //Source
+	    if (SOURCE == *node_type) {
+	      (*data_temp) = 15;
+	    }
 
-            //Additional cases, 
-            //if (SINK == *node_type) { foo(); bar(); } etc
+	    //Sink
+	    if (SINK == *node_type) {
+	      (*data_temp) = 0;
+	    }
         }
     }
             
@@ -240,9 +249,16 @@ static PyObject * update6(PyObject *self, PyObject *args) {
             if (WALL == *node_type) {
               (*data_temp) = reverse6(*data_temp);
             }
+	    
+	    //Source
+	    if (SOURCE == *node_type) {
+	      (*data_temp) = 63;
+	    }
 
-            //Additional cases, 
-            //if (SINK == *node_type) { foo(); bar(); } etc
+	    //Sink
+	    if (SINK == *node_type) {
+	      (*data_temp) = 0;
+	    }
         }
     }
     
