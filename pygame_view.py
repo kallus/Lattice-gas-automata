@@ -35,9 +35,21 @@ class PygameView(object):
 
         #self.wallsurface.set_colorkey((0, 0, 0))
 
+        pygame.event.set_allowed(None)
+        pygame.event.set_allowed(pygame.KEYDOWN)
+        pygame.event.set_allowed(pygame.MOUSEBUTTONUP)
+
         while True:
-            if (pygame.event.peek(pygame.KEYDOWN)):
-                exit(1)
+            events = pygame.event.get()
+            for e in events:
+                if pygame.KEYDOWN == e.type:
+                    exit(1)
+                elif pygame.MOUSEBUTTONUP == e.type:
+                    pos = (e.pos[1], e.pos[0]) #e.pos is tuple (x, y)
+                    if 1 == e.button:
+                        self.lattice_model.add_particles(pos)
+                    else:
+                        self.lattice_model.remove_particles(pos)
             self.update()
 
     def update(self):
