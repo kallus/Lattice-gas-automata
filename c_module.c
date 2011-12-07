@@ -412,7 +412,7 @@ static PyObject * update6(PyObject *self, PyObject *args) {
                             (*data) = 255 - random_table5[this_temp_r % size_random5];
                             break;
                         default:
-                            fprintf(stderr, "Bad magic %lu :(\n", *cell_color);
+                            fprintf(stderr, "Bad magic %ui :(\n", *cell_color);
                             break;
                         }
                     }

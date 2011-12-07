@@ -149,11 +149,7 @@ class PygameView(object):
 #                                              output=self.lattice_model.cell_colors)
 #        self.screen.fill((255, 255, 255))
         self.transpose2d = self.lattice_model.cell_colors.T
-#        self.screen.set_colorkey((0, 0, 0))
         pygame.surfarray.blit_array(self.screen, self.transpose2d)
-#        self.screen.get_buffer().write(self.lattice_model.cell_colors.tostring(), 0)
-
-#        pygame.display.update()
         pygame.display.flip()
 
 if __name__ == "__main__":
