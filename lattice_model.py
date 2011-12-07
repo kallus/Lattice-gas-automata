@@ -40,7 +40,8 @@ class LatticeModel(object):
 
     def update(self):
         if self.lattice_type == SQUARE_LATTICE:
-            c_module.update4(self.cells, self.cells_next, self.node_types, self.cell_colors)
+            c_module.update4(self.cells, self.cells_next, self.node_types, self.cell_colors,
+                             self.temperature)
         elif self.lattice_type == HEX_LATTICE:
             c_module.update6(self.cells, self.cells_next, self.node_types, self.cell_colors,
                              self.temperature)
