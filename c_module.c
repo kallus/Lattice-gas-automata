@@ -61,13 +61,15 @@ inline long reverse6(long x) {
     return (((x << 3) + (x >> 3)) & 63);
 }
 
-static PyObject * init4(PyObject *self, PyObject *args) {
+static PyObject * init_cells(PyObject *self, PyObject *args) {
     PyObject *cells_python_object;
     PyObject *node_types_python_object;
+    long particle_init = 0;
 
-    if (!PyArg_ParseTuple(args, "OO",
+    if (!PyArg_ParseTuple(args, "OOl",
             &cells_python_object,
-            &node_types_python_object)) {
+            &node_types_python_object,
+            &particle_init)) {
         fprintf(stderr, "Failed to parse arguments.\n");
         Py_RETURN_NONE;
     }
@@ -91,7 +93,7 @@ static PyObject * init4(PyObject *self, PyObject *args) {
             if (*node_type > 0) {
                 long r = (rand() % 256);
                 if (*node_type > r) {
-                    *cell = 15;
+                    *cell = particle_init;
                 }
             }
         }
@@ -469,7 +471,7 @@ static PyObject * update6(PyObject *self, PyObject *args) {
 
 static PyMethodDef C_Module_Methods[] = {
     /* function name, function polonger, always METH_VARARGS (could be KEYWORDS too), documentation string. */
-    { "init4", init4, METH_VARARGS, "Initialize random particles for square lattice." },
+    { "init_cells", init_cells, METH_VARARGS, "Initialize random particles." },
     { "update4", update4, METH_VARARGS, "Square lattice update." },
     { "update6", update6, METH_VARARGS, "Hexagonal lattice update." },
     { NULL, NULL, 0, NULL } /* list terminator. */

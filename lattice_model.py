@@ -22,24 +22,26 @@ class LatticeModel(object):
         # initialize cells randomly
         if lattice_type == SQUARE_LATTICE:
             print "init"
-            c_module.init4(self.cells, node_types)
+            c_module.init_cells(self.cells, node_types, 15)
             self.cells_temp = np.array(self.cells)
             possible_directions = 4
         else:
-            self.cells_temp = np.random.rand(self.shape[0], self.shape[1])
-            possible_directions = 6;
-        
-            random_particles = np.multiply(node_types > 0, node_types)
-            has_particle = (np.random.randint(0, 255, self.shape) < random_particles)
-            for i in xrange(possible_directions):
-                self.cells_temp = np.where(self.cells_temp < (i+1)*1.0/possible_directions, 2**i, self.cells_temp)
-            self.cells_temp = np.int_(self.cells_temp)
-#        mask = has_particle
-            mask = np.random.rand(self.shape[0], self.shape[1]) * 255
-            mask = np.where(mask < node_types, 1, 0)
-            self.cells_temp = np.where(mask == 1, self.cells_temp, 0)
-            self.cells_temp = np.where(node_types == pngnodes.WALL, 0, self.cells_temp)
-            self.cells = np.array(self.cells_temp, dtype=np.int)
+            c_module.init_cells(self.cells, node_types, 63)
+            self.cells_temp = np.array(self.cells)
+            possible_directions = 6
+
+#             self.cells_temp = np.random.rand(self.shape[0], self.shape[1])
+#             random_particles = np.multiply(node_types > 0, node_types)
+#             has_particle = (np.random.randint(0, 255, self.shape) < random_particles)
+#             for i in xrange(possible_directions):
+#                 self.cells_temp = np.where(self.cells_temp < (i+1)*1.0/possible_directions, 2**i, self.cells_temp)
+#             self.cells_temp = np.int_(self.cells_temp)
+# #        mask = has_particle
+#             mask = np.random.rand(self.shape[0], self.shape[1]) * 255
+#             mask = np.where(mask < node_types, 1, 0)
+#             self.cells_temp = np.where(mask == 1, self.cells_temp, 0)
+#             self.cells_temp = np.where(node_types == pngnodes.WALL, 0, self.cells_temp)
+#             self.cells = np.array(self.cells_temp, dtype=np.int)
 
     def update(self):
         if self.lattice_type == SQUARE_LATTICE:
