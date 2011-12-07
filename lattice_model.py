@@ -16,7 +16,8 @@ class LatticeModel(object):
         self.temperature = temperature;
         self.cells = np.zeros(self.shape, dtype=np.int)
         self.cells_next = np.zeros(self.shape, dtype=np.int)
-        self.cell_colors = np.zeros((self.shape[0], self.shape[1]), dtype=np.uint8)
+#        self.cell_colors = np.zeros((self.shape[0], self.shape[1]), dtype=np.uint8)
+        self.cell_colors = np.zeros((self.shape[0], self.shape[1]), dtype=np.uint32)
 
         # initialize cells randomly
         self.cells_temp = np.random.rand(self.shape[0], self.shape[1])

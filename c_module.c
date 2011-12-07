@@ -89,7 +89,6 @@ inline long which_border(long H, long W, long y, long x) {
 
 
 static PyObject * update4(PyObject *self, PyObject *args) {
-
     PyObject *array_python_object;
     PyObject *array_python_object_temp;
     PyObject *node_types_python_object;
@@ -239,7 +238,7 @@ static PyObject * update6(PyObject *self, PyObject *args) {
     array = (PyArrayObject *)PyArray_ContiguousFromAny(array_python_object, PyArray_LONG, 2, 2);
     array_temp = (PyArrayObject *)PyArray_ContiguousFromAny(array_python_object_temp, PyArray_LONG, 2, 2);
     node_types = (PyArrayObject *)PyArray_ContiguousFromAny(node_types_python_object, PyArray_LONG, 2, 2);
-    cell_colors = (PyArrayObject *)PyArray_ContiguousFromAny(cell_colors_python_object, PyArray_UINT8, 2, 2);
+    cell_colors = (PyArrayObject *)PyArray_ContiguousFromAny(cell_colors_python_object, PyArray_UINT32, 2, 2);
     if (array == NULL || array_temp == NULL || node_types == NULL || cell_colors == NULL) {
         fprintf(stderr, "Invalid array object.\n");
         Py_RETURN_NONE; /* returns None to the Python side, of course. */
@@ -343,7 +342,8 @@ static PyObject * update6(PyObject *self, PyObject *args) {
         long mod_iRowM1 = mod(iRow-1, H);
         long mod_iRowP1 = mod(iRow+1, H);
 
-        unsigned char *cell_color = PyArray_GETPTR2(cell_colors, iRow, 0);
+//        unsigned char *cell_color = PyArray_GETPTR2(cell_colors, iRow, 0);
+        uint32_t *cell_color = PyArray_GETPTR2(cell_colors, iRow, 0);
         for (iCol = 0; iCol < W; ++iCol, ++data, ++cell_color, ++node_type) {
             if (iCol == 0 || iCol == W) {
                 //Periodic boundary conditions:
@@ -387,7 +387,7 @@ static PyObject * update6(PyObject *self, PyObject *args) {
             /* Count the number of bits set. "You are not expected to understand this." */
             if (*node_type != WALL) {
 #define COLOR_FRACTION6 42
-                (*cell_color) = nSetBits[*data]*COLOR_FRACTION6;
+                (*cell_color) = 255 - nSetBits[*data]*COLOR_FRACTION6;
 
                 //Temperature
                 if (temperature != 0 && *cell_color != 0 && *cell_color != (COLOR_FRACTION6*6)) {
@@ -397,19 +397,19 @@ static PyObject * update6(PyObject *self, PyObject *args) {
 //                if ((((int)(iCol * iRow * temp_r) *  * 100) % 100) == 1) {
                         switch (*cell_color) {
                         case 1*COLOR_FRACTION6:
-                            (*data) = random_table1[this_temp_r % size_random1];
+                            (*data) = 255 - random_table1[this_temp_r % size_random1];
                             break;
                         case 2*COLOR_FRACTION6:
-                            (*data) = random_table2[this_temp_r % size_random2];
+                            (*data) = 255 - random_table2[this_temp_r % size_random2];
                             break;
                         case 3*COLOR_FRACTION6:
-                            (*data) = random_table3[this_temp_r % size_random3];
+                            (*data) = 255 - random_table3[this_temp_r % size_random3];
                             break;
                         case 4*COLOR_FRACTION6:
-                            (*data) = random_table4[this_temp_r % size_random4];
+                            (*data) = 255 - random_table4[this_temp_r % size_random4];
                             break;
                         case 5*COLOR_FRACTION6:
-                            (*data) = random_table5[this_temp_r % size_random5];
+                            (*data) = 255 - random_table5[this_temp_r % size_random5];
                             break;
                         default:
                             fprintf(stderr, "Bad magic %lu :(\n", *cell_color);
@@ -417,6 +417,7 @@ static PyObject * update6(PyObject *self, PyObject *args) {
                         }
                     }
                 }
+                (*cell_color) = (*cell_color << 16) | (*cell_color << 8) | (*cell_color << 0);
             }
         }
     }

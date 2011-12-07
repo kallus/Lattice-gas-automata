@@ -4,6 +4,7 @@ import time
 import numpy as np
 import pygame
 import pygame.display
+import pygame.event
 import scipy.ndimage
 from lattice_model import LatticeModel
 import pngnodes
@@ -15,34 +16,41 @@ class PygameView(object):
         self.lattice_model = lattice_model
         self.pixmap = np.ones((lattice_model.shape[0], lattice_model.shape[1], 3), dtype=np.uint8)
         self.transpose = np.zeros((lattice_model.shape[1], lattice_model.shape[0], 3), dtype=np.uint8)
+#        pygame.event.init()
         pygame.display.init()
-        self.screen = pygame.display.set_mode([lattice_model.shape[1], lattice_model.shape[0]])
+        self.screen = pygame.display.set_mode([lattice_model.shape[1], lattice_model.shape[0]], pygame.HWSURFACE | pygame.FULLSCREEN)
 #        tick_time = clock.tick(fps)
         pygame.display.set_caption("Lattice gas")
-        self.wallmap = np.ones((lattice_model.shape[0], lattice_model.shape[1], 3), dtype=np.uint8)
+        self.wallmap = np.ones((lattice_model.shape[1], lattice_model.shape[0], 3), dtype=np.uint8)
         self.wallmap.fill(0)
         for i in xrange(lattice_model.shape[0]):
           for j in xrange(lattice_model.shape[1]):
             if lattice_model.node_types[i,j]==pngnodes.WALL:
-              self.wallmap[i,j,0] = 12
-              self.wallmap[i,j,1] = 82
-              self.wallmap[i,j,2] = 232
+              self.wallmap[j,i,0] = 12
+              self.wallmap[j,i,1] = 82
+              self.wallmap[j,i,2] = 232
+        self.wallsurface = pygame.surfarray.make_surface(self.wallmap)
+        self.wallsurface.set_colorkey((0, 0, 0))
         while True:
+            if (pygame.event.peek(pygame.KEYDOWN)):
+                exit(1)
             self.update()
 
     def update(self):
         #print "update"
 #        self.pixmap[0:20, :, :] = 255
 #        start = time.time()
-#        nsteps = 2000
-#        for i in xrange(nsteps):
-        self.lattice_model.update()
+
+        nsteps = 5
+        for i in xrange(nsteps):
+            self.lattice_model.update()
 #        stop = time.time()
 #        print("executed %i steps in %f milliseconds" % (nsteps, stop - start,))
 #        exit(1)
         #print self.lattice_model.cells
-        self.pixmap.fill(255)
+
         if self.lattice_model.lattice_type == 0:
+            self.pixmap.fill(255)
             self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b0001)*128
             self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b0010)*128
             self.pixmap[:, :, 0] -= (self.lattice_model.cells == 0b0100)*128
@@ -135,28 +143,14 @@ class PygameView(object):
 
 #        scipy.ndimage.filters.gaussian_filter(self.lattice_model.cell_colors, 0.75,
 #                                              output=self.lattice_model.cell_colors)
-#        self.pixmap[:, :, 1] = self.pixmap[:, :, 0]
-#        self.pixmap[:, :, 1] = self.pixmap[:, :, 0]
-#        self.pixmap[:, :, 2] = self.pixmap[:, :, 1]
-
+        self.screen.get_buffer().write(self.lattice_model.cell_colors.tostring(), 0)
 #        self.screen.fill((255, 255, 255))
 
         # show walls
-        #pygame.surfarray.blit_array(self.screen, self.wallmap)
+        self.screen.set_colorkey((0, 0, 0))
+        self.screen.blit(self.wallsurface, (0, 0))
 
-        #print self.pixmap
-        arr = np.asarray(self.pixmap)
-        arr += self.wallmap
-        arr[:, :, 0] -= self.lattice_model.cell_colors
-        arr[:, :, 1] -= self.lattice_model.cell_colors
-        arr[:, :, 2] -= self.lattice_model.cell_colors
-
-        self.transpose[:, :, 0] = arr[:, :, 0].T
-        self.transpose[:, :, 1] = arr[:, :, 1].T
-        self.transpose[:, :, 2] = arr[:, :, 2].T
-        pygame.surfarray.blit_array(self.screen, self.transpose)
-
-        pygame.display.update()
+#        pygame.display.update()
         pygame.display.flip()
 
 if __name__ == "__main__":
