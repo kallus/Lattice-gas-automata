@@ -11,7 +11,7 @@ import pngnodes
 
 class PygameView(object):
     def __init__(self, lattice_model, delay):
-        print "init"
+        print "pygame init"
         self.fps = 30
         self.lattice_model = lattice_model
         self.pixmap = np.ones((lattice_model.shape[0], lattice_model.shape[1], 3), dtype=np.uint8)

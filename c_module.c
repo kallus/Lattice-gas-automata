@@ -40,12 +40,7 @@ inline long mod(long n, long k) {
 }
 
 inline long move4(long n, long e, long s, long w) {
-  long ret = 0;
-  if(n % 2 == 1) ret += 1;
-  if((e>>1) % 2 == 1) ret += 2;
-  if((s>>2) % 2 == 1) ret += 4;
-  if((w>>3) % 2 == 1) ret += 8;
-  return ret;
+    return ((n & 1) | (e & 2) | (s & 4) | (w & 8));
 }
 
 inline long reverse4(long x) {
@@ -60,56 +55,53 @@ inline long move6(long nw, long ne, long e, long se, long sw, long w) {
       | (sw & 8)
       | (w & 16)
       | (nw & 32));
-  /* long ret = 0; */
-  /* if(ne % 2 == 1) ret += 1; */
-  /* if((e>>1) % 2 == 1) ret += 2; */
-  /* if((se>>2) % 2 == 1) ret += 4; */
-  /* if((sw>>3) % 2 == 1) ret += 8; */
-  /* if((w>>4) % 2 == 1) ret += 16; */
-  /* if((nw>>5) % 2 == 1) ret += 32; */
-  /* return ret; */
 }
 
 inline long reverse6(long x) {
     return (((x << 3) + (x >> 3)) & 63);
-//  x = (x << 3) + (x >> 3);
-//  return x & 63;
 }
 
-inline long on_border(long H, long W, long y, long x) {
-  if (x == 0 || y == 0 || x == W-1 || y == H-1) {
-    return 1;
-  }
+static PyObject * init4(PyObject *self, PyObject *args) {
+    PyObject *cells_python_object;
+    PyObject *node_types_python_object;
 
-  return 0;
+    if (!PyArg_ParseTuple(args, "OO",
+            &cells_python_object,
+            &node_types_python_object)) {
+        fprintf(stderr, "Failed to parse arguments.\n");
+        Py_RETURN_NONE;
+    }
+
+    PyArrayObject *cells, *node_types;
+    cells = (PyArrayObject *)PyArray_ContiguousFromAny(cells_python_object, PyArray_LONG, 2, 2);
+    node_types = (PyArrayObject *)PyArray_ContiguousFromAny(node_types_python_object, PyArray_LONG, 2, 2);
+    if (cells == NULL || node_types == NULL) {
+        fprintf(stderr, "Invalid array object.\n");
+        Py_RETURN_NONE; /* returns None to the Python side, of course. */
+    }
+
+    long iRow, iCol;
+    long H = cells->dimensions[0];
+    long W = cells->dimensions[1];
+
+    for (iRow = 0; iRow < H; ++iRow) {
+        long *cell = PyArray_GETPTR2(cells, iRow, 0);
+        long *node_type = PyArray_GETPTR2(node_types, iRow, 0);
+        for (iCol = 0; iCol < W; ++iCol, ++cell, ++node_type) {
+            if (*node_type > 0) {
+                long r = (rand() % 256);
+                if (*node_type > r) {
+                    *cell = 15;
+                }
+            }
+        }
+    }
+
+    Py_XDECREF(cells);
+    Py_XDECREF(node_types);
+
+    Py_RETURN_NONE;    
 }
-
-inline long on_corner(long H, long W, long y, long x) {
-  if ((x == 0 || x == W-1) && (y == 0 || y == H-1)) {
-    return 1;
-  }
-
-  return 0;
-}
-
-inline long which_corner(long H, long W, long y, long x) {
-  if (y == 0 && x == 0) return 1;
-  if (y == 0 && x == W-1) return 2;
-  if (y == H-1 && x == W-1) return 3;
-  if (x == 0 && y == H-1) return 4;
-  fprintf(stderr, "unexpected in which_corner");
-  return 0;
-}
-
-inline long which_border(long H, long W, long y, long x) {
-  if (y == 0) return 1;
-  if (x == W-1) return 2;
-  if (y == H-1) return 3;
-  if (x == 0) return 4;
-  fprintf(stderr, "unexpected in which_border");
-  return 0;
-}
-
 
 static PyObject * update4(PyObject *self, PyObject *args) {
     PyObject *array_python_object;
@@ -219,23 +211,21 @@ static PyObject * update4(PyObject *self, PyObject *args) {
 
             /* Count the number of bits set. "You are not expected to understand this." */
             if (*node_type != WALL) {
-#define COLOR_FRACTION4 32
+#define COLOR_FRACTION4 63
                 (*cell_color) = 255 - nSetBits[*data]*COLOR_FRACTION4;
 
                 //Temperature
-                if (temperature != 0 && *cell_color != 0 && *cell_color != (COLOR_FRACTION4*4)) {
-//                    temp_r = rand()/((double)RAND_MAX);
+                if (temperature != 0 && *cell_color != 3 && *cell_color != 255) {
                     long this_temp_r = iCol * iRow * temp_r * *cell_color + iCol + iRow + temp_r;
                     if (this_temp_r % 100000 < temperature) {
-//                if ((((int)(iCol * iRow * temp_r) *  * 100) % 100) == 1) {
                         switch (*cell_color) {
-                        case 1*COLOR_FRACTION4:
+                        case 255 - 1*COLOR_FRACTION4:
                             (*data) = 255 - random_table1[this_temp_r % size_random1];
                             break;
-                        case 2*COLOR_FRACTION4:
+                        case 255 - 2*COLOR_FRACTION4:
                             (*data) = 255 - random_table2[this_temp_r % size_random2];
                             break;
-                        case 3*COLOR_FRACTION4:
+                        case 255 - 3*COLOR_FRACTION4:
                             (*data) = 255 - random_table3[this_temp_r % size_random3];
                             break;
                         default:
@@ -368,7 +358,7 @@ static PyObject * update6(PyObject *self, PyObject *args) {
 	    if (SOURCE == *node_type) {
                 double r = ((double)rand())/((double)RAND_MAX);
                 if(r < PROB) {
-                    int n = random() % 64;
+                    int n = rand() % 64;
                     (*data_temp) |= n;
                 }
 	    }
@@ -479,6 +469,7 @@ static PyObject * update6(PyObject *self, PyObject *args) {
 
 static PyMethodDef C_Module_Methods[] = {
     /* function name, function polonger, always METH_VARARGS (could be KEYWORDS too), documentation string. */
+    { "init4", init4, METH_VARARGS, "Initialize random particles for square lattice." },
     { "update4", update4, METH_VARARGS, "Square lattice update." },
     { "update6", update6, METH_VARARGS, "Hexagonal lattice update." },
     { NULL, NULL, 0, NULL } /* list terminator. */
