@@ -40,12 +40,7 @@ inline long mod(long n, long k) {
 }
 
 inline long move4(long n, long e, long s, long w) {
-  long ret = 0;
-  if(n % 2 == 1) ret += 1;
-  if((e>>1) % 2 == 1) ret += 2;
-  if((s>>2) % 2 == 1) ret += 4;
-  if((w>>3) % 2 == 1) ret += 8;
-  return ret;
+    return ((n & 1) | (e & 2) | (s & 4) | (w & 8));
 }
 
 inline long reverse4(long x) {
@@ -60,56 +55,11 @@ inline long move6(long nw, long ne, long e, long se, long sw, long w) {
       | (sw & 8)
       | (w & 16)
       | (nw & 32));
-  /* long ret = 0; */
-  /* if(ne % 2 == 1) ret += 1; */
-  /* if((e>>1) % 2 == 1) ret += 2; */
-  /* if((se>>2) % 2 == 1) ret += 4; */
-  /* if((sw>>3) % 2 == 1) ret += 8; */
-  /* if((w>>4) % 2 == 1) ret += 16; */
-  /* if((nw>>5) % 2 == 1) ret += 32; */
-  /* return ret; */
 }
 
 inline long reverse6(long x) {
     return (((x << 3) + (x >> 3)) & 63);
-//  x = (x << 3) + (x >> 3);
-//  return x & 63;
 }
-
-inline long on_border(long H, long W, long y, long x) {
-  if (x == 0 || y == 0 || x == W-1 || y == H-1) {
-    return 1;
-  }
-
-  return 0;
-}
-
-inline long on_corner(long H, long W, long y, long x) {
-  if ((x == 0 || x == W-1) && (y == 0 || y == H-1)) {
-    return 1;
-  }
-
-  return 0;
-}
-
-inline long which_corner(long H, long W, long y, long x) {
-  if (y == 0 && x == 0) return 1;
-  if (y == 0 && x == W-1) return 2;
-  if (y == H-1 && x == W-1) return 3;
-  if (x == 0 && y == H-1) return 4;
-  fprintf(stderr, "unexpected in which_corner");
-  return 0;
-}
-
-inline long which_border(long H, long W, long y, long x) {
-  if (y == 0) return 1;
-  if (x == W-1) return 2;
-  if (y == H-1) return 3;
-  if (x == 0) return 4;
-  fprintf(stderr, "unexpected in which_border");
-  return 0;
-}
-
 
 static PyObject * update4(PyObject *self, PyObject *args) {
     PyObject *array_python_object;
