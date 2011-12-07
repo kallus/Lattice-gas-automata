@@ -170,11 +170,12 @@ static PyObject * update4(PyObject *self, PyObject *args) {
 
 	    //Source
 	    if (SOURCE == *node_type) {
-              double r = rand()/((double)RAND_MAX);
-	      if(r < PROB) {
-                  int n = rand() % 16;
-                  (*data_temp) = n;
-	      }
+                double r = ((double)rand())/((double)RAND_MAX);
+                if(r < PROB) {
+                    int n = rand() % 16;
+                    (*data_temp) = n;
+                    continue;
+                }
 	    }
 
             if ((*data) == 0) {
@@ -365,13 +366,11 @@ static PyObject * update6(PyObject *self, PyObject *args) {
 	    
 	    //Source
 	    if (SOURCE == *node_type) {
-              double r = rand()/((double)RAND_MAX);
-	      if(r < PROB) {
-                  int n = rand() % 64;
-                  //int n = rand() % 6;
-                  // (*data_temp) |= (1 << n);
-                  (*data_temp) = n;
-	      }
+                double r = ((double)rand())/((double)RAND_MAX);
+                if(r < PROB) {
+                    int n = random() % 64;
+                    (*data_temp) |= n;
+                }
 	    }
 
 	    //Sink
