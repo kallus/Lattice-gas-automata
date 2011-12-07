@@ -51,3 +51,28 @@ class LatticeModel(object):
             c_module.update6(self.cells, self.cells_next, self.node_types, self.cell_colors,
                              self.temperature)
         return
+
+    def add_particles(self, pos):
+        radius = 20
+        xmin = max(0, pos[0]-radius)
+        ymin = max(0, pos[1]-radius)
+        xmax = min(self.shape[0], pos[0]+radius)
+        ymax = min(self.shape[1], pos[1]+radius)
+
+        for i in range(xmin, xmax):
+            for j in range(ymin, ymax):
+                if HEX_LATTICE == self.lattice_type:
+                    self.cells[i, j] = N_STATES_HEX - 1
+                elif SQUARE_LATTICE == self.lattice_type:
+                    self.cells[i, j] = N_STATES_SQUARE - 1
+
+    def remove_particles(self, pos):
+        radius = 20
+        xmin = max(0, pos[0]-radius)
+        ymin = max(0, pos[1]-radius)
+        xmax = min(self.shape[0], pos[0]+radius)
+        ymax = min(self.shape[1], pos[1]+radius)
+
+        for i in range(xmin, xmax):
+            for j in range(ymin, ymax):
+                self.cells[i, j] = 0
