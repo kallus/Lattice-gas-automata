@@ -385,7 +385,7 @@ static PyObject * update6(PyObject *self, PyObject *args) {
 //        unsigned char *cell_color = PyArray_GETPTR2(cell_colors, iRow, 0);
         uint32_t *cell_color = PyArray_GETPTR2(cell_colors, iRow, 0);
         for (iCol = 0; iCol < W; ++iCol, ++data, ++cell_color, ++node_type) {
-            if (iCol == 0 || iCol == W) {
+            if (iCol == 0 || iCol == (W-1)) {
                 //Periodic boundary conditions:
                 if (iRow % 2 == 0) { // even row
                     long *nw = PyArray_GETPTR2(array_temp, mod_iRowM1, mod(iCol-1, W));
