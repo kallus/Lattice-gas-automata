@@ -6,12 +6,13 @@ import pygame
 import pygame.display
 import pygame.event
 import scipy.ndimage
+import png
 from lattice_model import LatticeModel
 import pngnodes
 
 class PygameView(object):
-    def __init__(self, lattice_model, delay):
-        print "init"
+    def __init__(self, lattice_model, delay, filename):
+        print "pygame init"
         self.fps = 30
         self.lattice_model = lattice_model
         self.pixmap = np.ones((lattice_model.shape[0], lattice_model.shape[1], 3), dtype=np.uint8)
@@ -35,9 +36,24 @@ class PygameView(object):
 
         #self.wallsurface.set_colorkey((0, 0, 0))
 
+        pygame.event.set_allowed(None)
+        pygame.event.set_allowed(pygame.KEYDOWN)
+        pygame.event.set_allowed(pygame.MOUSEBUTTONUP)
+
         while True:
-            if (pygame.event.peek(pygame.KEYDOWN)):
-                exit(1)
+            events = pygame.event.get()
+            for e in events:
+                if pygame.KEYDOWN == e.type:
+                    if events[0].unicode == u'p':
+                        self.printscreen(filename+'.printscreen.png')
+                    else:
+                        exit(1)
+                elif pygame.MOUSEBUTTONUP == e.type:
+                    pos = (e.pos[1], e.pos[0]) #e.pos is tuple (x, y)
+                    if 1 == e.button:
+                        self.lattice_model.add_particles(pos)
+                    else:
+                        self.lattice_model.remove_particles(pos)
             self.update()
 
     def update(self):
@@ -60,6 +76,25 @@ class PygameView(object):
         pygame.surfarray.blit_array(self.screen, self.transpose2d)
         pygame.display.flip()
 
+    def printscreen(self, filename):
+        lattice_model = self.lattice_model
+        picture = [None]*lattice_model.shape[0]
+        for i in xrange(lattice_model.shape[0]):
+            row = [None]*lattice_model.shape[1]*3
+            c = 0
+            for j in xrange(lattice_model.shape[1]):
+                row[c] = lattice_model.cell_colors[i,j] >> 8 & 255
+                c += 1
+                row[c] = lattice_model.cell_colors[i,j] >> 16 & 255
+                c += 1
+                row[c] = lattice_model.cell_colors[i,j] >> 24 & 255
+                c += 1
+            picture[i] = row
+        w = png.Writer(lattice_model.shape[1], lattice_model.shape[0])
+        f = open(filename, "wb")
+        w.write(f, picture)
+        f.close()
+
 if __name__ == "__main__":
     print "main"
 
@@ -76,6 +111,7 @@ if __name__ == "__main__":
         lattice_type = 0;
     
     node_types = pngnodes.read(sys.argv[2])
+    filename = sys.argv[2]
     height = node_types.shape[0]
     width = node_types.shape[1]
 
@@ -85,5 +121,5 @@ if __name__ == "__main__":
 
 #    model.cells[0:height*5/6, 0:width*5/6] = 0
 #    model.cells[:, width*5/9:] = 0
-    view = PygameView(model, 10)
+    view = PygameView(model, 10, filename)
 
