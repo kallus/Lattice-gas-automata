@@ -40,13 +40,22 @@ class PygameView(object):
         pygame.event.set_allowed(pygame.KEYDOWN)
         pygame.event.set_allowed(pygame.MOUSEBUTTONUP)
 
+
+        self.lattice_model.update()
+        self.transpose2d = self.lattice_model.cell_colors.T
+        pygame.surfarray.blit_array(self.screen, self.transpose2d)
+        pygame.display.flip()
+
+        while (pygame.event.wait().type != pygame.KEYDOWN):
+            pass
+
         while True:
             events = pygame.event.get()
             for e in events:
                 if pygame.KEYDOWN == e.type:
-                    if events[0].unicode == u'p':
+                    if e.unicode == u'p':
                         self.printscreen(filename+'.printscreen.png')
-                    else:
+                    elif e.unicode == u'q':
                         exit(1)
                 elif pygame.MOUSEBUTTONUP == e.type:
                     pos = (e.pos[1], e.pos[0]) #e.pos is tuple (x, y)
