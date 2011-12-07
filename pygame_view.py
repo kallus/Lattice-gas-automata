@@ -158,6 +158,7 @@ class PygameView(object):
 
 #        scipy.ndimage.filters.gaussian_filter(self.lattice_model.cell_colors, 0.75,
 #                                              output=self.lattice_model.cell_colors)
+        self.screen.fill((255, 255, 255))
         self.transpose2d = self.lattice_model.cell_colors.T
 #        self.transpose[:, :, 1] = arr
 #        self.transpose[:, :, 2] = arr
