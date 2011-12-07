@@ -35,6 +35,17 @@ if __name__ == "__main__":
     domain[1:H-2,W/4:3*W/4] = numpy.where(randmat < 0.1, numpy.ones(randmat.shape)*WALL, domain[1:H-2,W/4:3*W/4])
     domain[:,0] = SOURCE
     domain[:,W-1] = SINK
+  elif figure == "porousfast":
+    W = 700
+    H = 100
+    domain = numpy.zeros((H,W), dtype=int)
+    domain.fill(200)
+    domain[0,:] = WALL
+    domain[H-1,:] = WALL
+    randmat = numpy.random.rand(H-3, W/2)
+    domain[1:H-2,W/4:3*W/4] = numpy.where(randmat < 0.01, numpy.ones(randmat.shape)*WALL, domain[1:H-2,W/4:3*W/4])
+    domain[:,0] = SOURCE
+    domain[:,W-1] = SINK
 
   picture = []
   domain = domain.T

@@ -171,7 +171,7 @@ class PygameView(object):
 
         # show walls
         self.screen.set_colorkey((0, 0, 0))
-        self.screen.blit(self.wallsurface, (0, 0))
+        #self.screen.blit(self.wallsurface, (0, 0))
 
 #        pygame.display.update()
         pygame.display.flip()
