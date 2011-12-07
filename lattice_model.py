@@ -53,7 +53,7 @@ class LatticeModel(object):
         return
 
     def add_particles(self, pos):
-        radius = 20
+        radius = int(round(self.shape[0] / 20))
         xmin = max(0, pos[0]-radius)
         ymin = max(0, pos[1]-radius)
         xmax = min(self.shape[0], pos[0]+radius)
@@ -68,7 +68,7 @@ class LatticeModel(object):
                         self.cells[i, j] = N_STATES_SQUARE - 1
 
     def remove_particles(self, pos):
-        radius = 40
+        radius = int(round(self.shape[0] / 10))
         xmin = max(0, pos[0]-radius)
         ymin = max(0, pos[1]-radius)
         xmax = min(self.shape[0], pos[0]+radius)
