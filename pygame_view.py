@@ -19,7 +19,7 @@ class PygameView(object):
         self.transpose2d = np.zeros((lattice_model.shape[1], lattice_model.shape[0]), dtype=np.uint32)
 #        pygame.event.init()
         pygame.display.init()
-        self.screen = pygame.display.set_mode([lattice_model.shape[1], lattice_model.shape[0]]) #, pygame.HWSURFACE | pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode([lattice_model.shape[1], lattice_model.shape[0]], pygame.HWSURFACE | pygame.FULLSCREEN)
 #        tick_time = clock.tick(fps)
         pygame.display.set_caption("Lattice gas")
 

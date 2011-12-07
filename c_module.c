@@ -390,25 +390,23 @@ static PyObject * update6(PyObject *self, PyObject *args) {
                 (*cell_color) = 255 - nSetBits[*data]*COLOR_FRACTION6;
 
                 //Temperature
-                if (temperature != 0 && *cell_color != 0 && *cell_color != (COLOR_FRACTION6*6)) {
-//                    temp_r = rand()/((double)RAND_MAX);
+                if (temperature != 0 && *cell_color != (255 - 6*COLOR_FRACTION6) && *cell_color != 255) {
                     long this_temp_r = iCol * iRow * temp_r * *cell_color + iCol + iRow + temp_r;
                     if (this_temp_r % 100000 < temperature) {
-//                if ((((int)(iCol * iRow * temp_r) *  * 100) % 100) == 1) {
                         switch (*cell_color) {
-                        case 1*COLOR_FRACTION6:
+                        case 255 - 1*COLOR_FRACTION6:
                             (*data) = 255 - random_table1[this_temp_r % size_random1];
                             break;
-                        case 2*COLOR_FRACTION6:
+                        case 255 - 2*COLOR_FRACTION6:
                             (*data) = 255 - random_table2[this_temp_r % size_random2];
                             break;
-                        case 3*COLOR_FRACTION6:
+                        case 255 - 3*COLOR_FRACTION6:
                             (*data) = 255 - random_table3[this_temp_r % size_random3];
                             break;
-                        case 4*COLOR_FRACTION6:
+                        case 255 - 4*COLOR_FRACTION6:
                             (*data) = 255 - random_table4[this_temp_r % size_random4];
                             break;
-                        case 5*COLOR_FRACTION6:
+                        case 255 - 5*COLOR_FRACTION6:
                             (*data) = 255 - random_table5[this_temp_r % size_random5];
                             break;
                         default:
