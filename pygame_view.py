@@ -11,7 +11,7 @@ from lattice_model import LatticeModel
 import pngnodes
 
 class PygameView(object):
-    def __init__(self, lattice_model, delay, filename):
+    def __init__(self, lattice_model, delay, filename, lattice_type):
         print "pygame init"
         self.fps = 30
         self.lattice_model = lattice_model
@@ -22,7 +22,7 @@ class PygameView(object):
         pygame.display.init()
         self.screen = pygame.display.set_mode([lattice_model.shape[1], lattice_model.shape[0]]) #, pygame.HWSURFACE | pygame.FULLSCREEN)
 #        tick_time = clock.tick(fps)
-        pygame.display.set_caption("Lattice gas")
+        pygame.display.set_caption(filename+' '+lattice_type)
 
         # self.wallmap = np.ones((lattice_model.shape[1], lattice_model.shape[0], 3), dtype=np.uint8)
         # self.wallmap.fill(0)
@@ -40,12 +40,15 @@ class PygameView(object):
         pygame.event.set_allowed(pygame.KEYDOWN)
         pygame.event.set_allowed(pygame.MOUSEBUTTONUP)
 
+        pcounter = 0
+
         while True:
             events = pygame.event.get()
             for e in events:
                 if pygame.KEYDOWN == e.type:
                     if events[0].unicode == u'p':
-                        self.printscreen(filename+'.printscreen.png')
+                        pcounter += 1
+                        self.printscreen(filename+'.'+lattice_type+'.printscreen'+str(pcounter)+'.png')
                     else:
                         exit(1)
                 elif pygame.MOUSEBUTTONUP == e.type:
@@ -121,5 +124,5 @@ if __name__ == "__main__":
 
 #    model.cells[0:height*5/6, 0:width*5/6] = 0
 #    model.cells[:, width*5/9:] = 0
-    view = PygameView(model, 10, filename)
+    view = PygameView(model, 10, filename, sys.argv[1])
 
