@@ -150,30 +150,10 @@ static PyObject * update4(PyObject *self, PyObject *args) {
     
     #pragma omp parallel for shared(array, array_temp, H, W, iRow) private (iCol)
     for (iRow = 0; iRow < H; ++iRow) {
-        for (iCol = 0; iCol < W; ++iCol) {
-            long *data = PyArray_GETPTR2(array, iRow, iCol);
-            long *data_temp = PyArray_GETPTR2(array_temp, iRow, iCol);
-            long *node_type = PyArray_GETPTR2(node_types, iRow, iCol);
-
-	    //Source
-	    if (SOURCE == *node_type) {
-              double r = rand()/((double)RAND_MAX);
-	      if(r < PROB) {
-                  int n = rand() % 16;
-                  (*data_temp) |= n;
-	      }
-	    }
-
-            if ((*data) == 0) {
-                (*data_temp) = 0;
-                continue;
-            }
-
-	    //Sink
-	    if (SINK == *node_type) {
-	      (*data_temp) = 0;
-	    }
-
+        long *data = PyArray_GETPTR2(array, iRow, 0);
+        long *data_temp = PyArray_GETPTR2(array_temp, iRow, 0);
+        long *node_type = PyArray_GETPTR2(node_types, iRow, 0);
+        for (iCol = 0; iCol < W; ++iCol, ++data, ++data_temp, ++node_type) {
             // cell collision
             if (*data == 5) {
               (*data_temp) = 10;
@@ -187,38 +167,56 @@ static PyObject * update4(PyObject *self, PyObject *args) {
             if (WALL == *node_type) {
               (*data_temp) = reverse4(*data_temp);
             }
+
+	    //Source
+	    if (SOURCE == *node_type) {
+              double r = rand()/((double)RAND_MAX);
+	      if(r < PROB) {
+                  int n = rand() % 16;
+                  (*data_temp) = n;
+	      }
+	    }
+
+            if ((*data) == 0) {
+                (*data_temp) = 0;
+                continue;
+            }
+
+	    //Sink
+	    if (SINK == *node_type) {
+	      (*data_temp) = 0;
+	    }
         }
     }
             
     // MOVEMENT
     // read from array_temp, write to array
-    #pragma omp parallel for shared(array, array_temp, H, W, iRow) private (iCol)
+#pragma omp parallel for shared(array, array_temp, cell_colors, H, W, iRow) private (iCol)
     for (iRow = 0; iRow < H; ++iRow) {
-      double temp_r = rand()/((double)RAND_MAX);
+        double temp_r = rand()/((double)RAND_MAX);
         long *data = PyArray_GETPTR2(array, iRow, 0);
         long *node_type = PyArray_GETPTR2(node_types, iRow, 0);
         long mod_iRowM1 = mod(iRow-1, H);
         long mod_iRowP1 = mod(iRow+1, H);
 
-      uint32_t *cell_color = PyArray_GETPTR2(cell_colors, iRow, 0);
-      for (iCol = 0; iCol < W; ++iCol, ++data, ++cell_color, ++node_type) {
-	long *data = PyArray_GETPTR2(array, iRow, iCol);
-	if(iCol == 0 || iCol == W){
-	  //Periodic boundary conditions
-	  long *n = PyArray_GETPTR2(array_temp, mod_iRowM1, iCol);
-	  long *e = PyArray_GETPTR2(array_temp, iRow, mod(iCol+1, W));
-	  long *s = PyArray_GETPTR2(array_temp, mod_iRowP1, iCol);
-	  long *w = PyArray_GETPTR2(array_temp, iRow, mod(iCol-1,W));
-	  (*data) = move4(*n,*e,*s,*w);
-	}else{
-	  long *n = PyArray_GETPTR2(array_temp, mod_iRowM1, iCol);
-	  long *e = PyArray_GETPTR2(array_temp, iRow, iCol+1);
-	  long *s = PyArray_GETPTR2(array_temp, mod_iRowP1, iCol);
-	  long *w = PyArray_GETPTR2(array_temp, iRow, iCol-1);
-	  (*data) = move4(*n,*e,*s,*w);
-	}
+        uint32_t *cell_color = PyArray_GETPTR2(cell_colors, iRow, 0);
+        for (iCol = 0; iCol < W; ++iCol, ++data, ++cell_color, ++node_type) {
+            if (iCol == 0 || iCol == W) {
+                //Periodic boundary conditions
+                long *n = PyArray_GETPTR2(array_temp, mod_iRowM1, iCol);
+                long *e = PyArray_GETPTR2(array_temp, iRow, mod(iCol+1, W));
+                long *s = PyArray_GETPTR2(array_temp, mod_iRowP1, iCol);
+                long *w = PyArray_GETPTR2(array_temp, iRow, mod(iCol-1,W));
+                (*data) = move4(*n,*e,*s,*w);
+            }else{
+                long *n = PyArray_GETPTR2(array_temp, mod_iRowM1, iCol);
+                long *e = PyArray_GETPTR2(array_temp, iRow, iCol+1);
+                long *s = PyArray_GETPTR2(array_temp, mod_iRowP1, iCol);
+                long *w = PyArray_GETPTR2(array_temp, iRow, iCol-1);
+                (*data) = move4(*n,*e,*s,*w);
+            }
 
-	                /* Count the number of bits set. "You are not expected to understand this." */
+            /* Count the number of bits set. "You are not expected to understand this." */
             if (*node_type != WALL) {
 #define COLOR_FRACTION4 32
                 (*cell_color) = 255 - nSetBits[*data]*COLOR_FRACTION4;
