@@ -28,8 +28,11 @@ class PygameView(object):
         for i in xrange(lattice_model.shape[0]):
           for j in xrange(lattice_model.shape[1]):
             if lattice_model.node_types[i,j]==pngnodes.WALL:
-              self.wallmap32[j,i] = 232
-        self.wallsurface = pygame.surfarray.make_surface(self.wallmap32)
+              self.wallmap32[j,i] = 232 | (19 << 8)
+#        self.wallmap32._make_array2d(np.uint32)
+        self.wallsurface = pygame.image.frombuffer(self.wallmap32.tostring(), self.wallmap32.shape, 'RGBA')
+#        self.wallsurface = pygame.image.fromstring(self.wallmap32.tostring(), self.wallmap32.shape, 'ARGB')
+#        self.wallsurface = pygame.surfarray.make_surface(self.wallmap32)
 
         # self.wallmap = np.ones((lattice_model.shape[1], lattice_model.shape[0], 3), dtype=np.uint8)
         # self.wallmap.fill(0)
