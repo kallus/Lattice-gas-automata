@@ -196,7 +196,7 @@ static PyObject * update4(PyObject *self, PyObject *args) {
 
         uint32_t *cell_color = PyArray_GETPTR2(cell_colors, iRow, 0);
         for (iCol = 0; iCol < W; ++iCol, ++data, ++cell_color, ++node_type) {
-            if (iCol == 0 || iCol == W) {
+            if (iCol == 0 || iCol == (W-1)) {
                 //Periodic boundary conditions
                 long *n = PyArray_GETPTR2(array_temp, mod_iRowM1, iCol);
                 long *e = PyArray_GETPTR2(array_temp, iRow, mod(iCol+1, W));
@@ -405,7 +405,7 @@ static PyObject * update6(PyObject *self, PyObject *args) {
                     (*data) = move6(*nw,*ne,*e,*se,*sw,*w);
                 }
             } else {
-                if ((iRow & 2) == 0) {
+                if ((iRow % 2) == 0) {
                     long *nw = PyArray_GETPTR2(array_temp, mod_iRowM1, iCol-1);
                     long *ne = PyArray_GETPTR2(array_temp, mod_iRowM1, iCol);
                     long *e = PyArray_GETPTR2(array_temp, iRow, iCol+1);
