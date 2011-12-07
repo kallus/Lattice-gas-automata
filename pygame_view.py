@@ -16,9 +16,10 @@ class PygameView(object):
         self.lattice_model = lattice_model
         self.pixmap = np.ones((lattice_model.shape[0], lattice_model.shape[1], 3), dtype=np.uint8)
         self.transpose = np.zeros((lattice_model.shape[1], lattice_model.shape[0], 3), dtype=np.uint8)
+        self.transpose2d = np.zeros((lattice_model.shape[1], lattice_model.shape[0]), dtype=np.uint32)
 #        pygame.event.init()
         pygame.display.init()
-        self.screen = pygame.display.set_mode([lattice_model.shape[1], lattice_model.shape[0]], pygame.HWSURFACE | pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode([lattice_model.shape[1], lattice_model.shape[0]]) #, pygame.HWSURFACE | pygame.FULLSCREEN)
 #        tick_time = clock.tick(fps)
         pygame.display.set_caption("Lattice gas")
         self.wallmap = np.ones((lattice_model.shape[1], lattice_model.shape[0], 3), dtype=np.uint8)
@@ -143,7 +144,11 @@ class PygameView(object):
 
 #        scipy.ndimage.filters.gaussian_filter(self.lattice_model.cell_colors, 0.75,
 #                                              output=self.lattice_model.cell_colors)
-        self.screen.get_buffer().write(self.lattice_model.cell_colors.tostring(), 0)
+        self.transpose2d = self.lattice_model.cell_colors.T
+#        self.transpose[:, :, 1] = arr
+#        self.transpose[:, :, 2] = arr
+        pygame.surfarray.blit_array(self.screen, self.transpose2d)
+#        self.screen.get_buffer().write(self.lattice_model.cell_colors.tostring(), 0)
 #        self.screen.fill((255, 255, 255))
 
         # show walls
