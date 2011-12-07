@@ -130,7 +130,7 @@ static PyObject * update4(PyObject *self, PyObject *args) {
 	    if (SOURCE == *node_type) {
               double r = rand()/((double)RAND_MAX);
 	      if(r < PROB) {
-                  int n = random() % 16;
+                  int n = rand() % 16;
                   (*data_temp) |= n;
 	      }
 	    }
