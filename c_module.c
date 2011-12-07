@@ -61,13 +61,15 @@ inline long reverse6(long x) {
     return (((x << 3) + (x >> 3)) & 63);
 }
 
-static PyObject * init4(PyObject *self, PyObject *args) {
+static PyObject * init_cells(PyObject *self, PyObject *args) {
     PyObject *cells_python_object;
     PyObject *node_types_python_object;
+    long particle_init = 0;
 
-    if (!PyArg_ParseTuple(args, "OO",
+    if (!PyArg_ParseTuple(args, "OOl",
             &cells_python_object,
-            &node_types_python_object)) {
+            &node_types_python_object,
+            &particle_init)) {
         fprintf(stderr, "Failed to parse arguments.\n");
         Py_RETURN_NONE;
     }
@@ -91,7 +93,7 @@ static PyObject * init4(PyObject *self, PyObject *args) {
             if (*node_type > 0) {
                 long r = (rand() % 256);
                 if (*node_type > r) {
-                    *cell = 15;
+                    *cell = particle_init;
                 }
             }
         }
@@ -194,7 +196,7 @@ static PyObject * update4(PyObject *self, PyObject *args) {
 
         uint32_t *cell_color = PyArray_GETPTR2(cell_colors, iRow, 0);
         for (iCol = 0; iCol < W; ++iCol, ++data, ++cell_color, ++node_type) {
-            if (iCol == 0 || iCol == W) {
+            if (iCol == 0 || iCol == (W-1)) {
                 //Periodic boundary conditions
                 long *n = PyArray_GETPTR2(array_temp, mod_iRowM1, iCol);
                 long *e = PyArray_GETPTR2(array_temp, iRow, mod(iCol+1, W));
@@ -383,7 +385,7 @@ static PyObject * update6(PyObject *self, PyObject *args) {
 //        unsigned char *cell_color = PyArray_GETPTR2(cell_colors, iRow, 0);
         uint32_t *cell_color = PyArray_GETPTR2(cell_colors, iRow, 0);
         for (iCol = 0; iCol < W; ++iCol, ++data, ++cell_color, ++node_type) {
-            if (iCol == 0 || iCol == W) {
+            if (iCol == 0 || iCol == (W-1)) {
                 //Periodic boundary conditions:
                 if (iRow % 2 == 0) { // even row
                     long *nw = PyArray_GETPTR2(array_temp, mod_iRowM1, mod(iCol-1, W));
@@ -403,7 +405,7 @@ static PyObject * update6(PyObject *self, PyObject *args) {
                     (*data) = move6(*nw,*ne,*e,*se,*sw,*w);
                 }
             } else {
-                if ((iRow & 2) == 0) {
+                if ((iRow % 2) == 0) {
                     long *nw = PyArray_GETPTR2(array_temp, mod_iRowM1, iCol-1);
                     long *ne = PyArray_GETPTR2(array_temp, mod_iRowM1, iCol);
                     long *e = PyArray_GETPTR2(array_temp, iRow, iCol+1);
@@ -469,7 +471,7 @@ static PyObject * update6(PyObject *self, PyObject *args) {
 
 static PyMethodDef C_Module_Methods[] = {
     /* function name, function polonger, always METH_VARARGS (could be KEYWORDS too), documentation string. */
-    { "init4", init4, METH_VARARGS, "Initialize random particles for square lattice." },
+    { "init_cells", init_cells, METH_VARARGS, "Initialize random particles." },
     { "update4", update4, METH_VARARGS, "Square lattice update." },
     { "update6", update6, METH_VARARGS, "Hexagonal lattice update." },
     { NULL, NULL, 0, NULL } /* list terminator. */
