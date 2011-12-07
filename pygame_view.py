@@ -9,6 +9,7 @@ import scipy.ndimage
 import png
 from lattice_model import LatticeModel
 import pngnodes
+import matnodes
 
 class PygameView(object):
     def __init__(self, lattice_model, delay, filename, lattice_type):
@@ -121,7 +122,8 @@ if __name__ == "__main__":
     if (sys.argv[1]=="square"):
         lattice_type = 0;
     
-    node_types = pngnodes.read(sys.argv[2])
+    #node_types = pngnodes.read(sys.argv[2])
+    node_types = matnodes.read(sys.argv[2])
     filename = sys.argv[2]
     height = node_types.shape[0]
     width = node_types.shape[1]
