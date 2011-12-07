@@ -63,13 +63,19 @@ class PygameView(object):
 if __name__ == "__main__":
     print "main"
 
-    if len(sys.argv) != 2:
-        print("Please specify map file.")
+    if len(sys.argv) != 3:
+        print("Please specify lattice tpe and map file.")
+        print("Usage: python pygame_view.py lattice_type file_name.png\n")
+        print("lattice_type:\nhexagonal lattice: hex\nsquare lattice: square")
         exit(1)
-    elif os.path.isfile(sys.argv[1]) == False:
+    elif os.path.isfile(sys.argv[2]) == False:
         print("Map file name %s is not valid" % (sys.argv[1],))
+
+    lattice_type = 1;
+    if (sys.argv[1]=="square"):
+        lattice_type = 0;
     
-    node_types = pngnodes.read(sys.argv[1])
+    node_types = pngnodes.read(sys.argv[2])
     height = node_types.shape[0]
     width = node_types.shape[1]
 
