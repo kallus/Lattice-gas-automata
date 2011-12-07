@@ -11,6 +11,29 @@
 #define SINK -3
 #define PROB 0.8
 
+static const unsigned char random_table1[] = { 32, 16, 8, 4, 2, 1 };
+static const int size_random1 = sizeof(random_table1)/sizeof(random_table1[0]);
+static const unsigned char random_table2[] = { 48, 40, 36, 34, 33, 24, 20, 18, 17, 12, 10, 9, 6, 5, 3 };
+static const int size_random2 = sizeof(random_table2)/sizeof(random_table2[0]);
+static const unsigned char random_table3[] = { 56, 52, 50, 49, 44, 42, 41, 38, 37, 35, 28, 26, 25, 22,
+                                               21, 19, 14, 13, 11, 7 };
+static const int size_random3 = sizeof(random_table3)/sizeof(random_table3[0]);
+static const unsigned char random_table4[] = { 60, 58, 57, 54, 53, 51, 46, 45, 43, 39, 30, 29, 27, 23, 15 };
+static const int size_random4 = sizeof(random_table4)/sizeof(random_table4[0]);
+static const unsigned char random_table5[] = { 62, 61, 59, 55, 47, 31 };
+static const int size_random5 = sizeof(random_table5)/sizeof(random_table5[0]);
+
+static const long nSetBits[] = { 
+  0, 1, 1, 2, 1, 2, 2, 3, 
+  1, 2, 2, 3, 2, 3, 3, 4, 
+  1, 2, 2, 3, 2, 3, 3, 4, 
+  2, 3, 3, 4, 3, 4, 4, 5, 
+  1, 2, 2, 3, 2, 3, 3, 4, 
+  2, 3, 3, 4, 3, 4, 4, 5, 
+  2, 3, 3, 4, 3, 4, 4, 5, 
+  3, 4, 4, 5, 4, 5, 5, 6
+};
+
 inline long mod(long n, long k) {
   if(n<0) return k+n;
   return n % k;
@@ -92,11 +115,15 @@ static PyObject * update4(PyObject *self, PyObject *args) {
     PyObject *array_python_object;
     PyObject *array_python_object_temp;
     PyObject *node_types_python_object;
+    PyObject *cell_colors_python_object;
+    long temperature;
 
-    if (!PyArg_ParseTuple(args, "OOO",
+    if (!PyArg_ParseTuple(args, "OOOOl",
         &array_python_object,
         &array_python_object_temp,
-        &node_types_python_object)) {
+	&node_types_python_object,
+	&cell_colors_python_object,
+	&temperature)) {
           fprintf(stderr, "Failed to parse arguments.\n");
           Py_RETURN_NONE;
     }
@@ -104,11 +131,13 @@ static PyObject * update4(PyObject *self, PyObject *args) {
     PyArrayObject *array;
     PyArrayObject *array_temp;
     PyArrayObject *node_types;
+    PyArrayObject *cell_colors;
 
     array = (PyArrayObject *)PyArray_ContiguousFromAny(array_python_object, PyArray_LONG, 2, 2);
     array_temp = (PyArrayObject *)PyArray_ContiguousFromAny(array_python_object_temp, PyArray_LONG, 2, 2);
     node_types = (PyArrayObject *)PyArray_ContiguousFromAny(node_types_python_object, PyArray_LONG, 2, 2);
-    if (array == NULL || array_temp == NULL || node_types == NULL) {
+    cell_colors = (PyArrayObject *)PyArray_ContiguousFromAny(cell_colors_python_object, PyArray_UINT32, 2, 2);
+    if (array == NULL || array_temp == NULL || node_types == NULL || cell_colors == NULL) {
         fprintf(stderr, "Invalid array object.\n");
         Py_RETURN_NONE; /* returns None to the Python side, of course. */
     }
@@ -130,7 +159,7 @@ static PyObject * update4(PyObject *self, PyObject *args) {
 	    if (SOURCE == *node_type) {
               double r = rand()/((double)RAND_MAX);
 	      if(r < PROB) {
-                  int n = random() % 16;
+                  int n = rand() % 16;
                   (*data_temp) |= n;
 	      }
 	    }
@@ -165,15 +194,59 @@ static PyObject * update4(PyObject *self, PyObject *args) {
     // read from array_temp, write to array
     #pragma omp parallel for shared(array, array_temp, H, W, iRow) private (iCol)
     for (iRow = 0; iRow < H; ++iRow) {
-        for (iCol = 0; iCol < W; ++iCol) {
-            long *data = PyArray_GETPTR2(array, iRow, iCol);
+      double temp_r = rand()/((double)RAND_MAX);
+        long *data = PyArray_GETPTR2(array, iRow, 0);
+        long *node_type = PyArray_GETPTR2(node_types, iRow, 0);
+        long mod_iRowM1 = mod(iRow-1, H);
+        long mod_iRowP1 = mod(iRow+1, H);
 
-            //Periodic boundary conditions
-            long *n = PyArray_GETPTR2(array_temp, mod(iRow-1, H), iCol);
-            long *e = PyArray_GETPTR2(array_temp, iRow, mod(iCol+1, W));
-            long *s = PyArray_GETPTR2(array_temp, mod(iRow+1,H), iCol);
-            long *w = PyArray_GETPTR2(array_temp, iRow, mod(iCol-1,W));
-            (*data) = move4(*n,*e,*s,*w);
+      uint32_t *cell_color = PyArray_GETPTR2(cell_colors, iRow, 0);
+      for (iCol = 0; iCol < W; ++iCol, ++data, ++cell_color, ++node_type) {
+	long *data = PyArray_GETPTR2(array, iRow, iCol);
+	if(iCol == 0 || iCol == W){
+	  //Periodic boundary conditions
+	  long *n = PyArray_GETPTR2(array_temp, mod_iRowM1, iCol);
+	  long *e = PyArray_GETPTR2(array_temp, iRow, mod(iCol+1, W));
+	  long *s = PyArray_GETPTR2(array_temp, mod_iRowP1, iCol);
+	  long *w = PyArray_GETPTR2(array_temp, iRow, mod(iCol-1,W));
+	  (*data) = move4(*n,*e,*s,*w);
+	}else{
+	  long *n = PyArray_GETPTR2(array_temp, mod_iRowM1, iCol);
+	  long *e = PyArray_GETPTR2(array_temp, iRow, iCol+1);
+	  long *s = PyArray_GETPTR2(array_temp, mod_iRowP1, iCol);
+	  long *w = PyArray_GETPTR2(array_temp, iRow, iCol-1);
+	  (*data) = move4(*n,*e,*s,*w);
+	}
+
+	                /* Count the number of bits set. "You are not expected to understand this." */
+            if (*node_type != WALL) {
+#define COLOR_FRACTION4 32
+                (*cell_color) = 255 - nSetBits[*data]*COLOR_FRACTION4;
+
+                //Temperature
+                if (temperature != 0 && *cell_color != 0 && *cell_color != (COLOR_FRACTION4*4)) {
+//                    temp_r = rand()/((double)RAND_MAX);
+                    long this_temp_r = iCol * iRow * temp_r * *cell_color + iCol + iRow + temp_r;
+                    if (this_temp_r % 100000 < temperature) {
+//                if ((((int)(iCol * iRow * temp_r) *  * 100) % 100) == 1) {
+                        switch (*cell_color) {
+                        case 1*COLOR_FRACTION4:
+                            (*data) = 255 - random_table1[this_temp_r % size_random1];
+                            break;
+                        case 2*COLOR_FRACTION4:
+                            (*data) = 255 - random_table2[this_temp_r % size_random2];
+                            break;
+                        case 3*COLOR_FRACTION4:
+                            (*data) = 255 - random_table3[this_temp_r % size_random3];
+                            break;
+                        default:
+                            fprintf(stderr, "Bad magic %ui :(\n", *cell_color);
+                            break;
+                        }
+                    }
+                }
+                (*cell_color) = (*cell_color << 24) | (*cell_color << 16) | (*cell_color << 8) | (*cell_color << 0);
+            }
         }
     }
 
@@ -191,28 +264,6 @@ static PyObject * update4(PyObject *self, PyObject *args) {
     Py_RETURN_NONE;
 }
 
-static const unsigned char random_table1[] = { 32, 16, 8, 4, 2, 1 };
-static const int size_random1 = sizeof(random_table1)/sizeof(random_table1[0]);
-static const unsigned char random_table2[] = { 48, 40, 36, 34, 33, 24, 20, 18, 17, 12, 10, 9, 6, 5, 3 };
-static const int size_random2 = sizeof(random_table2)/sizeof(random_table2[0]);
-static const unsigned char random_table3[] = { 56, 52, 50, 49, 44, 42, 41, 38, 37, 35, 28, 26, 25, 22,
-                                               21, 19, 14, 13, 11, 7 };
-static const int size_random3 = sizeof(random_table3)/sizeof(random_table3[0]);
-static const unsigned char random_table4[] = { 60, 58, 57, 54, 53, 51, 46, 45, 43, 39, 30, 29, 27, 23, 15 };
-static const int size_random4 = sizeof(random_table4)/sizeof(random_table4[0]);
-static const unsigned char random_table5[] = { 62, 61, 59, 55, 47, 31 };
-static const int size_random5 = sizeof(random_table5)/sizeof(random_table5[0]);
-
-static const long nSetBits[] = { 
-  0, 1, 1, 2, 1, 2, 2, 3, 
-  1, 2, 2, 3, 2, 3, 3, 4, 
-  1, 2, 2, 3, 2, 3, 3, 4, 
-  2, 3, 3, 4, 3, 4, 4, 5, 
-  1, 2, 2, 3, 2, 3, 3, 4, 
-  2, 3, 3, 4, 3, 4, 4, 5, 
-  2, 3, 3, 4, 3, 4, 4, 5, 
-  3, 4, 4, 5, 4, 5, 5, 6
-};
 
 static PyObject * update6(PyObject *self, PyObject *args) {
     PyObject *array_python_object;
