@@ -23,17 +23,6 @@ class PygameView(object):
 #        tick_time = clock.tick(fps)
         pygame.display.set_caption("Lattice gas")
 
-        self.wallmap32 = np.ones((lattice_model.shape[1], lattice_model.shape[0]), dtype=np.uint32)
-        self.wallmap32.fill(0)
-        for i in xrange(lattice_model.shape[0]):
-          for j in xrange(lattice_model.shape[1]):
-            if lattice_model.node_types[i,j]==pngnodes.WALL:
-              self.wallmap32[j,i] = 232 | (19 << 8)
-#        self.wallmap32._make_array2d(np.uint32)
-        self.wallsurface = pygame.image.frombuffer(self.wallmap32.tostring(), self.wallmap32.shape, 'RGBA')
-#        self.wallsurface = pygame.image.fromstring(self.wallmap32.tostring(), self.wallmap32.shape, 'ARGB')
-#        self.wallsurface = pygame.surfarray.make_surface(self.wallmap32)
-
         # self.wallmap = np.ones((lattice_model.shape[1], lattice_model.shape[0], 3), dtype=np.uint8)
         # self.wallmap.fill(0)
         # for i in xrange(lattice_model.shape[0]):
@@ -44,7 +33,7 @@ class PygameView(object):
         #       self.wallmap[j,i,2] = 232
         # self.wallsurface = pygame.surfarray.make_surface(self.wallmap)
 
-        self.wallsurface.set_colorkey((0, 0, 0))
+        #self.wallsurface.set_colorkey((0, 0, 0))
 
         while True:
             if (pygame.event.peek(pygame.KEYDOWN)):
@@ -158,20 +147,11 @@ class PygameView(object):
 
 #        scipy.ndimage.filters.gaussian_filter(self.lattice_model.cell_colors, 0.75,
 #                                              output=self.lattice_model.cell_colors)
-        self.screen.fill((255, 255, 255))
+#        self.screen.fill((255, 255, 255))
         self.transpose2d = self.lattice_model.cell_colors.T
-#        self.transpose[:, :, 1] = arr
-#        self.transpose[:, :, 2] = arr
-        # print self.screen.get_buffer().length
-        # print self.transpose2d.size
-        # exit(1)
+#        self.screen.set_colorkey((0, 0, 0))
         pygame.surfarray.blit_array(self.screen, self.transpose2d)
 #        self.screen.get_buffer().write(self.lattice_model.cell_colors.tostring(), 0)
-#        self.screen.fill((255, 255, 255))
-
-        # show walls
-        self.screen.set_colorkey((0, 0, 0))
-        self.screen.blit(self.wallsurface, (0, 0))
 
 #        pygame.display.update()
         pygame.display.flip()

@@ -417,7 +417,7 @@ static PyObject * update6(PyObject *self, PyObject *args) {
                         }
                     }
                 }
-                (*cell_color) = (*cell_color << 16) | (*cell_color << 8) | (*cell_color << 0);
+                (*cell_color) = (*cell_color << 24) | (*cell_color << 16) | (*cell_color << 8) | (*cell_color << 0);
             }
         }
     }
