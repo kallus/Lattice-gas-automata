@@ -61,13 +61,14 @@ class LatticeModel(object):
 
         for i in range(xmin, xmax):
             for j in range(ymin, ymax):
-                if HEX_LATTICE == self.lattice_type:
-                    self.cells[i, j] = N_STATES_HEX - 1
-                elif SQUARE_LATTICE == self.lattice_type:
-                    self.cells[i, j] = N_STATES_SQUARE - 1
+                if (i-pos[0])**2 + (j-pos[1])**2 < radius**2:
+                    if HEX_LATTICE == self.lattice_type:
+                        self.cells[i, j] = N_STATES_HEX - 1
+                    elif SQUARE_LATTICE == self.lattice_type:
+                        self.cells[i, j] = N_STATES_SQUARE - 1
 
     def remove_particles(self, pos):
-        radius = 20
+        radius = 40
         xmin = max(0, pos[0]-radius)
         ymin = max(0, pos[1]-radius)
         xmax = min(self.shape[0], pos[0]+radius)
@@ -75,4 +76,5 @@ class LatticeModel(object):
 
         for i in range(xmin, xmax):
             for j in range(ymin, ymax):
-                self.cells[i, j] = 0
+                if (i-pos[0])**2 + (j-pos[1])**2 < radius**2:
+                    self.cells[i, j] = 0
