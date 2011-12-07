@@ -6,11 +6,12 @@ import pygame
 import pygame.display
 import pygame.event
 import scipy.ndimage
+import png
 from lattice_model import LatticeModel
 import pngnodes
 
 class PygameView(object):
-    def __init__(self, lattice_model, delay):
+    def __init__(self, lattice_model, delay, filename):
         print "init"
         self.fps = 30
         self.lattice_model = lattice_model
@@ -37,6 +38,8 @@ class PygameView(object):
 
         while True:
             if (pygame.event.peek(pygame.KEYDOWN)):
+                if pygame.event.get(pygame.KEYDOWN)[0].unicode == u'p':
+                  self.printscreen(filename+'.printscreen.png')
                 exit(1)
             self.update()
 
@@ -60,6 +63,25 @@ class PygameView(object):
         pygame.surfarray.blit_array(self.screen, self.transpose2d)
         pygame.display.flip()
 
+    def printscreen(self, filename):
+        lattice_model = self.lattice_model
+        picture = [None]*lattice_model.shape[0]
+        for i in xrange(lattice_model.shape[0]):
+            row = [None]*lattice_model.shape[1]*3
+            c = 0
+            for j in xrange(lattice_model.shape[1]):
+                row[c] = lattice_model.cell_colors[i,j] >> 8 & 255
+                c += 1
+                row[c] = lattice_model.cell_colors[i,j] >> 16 & 255
+                c += 1
+                row[c] = lattice_model.cell_colors[i,j] >> 24 & 255
+                c += 1
+            picture[i] = row
+        w = png.Writer(lattice_model.shape[1], lattice_model.shape[0])
+        f = open(filename, "wb")
+        w.write(f, picture)
+        f.close()
+
 if __name__ == "__main__":
     print "main"
 
@@ -76,6 +98,7 @@ if __name__ == "__main__":
         lattice_type = 0;
     
     node_types = pngnodes.read(sys.argv[2])
+    filename = sys.argv[2]
     height = node_types.shape[0]
     width = node_types.shape[1]
 
@@ -85,5 +108,5 @@ if __name__ == "__main__":
 
 #    model.cells[0:height*5/6, 0:width*5/6] = 0
 #    model.cells[:, width*5/9:] = 0
-    view = PygameView(model, 10)
+    view = PygameView(model, 10, filename)
 
