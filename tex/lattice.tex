@@ -174,6 +174,37 @@ We modified our program to count the number of particles in each box; see figure
 \label{gascount}
 \end{figure}
 
+The results in figure \ref{gascount} can be compared qualitatively to the following model
+\[
+\left\{
+\begin{array}{l}
+  \frac{dc_1}{dt}=k(-c_1+c_2)\\
+  \frac{dc_2}{dt}=k(c_1-2c_2+c_3)\\
+  \frac{dc_3}{dt}=k(c_2-c_3)
+\end{array}\right.
+\]
+Where $c_1$ denotes the particle density in box $1$, $c_2$ denotes the particle density in box $2$
+, $c_3$ denotes the particle density in box $3$ and $k$ is a constant determining the speed of
+the particle flows. This system of coupled differential equations can be solved analytically and
+the solutions are
+\[
+\left\{
+\begin{array}{l}
+  c_1=\frac{1}{12}(e^{-5kt}+4+7e^{-kt})\\
+  c_2=\frac{1}{3}(1-e^{-3kt})\\
+  c_3=\frac{1}{3}-\frac{1}{12}(e^{-5kt}+7e^{-kt}-4e^{-3kt})
+\end{array}\right.
+\]
+In an attempt to match the time $t$ with the previous time scale 
+the $c_2$-curve was fitted to the green curve in figure \ref{gascount} which gave a value of
+$k\approx 1.4032 \cdot 10^{-4}$. With this value of $k$, the analytical solutions was plotted
+as a function of time. The result can be seen in figure \ref{gascount_anal}. One can see that
+the behaviour here is similar to the one in figure \ref{gascount}, but the relative behaviour
+of the curves is different. It is to be expected that the analytical results differ from the
+simulation since the model upon which the analytical results rest is very simplistic. 
+However, from the qualitative similarity one can hope that our simulation qualitatively
+captures some features of diffusion driven flow.
+
 \begin{figure}[htp]
 \caption{Analytical density in each box as a function of time.}
 \centering
