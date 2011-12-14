@@ -51,7 +51,18 @@ The mayor benefit of simulation of gases using lattice gas automata is simplicit
 \section{Implementation details}
 \label{sec:imp}
 % describe bouncing off walls, random initializations at sources... anything else?
-\subsection{Hexagonal lattice}
+
+Unlike the square lattice, the hexagonal lattice gives us many possible collision 
+rules that preserve momentum. This is a consequence of the increased degree of freedom
+in the system. Now, two particles can collide among three degrees of freedom and a mapping
+from any of these state to another preserve the momentum. Also, collisons between
+three and four particles can be realized in more ways than the trivial way 
+(mapping to itself). There are two approaches to dealing with this. The first is to
+choose an allowed collision rule randomly for each collision and the second is to
+have a deterministic mapping scheme which always is the same. This implementation
+uses the second approach with a mapping scheme which is cyclic, meaning that by
+applying a collison rule a given number of times, an arbitrary state should map back to
+itself. The reason for this is to preserve information and making the mapping reversible.
 
 \subsection{Bouncing off walls}
 Bouncing off walls can be implemented in many different ways. It is possible to
@@ -60,7 +71,7 @@ on the wall before a collision to a certain state after the collision. This is,
 however, very tiresome, especially for a hexagonal lattice. Another disadvantage
 is that one has to keep check of the orientation of the wall and not only it's 
 position. Therefore, to keep the implementation as simple as possible, the collison
-mapping just revers all particle directions.
+mapping just reverses all particle directions.
 
 \subsection{Sources and sinks}
 A source has been implemented as setting the state of the source node to a state
