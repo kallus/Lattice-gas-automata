@@ -55,7 +55,7 @@ The mayor benefit of simulation of gases using lattice gas automata is simplicit
 \section{Experiments, results}
 \label{sec:exp}
 % or should this just say ``waves''?
-\subsection{Shockwaves}
+\subsection{Waves}
 We start out with a square area, surrounded by walls, where initially each lattice site (not including walls)
 is completely filled with a probability of 0.3. Completely filled means that it contains six or
 four particles, if we use a hexagonal or a square lattice, respectively. After one time step,
@@ -65,7 +65,7 @@ explained in the last part of this section.
 
 \begin{figure}[htp]
 % if we change to just waves, this caption needs to be changed.
-\caption{Initial conditions, after one time step, for the shockwave experiment using a hexagonal lattice.}
+\caption{Initial conditions, after one time step, for the wave experiment using a hexagonal lattice.}
 \centering
   \includegraphics[width=100pt]{figs/hexwaveinit.png}
 \label{hexwaveinit}
@@ -77,7 +77,7 @@ concentrations of particles, away from the spawn point (since the circular area 
 possible). Three frames taken just after the particles were added are shown in figure \ref{hexwavestart}.
 
 \begin{figure}[htp]
-\caption{Frames demonstrating the initial phase of the shockwave.}
+\caption{Frames demonstrating the initial phase of the wave.}
 \centering
   \includegraphics[width=300pt]{figs/hexwavestart.png}
 \label{hexwavestart}
@@ -86,7 +86,7 @@ possible). Three frames taken just after the particles were added are shown in f
 
 The resulting waves bounce off against the walls, figure \ref{hexwavebounce}.
 \begin{figure}[htp]
-\caption{Just like real waves, the lattice gas shockwaves bounce off the walls.}
+\caption{Just like real waves, the lattice gas wave bounce off the walls.}
 \centering
   \includegraphics[width=100pt]{figs/hexwavebounce.png}
 \label{hexwavebounce}
@@ -96,10 +96,10 @@ Eventually, through collisions
 with the other random particles in the box, the particles we added spread out and the pattern which was formed
 when we filled the circular area is lost. Figure \ref{hexwaveend} shows what it looks like many time
 steps later (approximately 30 seconds later, when the simulation is run on a fast computer).
-We can see no trace of the shockwave.
+We can see no trace of the wave.
 
 \begin{figure}[htp]
-\caption{Many updates later, the picture looks the same as before the shockwave.}
+\caption{Many updates later, the picture looks the same as before the wave.}
 \centering
   \includegraphics[width=100pt]{figs/hexwaveend.png}
 \label{hexwaveend}
@@ -110,7 +110,7 @@ We can see no trace of the shockwave.
 
 If we use a square lattice instead, we still get the wave-like behaviour, figure \ref{squarewave}.
 \begin{figure}[htp]
-\caption{The shockwave looks similar when using a square lattice.}
+\caption{The wave looks similar when using a square lattice.}
 \centering
   \includegraphics[width=100pt]{figs/squarewave.png}
 \label{squarewave}
@@ -180,8 +180,8 @@ We modified our program to count the number of particles in each box; see figure
 \label{sec:conclusion}
 As is argued above, lattice gas automata capture the qualitative behaviour of a gas when it evens out density differences by diffusion. They also capture the qualitative behavior of waves of density difference in a gas that fills a space, for example sound waves.
 
-When a gas flows through some space from one side to the other, think of a pipe for example, the gas is expected to behave in a certain way when flowing around an obstacle. Typically, the density should increase close to the obstacle on the side of the obstacle that is facing the flow, and the density should decrease on the other side of the obstacle. Also, some turbulence and strong currents are expected right after the interaction with the obstacle. The turbulent behaviour is expected to even out futher away from the obstacle, making the gas behave as if it never interacted with the obstacle. Lattice gas automata does not capture this behaviour. We found, instead, in this experiment that the simulation became turbulent in the entire domain after the obstacle. This domain did not show an even density over diffent parts of the domain, and waves going against the direction of the flow formed, seemingly randomly.
+When a gas flows through some space from one side to the other, think of a pipe for example, the gas is expected to behave in a certain way when flowing around an obstacle. Typically, the density should increase close to the obstacle on the side of the obstacle that is facing the flow, and the density should decrease on the other side of the obstacle. Also, some turbulence and strong currents are expected right after the interaction with the obstacle. The turbulent behaviour is expected to even out further away from the obstacle, making the gas behave as if it never interacted with the obstacle. Lattice gas automata does not capture this behaviour. We found, instead, in this experiment that the simulation became turbulent in the entire domain after the obstacle. This domain did not show an even density over different parts of the domain, and waves going against the direction of the flow formed, seemingly randomly.
 
-We conclude that this model can be useful for modelling diffusion and waves. The main benenfits are that the relatively simple rules that the model consists of make it easy to implement and since the rules are easy to get an intuitive understanding of, the behaviour of the model is easy to discuss. Using fast computers and software that makes use of the many cores of modern processors and the speed of modern computer graphics cards, it becomes possible to compute and watch huge simulations in real time.
+We conclude that this model can be useful for modelling diffusion and waves. The main benefits are that the relatively simple rules that the model consists of make it easy to implement and since the rules are easy to get an intuitive understanding of, the behaviour of the model is easy to discuss. Using fast computers and software that makes use of the many cores of modern processors and the speed of modern computer graphics cards, it becomes possible to compute and watch huge simulations in real time.
 
 \end{document}
