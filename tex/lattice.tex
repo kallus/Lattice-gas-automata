@@ -39,7 +39,7 @@ Lattice gas automata are a kind of cellular automata, which are used to model so
 
 This text explores the behaviour of lattice gas automata. A number of simulations are run to qualitatively see if the model captures some phenomena expected from actual gases. The investigated phenomena are specifically waves, diffusion and currents of a flow around a cylinder. Some attempts are made to make meaningful comparisons to the theory of gas physics.
 
-The theory of lattice gas automata in general is introduced in section~\ref{sec:theory} followed by the specific details of our implementation in section~\ref{sec:imp}. The conducted experiments and their results are presented in section~\ref{sec:exp}. In the last section, section~\ref{sec:conclusion}, we conclude that the model can capture waves and diffusion, but not the typical behaviour of a compressed flow around a cylinder. There, we also discuss the benefits and disadvantages of the model.
+The theory of lattice gas automata in general is introduced in section~\ref{sec:theory} followed by the specific details of our implementation in section~\ref{sec:imp}. The conducted experiments and their results are presented in section~\ref{sec:exp}. In the last section, section~\ref{sec:conclusion}, we conclude that the model can capture waves and diffusion, but not the typical behaviour of a compressed flow around a cylinder. There we also discuss the benefits and disadvantages of the model, and that the model can show a turbulent behaviour under certain circumstances.
 
 Cellular automata in general, thus also lattice gas automata, are systems that are discrete in time and in space. They are built using a small set of deterministic rules, usually a mapping from each possible spatial configuration of some small area into a spatial configuration of that area for the next time step.
 
@@ -178,5 +178,10 @@ We modified our program to count the number of particles in each box; see figure
 
 \section{Conclusion}
 \label{sec:conclusion}
+As is argued above, lattice gas automata capture the qualitative behaviour of a gas when it evens out density differences by diffusion. They also capture the qualitative behavior of waves of density difference in a gas that fills a space, for example sound waves.
+
+When a gas flows through some space from one side to the other, think of a pipe for example, the gas is expected to behave in a certain way when flowing around an obstacle. Typically, the density should increase close to the obstacle on the side of the obstacle that is facing the flow, and the density should decrease on the other side of the obstacle. Also, some turbulence and strong currents are expected right after the interaction with the obstacle. The turbulent behaviour is expected to even out futher away from the obstacle, making the gas behave as if it never interacted with the obstacle. Lattice gas automata does not capture this behaviour. We found, instead, in this experiment that the simulation became turbulent in the entire domain after the obstacle. This domain did not show an even density over diffent parts of the domain, and waves going against the direction of the flow formed, seemingly randomly.
+
+We conclude that this model can be useful for modelling diffusion and waves. The main benenfits are that the relatively simple rules that the model consists of make it easy to implement and since the rules are easy to get an intuitive understanding of, the behaviour of the model is easy to discuss. Using fast computers and software that makes use of the many cores of modern processors and the speed of modern computer graphics cards, it becomes possible to compute and watch huge simulations in real time.
 
 \end{document}
