@@ -128,6 +128,34 @@ uses the second approach with a mapping scheme which is cyclic, meaning that by
 applying a collison rule a given number of times, an arbitrary state should map back to
 itself. The reason for this is to preserve information and making the mapping reversible.
 
+\begin{table}\centering
+\caption{The collision scheme used for the hexagonal lattice.}
+\label{collisionscheme}
+\begin{tabular}{ccc}
+(0,1,0,1,0,1)& $\mapsto$ & (1,0,1,0,1,0) \\
+(1,0,1,0,1,0)& $\mapsto$ & (0,1,0,1,0,1) \\
+(0,1,0,0,1,1)& $\mapsto$ & (1,0,0,1,0,1) \\
+(1,0,0,1,0,1)& $\mapsto$ & (0,1,0,0,1,1) \\
+(1,1,0,0,1,0)& $\mapsto$ & (1,0,1,0,0,1) \\
+(1,0,1,0,0,1)& $\mapsto$ & (1,1,0,0,1,0) \\
+(0,1,0,1,1,0)& $\mapsto$ & (0,0,1,1,0,1) \\
+(0,0,1,1,0,1)& $\mapsto$ & (0,1,0,1,1,0) \\
+(0,1,1,0,1,0)& $\mapsto$ & (1,0,1,1,0,0) \\
+(1,0,1,1,0,0)& $\mapsto$ & (0,1,1,0,1,0) \\
+(0,1,1,0,0,1)& $\mapsto$ & (1,1,0,1,0,0) \\
+(1,1,0,1,0,0)& $\mapsto$ & (0,1,1,0,0,1) \\
+(1,0,0,1,1,0)& $\mapsto$ & (0,0,1,0,1,1) \\
+(0,0,1,0,1,1)& $\mapsto$ & (1,0,0,1,1,0) \\
+(1,0,1,1,0,1)& $\mapsto$ & (0,1,1,0,1,1) \\
+(0,1,1,0,1,1)& $\mapsto$ & (1,1,0,1,1,0) \\
+(1,1,0,1,1,0)& $\mapsto$ & (1,0,1,1,0,1) \\
+(0,0,1,0,0,1)& $\mapsto$ & (0,1,0,0,1,0) \\
+(0,1,0,0,1,0)& $\mapsto$ & (1,0,0,1,0,0) \\
+(1,0,0,1,0,0)& $\mapsto$ & (0,0,1,0,0,1) \\
+\end{tabular}
+\end{table}
+
+
 \subsection{Bouncing off walls}
 Bouncing off walls can be implemented in many different ways. It is possible to
 come up with specific rules that specifies a mapping between from a certain state
@@ -354,6 +382,6 @@ As is argued above, lattice gas automata capture the qualitative behaviour of a 
 
 When a gas flows through some space from one side to the other, think of a pipe for example, the gas is expected to behave in a certain way when flowing around an obstacle. Typically, the density should increase close to the obstacle on the side of the obstacle that is facing the flow, and the density should decrease on the other side of the obstacle. Also, some turbulence and strong currents are expected right after the interaction with the obstacle. The turbulent behaviour is expected to even out further away from the obstacle, making the gas behave as if it never interacted with the obstacle. Lattice gas automata does not capture this behaviour. Instead we found in experiments that the simulation became turbulent in the entire domain after the obstacle. This domain did not show an even density over different parts of the domain, and waves going against the direction of the flow formed seemingly randomly.
 
-We conclude that this model can be useful for modelling diffusion and waves. The main benefits are that the relatively simple rules that the model consists of make it easy to implement and since the rules are easy to get an intuitive understanding of, the behaviour of the model is easy to discuss. Using fast computers and software that makes use of the many cores of modern processors and the speed of modern computer graphics cards, it becomes possible to compute and watch huge simulations in real time.
+We conclude that this model can be useful for modelling diffusion and waves. The main benefits are that the relatively simple rules that the model consists of make it easy to implement and since the rules are easy to get an intuitive understanding of, the behaviour of the model is easy to discuss. Using fast computers and software that makes use of the many cores of modern processors and the speed of modern computer graphics processors, it becomes possible to watch huge simulations in a satifactory pace at the same time as they are being computed.
 
 \end{document}
