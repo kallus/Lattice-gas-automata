@@ -138,8 +138,8 @@ explained in the last part of this section.
 % if we change to just waves, this caption needs to be changed.
 \centering
   \includegraphics[width=100pt]{figs/hexwaveinit.png}
-\label{hexwaveinit}
 \caption{Initial conditions, after one time step, for the wave experiment using a hexagonal lattice.}
+\label{hexwaveinit}
 \end{figure}
 
 By clicking the left mouse button we set a circular area of lattice sites around the mouse cursor to
@@ -150,8 +150,8 @@ possible). Three frames taken just after the particles were added are shown in f
 \begin{figure}[htp]
 \centering
   \includegraphics[width=300pt]{figs/hexwavestart.png}
-\label{hexwavestart}
 \caption{Frames demonstrating the initial phase of the wave.}
+\label{hexwavestart}
 \end{figure}
 
 
@@ -159,8 +159,8 @@ The resulting waves bounce off against the walls, figure \ref{hexwavebounce}.
 \begin{figure}[htp]
 \centering
   \includegraphics[width=100pt]{figs/hexwavebounce.png}
-\label{hexwavebounce}
 \caption{Just like real waves, the lattice gas wave bounce off the walls.}
+\label{hexwavebounce}
 \end{figure}
 
 Eventually, through collisions
@@ -172,8 +172,8 @@ We can see no trace of the wave.
 \begin{figure}[htp]
 \centering
   \includegraphics[width=100pt]{figs/hexwaveend.png}
-\label{hexwaveend}
 \caption{Many updates later, the picture looks the same as before the wave.}
+\label{hexwaveend}
 \end{figure}
 
 
@@ -183,8 +183,8 @@ If we use a square lattice instead, we still get the wave-like behaviour, figure
 \begin{figure}[htp]
 \centering
   \includegraphics[width=100pt]{figs/squarewave.png}
-\label{squarewave}
 \caption{The wave looks similar when using a square lattice.}
+\label{squarewave}
 \end{figure}
 
 However, the waves persist for much longer, possibly because there are fewer possible collisions.
@@ -207,24 +207,24 @@ is completely filled with particles. The initial conditions are shown in figure 
 % if we change to just waves, this caption needs to be changed.
 \centering
   \includegraphics[width=200pt]{figs/diffusioninit.png}
-\label{diffusioninit}
 \caption{Initial conditions, after one time step, for the diffusion experiment.}
+\label{diffusioninit}
 \end{figure}
 
 As the simulation runs, the gas spreads first to the second box (figure \ref{diffusionbox2fill}.
 \begin{figure}[htp]
 \centering
   \includegraphics[width=200pt]{figs/diffusionbox2fill.png}
-\label{diffusionbox2fill}
 \caption{Much of the gas has spread to the second box.}
+\label{diffusionbox2fill}
 \end{figure}
 
 Eventually, particles also start to fill up the third box (figure \ref{diffusionbox3fill}.
 \begin{figure}[htp]
 \centering
   \includegraphics[width=200pt]{figs/diffusionbox3fill.png}
-\label{diffusionbox3fill}
 \caption{A while later, many particles are also found in the third box.}
+\label{diffusionbox3fill}
 \end{figure}
 
 Given enough time, they spread out uniformly over the whole available space, just like a real gas would.
@@ -232,8 +232,8 @@ This ``steady-state'' is shown in figure \ref{diffusionend}.
 \begin{figure}[htp]
 \centering
   \includegraphics[width=200pt]{figs/diffusionend.png}
-\label{diffusionend}
 \caption{Eventually, the particle density is the same for all boxes.}
+\label{diffusionend}
 \end{figure}
 
 We modified our program to count the number of particles in each box; see figure \ref{gascount}.
@@ -241,8 +241,8 @@ We modified our program to count the number of particles in each box; see figure
 \begin{figure}[htp]
 \centering
   \includegraphics[width=300pt]{figs/gascount.pdf}
-\label{gascount}
 \caption{Particle density in each box as a function of the number of updates.}
+\label{gascount}
 \end{figure}
 
 The results in figure \ref{gascount} can be compared qualitatively to the following model
@@ -283,8 +283,8 @@ captures some features of diffusion driven flow.
 \begin{figure}[htp]
 \centering
   \includegraphics[width=300pt]{figs/gascount_anal.pdf}
-\label{gascount_anal}
 \caption{Analytical density in each box as a function of time.}
+\label{gascount_anal}
 \end{figure}
 
 \subsection{Flow around cylinder}
@@ -294,30 +294,30 @@ After a short while the domain is filled with particles and a somewhat steady st
 \begin{figure}[htp]
 \centering
   \includegraphics[width=300pt]{figs/scenario3mathexprintscreen1.png}
-\label{flow1}
 \caption{The pattern of different densities is unrealistic and artifacts coming from the hexagonal lattice are apparent.}
+\label{flow1}
 \end{figure}
 
 Unexpectedly and seemingly without reason, at times the density becomes higher at a certain point to the right of the cylinder. This can be seen in figure~\ref{flow2}. A wave is created and moves towards the cylinder as seen in figures~\ref{flow3} and~\ref{flow4}. This happens repeatedly, but the times between wave formations seem to be irregular. Therefor we suspect that the system shows a turbulent behaviour.
 \begin{figure}[htp]
 \centering
   \includegraphics[width=300pt]{figs/scenario3mathexprintscreen10.png}
-\label{flow2}
 \caption{Waves form after the cylinder, without an obvious cause. The formation of waves does not seem to be periodic in time. The waves have a direction that goes against the flow, they move towards the cylinder.}
+\label{flow2}
 \end{figure}
 
 \begin{figure}[htp]
 \centering
   \includegraphics[width=300pt]{figs/scenario3mathexprintscreen5.png}
-\label{flow3}
 \caption{The wave bounces against the cylinder.}
+\label{flow3}
 \end{figure}
 
 \begin{figure}[htp]
 \centering
   \includegraphics[width=300pt]{figs/scenario3mathexprintscreen6.png}
-\label{flow4}
 \caption{The wave moves away from the cylinder and diffuses. Soon the system will be back in the ``normal'' state, seen in figure~\ref{flow1}.}
+\label{flow4}
 \end{figure}
 
 \section{Conclusion}
