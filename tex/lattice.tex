@@ -58,6 +58,7 @@ The lattice gas model describes how particles move around on a lattice. Particle
 
 Specifically, the model consists of a lattice where each node takes on one of a finite set of states. Each state represents a configuration of particles in that site. In each time step, the nodes are updated according to a rule based on the values of the nearest neighbors. The update rule corresponds to particle collisions and movements between neighboring nodes.
 
+\subsection{Square lattice example}
 Consider the example of a square lattice, where each node has four neighbors. For a particle in a node, there are four possible velocities (up, down, left, right). For each lattice node, there can be at most one particle moving in each direction. Hence, the state of a node can be encoded in four binary values indicating whether there is or is not a particle moving in each direction. See figure \ref{fig:square-state} for an illustration.
 
 \begin{figure}[htp]
