@@ -6,6 +6,10 @@
 \usepackage{graphicx}
 \usepackage{color}
 \usepackage{url}
+\usepackage{caption}
+
+
+\captionsetup{width=.8\textwidth,font=small} 
 
 % Stolen settings (unknown origin):
 % Alter some LaTeX defaults for better treatment of figures:
@@ -37,6 +41,35 @@
 \section{Introduction.}
 
 \section{Theory.}
+The lattice gas model describes how particles move around on a lattice. Particles make discrete jumps between lattice nodes, where they may collide with each other and change directions. In the following discussion, we only consider two-dimensional lattices.
+
+Specifically, the model consists of a lattice where each node takes on one of a finite set of states. Each state represents a configuration of particles in that site. In each time step, the nodes are updated according to a rule based on the values of the nearest neighbors. The update rule corresponds to particle collisions and movements between neighboring nodes.
+
+Consider the example of a square lattice, where each node has four neighbors. For a particle in a node, there are four possible velocities (up, down, left, right). For each lattice node, there can be at most one particle moving in each direction. Hence, the state of a node can be encoded in four binary values indicating whether there is or is not a particle moving in each direction. See figure \ref{fig:square-state} for an illustration.
+
+\begin{figure}[htp]
+\centering
+  \includegraphics{figs/square-state.pdf}
+\caption{Example showing the state of four nodes. Each node can be occupied by zero to four particles, one in each direction. The state $n_{ij}$ can be encoded using four binary values \{up, right, down, left\} as indicated the figure. For instance, in the upper right corner, there is one particle moving to the right. In the lower right corner, there are particles moving upwards and to the left, etc.}
+\label{fig:square-state}
+\end{figure}
+
+A time step in the model is described by a mapping, where we write $n_{ij}^t$ to denote the the state of node $(i,j)$ at $t$,
+\begin{equation}\label{eqn:mapping}
+n^{t+1}_{ij} = f(n^t_{ij}, n^t_{i+1,j}, n^t_{i,j+1}, n^t_{i-1,j}, n^t_{i,j-1}).
+\end{equation}
+In theory, this map can be written down explicitly. The node $(i,j)$ and its four nearest neighbors have a total of $2^{20}\approx 10^6$ states, and these states map to the $2^4=16$ possible states $n^{t+1}_{ij}$. In other words, the map is
+$
+f: \{0,1\}^{20} \longrightarrow \{0,1\}^4.
+$
+A more practical representation is divided into two operations, propagation and collision. 
+
+In the propagation operation, each particle moves to the next node (see figure \ref{fig:propagation}). All nodes are equidistant the lattice, which means the particles all have the same speed.
+
+In the collision operation, collisions between particles are considered. Two particles in the same node can collide with each other, so that they change directions. With the restriction that collisions must preserve momentum, one can verify that the only allowed collision rules are the ones shown in figure \ref{fig:collision}. All other states must map to themselves in the collision operation.
+
+The lattice gas model can be propagated by alternating between the collision and propagation operations. Applying both operators in sequence is equivalent to taking one time step according to equation \eqref{eqn:mapping}. For a complete example of a time step, see figure \ref{fig:collision-propagation}.
+
 
 \section{Implementation details.}
 % describe bouncing off walls, random initializations at sources... anything else?
