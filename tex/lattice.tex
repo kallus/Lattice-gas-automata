@@ -243,6 +243,9 @@ captures some features of diffusion driven flow.
 \end{figure}
 
 \subsection{Flow around cylinder}
+This experiment was conducted to examine what this model capture with respect to gas flow around a cylinder shaped obstacle. We have a rectangular domain, with walls at the top, bottom and left sides. Next to the wall at the left side, the entire strip is a source. At the right side of the domain, the entire strip is a sink. In this way, particles are made to enter the system at the left side and leave the system at the right side, creating a flow of particles from left to right. The domain can be thought of as a part of a pipe, with a gas flowing through it. Roughly at the middle of the domain is a round obstacle, a cylinder going straight through the pipe, perpendicular to the direction of the flow.
+
+After a short while the domain is filled with particles and a somewhat steady state is reached. This state can be seen in figure~\ref{flow1}. As can be seen in this figure, the gas does not behave realistically. Instead a pattern of unrealistic density differences is created. The pattern is clearly influenced by the hexagonal lattice that is used.
 \begin{figure}[htp]
 \caption{The pattern of different densities is unrealistic and artifacts coming from the hexagonal lattice are apparent.}
 \centering
@@ -250,6 +253,7 @@ captures some features of diffusion driven flow.
 \label{flow1}
 \end{figure}
 
+Unexpectedly and seemingly without reason, at times the density becomes higher at a certain point to the right of the cylinder. This can be seen in figure~\ref{flow2}. A wave is created and moves towards the cylinder as seen in figures~\ref{flow3} and~\ref{flow4}. This happens repeatedly, but the times between wave formations seem to be irregular. Therefor we suspect that the system shows a turbulent behaviour.
 \begin{figure}[htp]
 \caption{Waves form after the cylinder, without an obvious cause. The formation of waves does not seem to be periodic in time. The waves have a direction that goes against the flow, they move towards the cylinder.}
 \centering
