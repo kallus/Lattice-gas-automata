@@ -182,12 +182,39 @@ We modified our program to count the number of particles in each box; see figure
 \end{figure}
 
 \subsection{Flow around cylinder}
+\begin{figure}[htp]
+\caption{The pattern of different densities is unrealistic and artifacts coming from the hexagonal lattice are apparent.}
+\centering
+  \includegraphics[width=300pt]{figs/scenario3mathexprintscreen1.png}
+\label{flow1}
+\end{figure}
+
+\begin{figure}[htp]
+\caption{Waves form after the cylinder, without an obvious cause. The formation of waves does not seem to be periodic in time. The waves have a direction that goes against the flow, they move towards the cylinder.}
+\centering
+  \includegraphics[width=300pt]{figs/scenario3mathexprintscreen10.png}
+\label{flow2}
+\end{figure}
+
+\begin{figure}[htp]
+\caption{The wave bounces against the cylinder.}
+\centering
+  \includegraphics[width=300pt]{figs/scenario3mathexprintscreen5.png}
+\label{flow3}
+\end{figure}
+
+\begin{figure}[htp]
+\caption{The wave moves away from the cylinder and diffuses. Soon the system will be back in the ``normal'' state, seen in figure~\ref{flow1}.}
+\centering
+  \includegraphics[width=300pt]{figs/scenario3mathexprintscreen6.png}
+\label{flow4}
+\end{figure}
 
 \section{Conclusion}
 \label{sec:conclusion}
 As is argued above, lattice gas automata capture the qualitative behaviour of a gas when it evens out density differences by diffusion. They also capture the qualitative behavior of waves of density difference in a gas that fills a space, for example sound waves.
 
-When a gas flows through some space from one side to the other, think of a pipe for example, the gas is expected to behave in a certain way when flowing around an obstacle. Typically, the density should increase close to the obstacle on the side of the obstacle that is facing the flow, and the density should decrease on the other side of the obstacle. Also, some turbulence and strong currents are expected right after the interaction with the obstacle. The turbulent behaviour is expected to even out further away from the obstacle, making the gas behave as if it never interacted with the obstacle. Lattice gas automata does not capture this behaviour. We found, instead, in this experiment that the simulation became turbulent in the entire domain after the obstacle. This domain did not show an even density over different parts of the domain, and waves going against the direction of the flow formed, seemingly randomly.
+When a gas flows through some space from one side to the other, think of a pipe for example, the gas is expected to behave in a certain way when flowing around an obstacle. Typically, the density should increase close to the obstacle on the side of the obstacle that is facing the flow, and the density should decrease on the other side of the obstacle. Also, some turbulence and strong currents are expected right after the interaction with the obstacle. The turbulent behaviour is expected to even out further away from the obstacle, making the gas behave as if it never interacted with the obstacle. Lattice gas automata does not capture this behaviour. Instead we found in experiments that the simulation became turbulent in the entire domain after the obstacle. This domain did not show an even density over different parts of the domain, and waves going against the direction of the flow formed seemingly randomly.
 
 We conclude that this model can be useful for modelling diffusion and waves. The main benefits are that the relatively simple rules that the model consists of make it easy to implement and since the rules are easy to get an intuitive understanding of, the behaviour of the model is easy to discuss. Using fast computers and software that makes use of the many cores of modern processors and the speed of modern computer graphics cards, it becomes possible to compute and watch huge simulations in real time.
 
