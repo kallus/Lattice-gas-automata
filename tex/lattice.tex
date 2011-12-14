@@ -99,6 +99,16 @@ uses the second approach with a mapping scheme which is cyclic, meaning that by
 applying a collison rule a given number of times, an arbitrary state should map back to
 itself. The reason for this is to preserve information and making the mapping reversible.
 
+\begin{table}\centering
+\caption{The collision scheme used for the hexagonal lattice.}
+\label{collisionscheme}
+\begin{tabular}{ccc}
+  (1,0,0,0,0,0)& $\mapsto$ & hej\\
+  (0,1,0,0,0,0)& $\mapsto$ & hej\\
+\end{tabular}
+\end{table}
+
+
 \subsection{Bouncing off walls}
 Bouncing off walls can be implemented in many different ways. It is possible to
 come up with specific rules that specifies a mapping between from a certain state
