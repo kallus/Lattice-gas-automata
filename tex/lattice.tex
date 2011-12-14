@@ -102,10 +102,10 @@ explained in the last part of this section.
 
 \begin{figure}[htp]
 % if we change to just waves, this caption needs to be changed.
-\caption{Initial conditions, after one time step, for the wave experiment using a hexagonal lattice.}
 \centering
   \includegraphics[width=100pt]{figs/hexwaveinit.png}
 \label{hexwaveinit}
+\caption{Initial conditions, after one time step, for the wave experiment using a hexagonal lattice.}
 \end{figure}
 
 By clicking the left mouse button we set a circular area of lattice sites around the mouse cursor to
@@ -114,19 +114,19 @@ concentrations of particles, away from the spawn point (since the circular area 
 possible). Three frames taken just after the particles were added are shown in figure \ref{hexwavestart}.
 
 \begin{figure}[htp]
-\caption{Frames demonstrating the initial phase of the wave.}
 \centering
   \includegraphics[width=300pt]{figs/hexwavestart.png}
 \label{hexwavestart}
+\caption{Frames demonstrating the initial phase of the wave.}
 \end{figure}
 
 
 The resulting waves bounce off against the walls, figure \ref{hexwavebounce}.
 \begin{figure}[htp]
-\caption{Just like real waves, the lattice gas wave bounce off the walls.}
 \centering
   \includegraphics[width=100pt]{figs/hexwavebounce.png}
 \label{hexwavebounce}
+\caption{Just like real waves, the lattice gas wave bounce off the walls.}
 \end{figure}
 
 Eventually, through collisions
@@ -136,10 +136,10 @@ steps later (approximately 30 seconds later, when the simulation is run on a fas
 We can see no trace of the wave.
 
 \begin{figure}[htp]
-\caption{Many updates later, the picture looks the same as before the wave.}
 \centering
   \includegraphics[width=100pt]{figs/hexwaveend.png}
 \label{hexwaveend}
+\caption{Many updates later, the picture looks the same as before the wave.}
 \end{figure}
 
 
@@ -147,10 +147,10 @@ We can see no trace of the wave.
 
 If we use a square lattice instead, we still get the wave-like behaviour, figure \ref{squarewave}.
 \begin{figure}[htp]
-\caption{The wave looks similar when using a square lattice.}
 \centering
   \includegraphics[width=100pt]{figs/squarewave.png}
 \label{squarewave}
+\caption{The wave looks similar when using a square lattice.}
 \end{figure}
 
 However, the waves persist for much longer, possibly because there are fewer possible collisions.
@@ -171,44 +171,44 @@ is completely filled with particles. The initial conditions are shown in figure 
 
 \begin{figure}[htp]
 % if we change to just waves, this caption needs to be changed.
-\caption{Initial conditions, after one time step, for the diffusion experiment.}
 \centering
   \includegraphics[width=200pt]{figs/diffusioninit.png}
 \label{diffusioninit}
+\caption{Initial conditions, after one time step, for the diffusion experiment.}
 \end{figure}
 
 As the simulation runs, the gas spreads first to the second box (figure \ref{diffusionbox2fill}.
 \begin{figure}[htp]
-\caption{Much of the gas has spread to the second box.}
 \centering
   \includegraphics[width=200pt]{figs/diffusionbox2fill.png}
 \label{diffusionbox2fill}
+\caption{Much of the gas has spread to the second box.}
 \end{figure}
 
 Eventually, particles also start to fill up the third box (figure \ref{diffusionbox3fill}.
 \begin{figure}[htp]
-\caption{A while later, many particles are also found in the third box.}
 \centering
   \includegraphics[width=200pt]{figs/diffusionbox3fill.png}
 \label{diffusionbox3fill}
+\caption{A while later, many particles are also found in the third box.}
 \end{figure}
 
 Given enough time, they spread out uniformly over the whole available space, just like a real gas would.
 This ``steady-state'' is shown in figure \ref{diffusionend}.
 \begin{figure}[htp]
-\caption{Eventually, the particle density is the same for all boxes.}
 \centering
   \includegraphics[width=200pt]{figs/diffusionend.png}
 \label{diffusionend}
+\caption{Eventually, the particle density is the same for all boxes.}
 \end{figure}
 
 We modified our program to count the number of particles in each box; see figure \ref{gascount}.
 % compare to theoretical results?
 \begin{figure}[htp]
-\caption{Particle density in each box as a function of the number of updates.}
 \centering
   \includegraphics[width=300pt]{figs/gascount.pdf}
 \label{gascount}
+\caption{Particle density in each box as a function of the number of updates.}
 \end{figure}
 
 The results in figure \ref{gascount} can be compared qualitatively to the following model
@@ -247,39 +247,39 @@ However, from the qualitative similarity one can hope that our simulation qualit
 captures some features of diffusion driven flow.
 
 \begin{figure}[htp]
-\caption{Analytical density in each box as a function of time.}
 \centering
   \includegraphics[width=300pt]{figs/gascount_anal.pdf}
 \label{gascount_anal}
+\caption{Analytical density in each box as a function of time.}
 \end{figure}
 
 \subsection{Flow around cylinder}
 \begin{figure}[htp]
-\caption{The pattern of different densities is unrealistic and artifacts coming from the hexagonal lattice are apparent.}
 \centering
   \includegraphics[width=300pt]{figs/scenario3mathexprintscreen1.png}
 \label{flow1}
+\caption{The pattern of different densities is unrealistic and artifacts coming from the hexagonal lattice are apparent.}
 \end{figure}
 
 \begin{figure}[htp]
-\caption{Waves form after the cylinder, without an obvious cause. The formation of waves does not seem to be periodic in time. The waves have a direction that goes against the flow, they move towards the cylinder.}
 \centering
   \includegraphics[width=300pt]{figs/scenario3mathexprintscreen10.png}
 \label{flow2}
+\caption{Waves form after the cylinder, without an obvious cause. The formation of waves does not seem to be periodic in time. The waves have a direction that goes against the flow, they move towards the cylinder.}
 \end{figure}
 
 \begin{figure}[htp]
-\caption{The wave bounces against the cylinder.}
 \centering
   \includegraphics[width=300pt]{figs/scenario3mathexprintscreen5.png}
 \label{flow3}
+\caption{The wave bounces against the cylinder.}
 \end{figure}
 
 \begin{figure}[htp]
-\caption{The wave moves away from the cylinder and diffuses. Soon the system will be back in the ``normal'' state, seen in figure~\ref{flow1}.}
 \centering
   \includegraphics[width=300pt]{figs/scenario3mathexprintscreen6.png}
 \label{flow4}
+\caption{The wave moves away from the cylinder and diffuses. Soon the system will be back in the ``normal'' state, seen in figure~\ref{flow1}.}
 \end{figure}
 
 \section{Conclusion}
