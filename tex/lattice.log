@@ -1,0 +1,321 @@
+This is pdfTeX, Version 3.1415926-1.40.10 (MiKTeX 2.8) (preloaded format=pdflatex 2011.12.14)  14 DEC 2011 17:26
+entering extended mode
+**E:/Rasmus/Documents/Skola/CAS/FFR120/Projekt/code/tex/lattice.tex
+(E:/Rasmus/Documents/Skola/CAS/FFR120/Projekt/code/tex/lattice.tex
+LaTeX2e <2009/09/24>
+Babel <v3.8l> and hyphenation patterns for english, dumylang, nohyphenation, sw
+edish, loaded.
+("e:\Program Files (x86)\MiKTeX 2.8\tex\latex\base\article.cls"
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+("e:\Program Files (x86)\MiKTeX 2.8\tex\latex\base\size12.clo"
+File: size12.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+("e:\Program Files (x86)\MiKTeX 2.8\tex\latex\amsfonts\amssymb.sty"
+Package: amssymb 2009/06/22 v3.00
+
+("e:\Program Files (x86)\MiKTeX 2.8\tex\latex\amsfonts\amsfonts.sty"
+Package: amsfonts 2009/06/22 v3.00 Basic AMSFonts support
+\@emptytoks=\toks14
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 96.
+))
+("e:\Program Files (x86)\MiKTeX 2.8\tex\latex\ams\math\amsmath.sty"
+Package: amsmath 2000/07/18 v2.13 AMS math features
+\@mathmargin=\skip43
+
+For additional information on amsmath, use the `?' option.
+("e:\Program Files (x86)\MiKTeX 2.8\tex\latex\ams\math\amstext.sty"
+Package: amstext 2000/06/29 v2.01
+
+("e:\Program Files (x86)\MiKTeX 2.8\tex\latex\ams\math\amsgen.sty"
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks15
+\ex@=\dimen103
+))
+("e:\Program Files (x86)\MiKTeX 2.8\tex\latex\ams\math\amsbsy.sty"
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen104
+)
+("e:\Program Files (x86)\MiKTeX 2.8\tex\latex\ams\math\amsopn.sty"
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count87
+LaTeX Info: Redefining \frac on input line 211.
+\uproot@=\count88
+\leftroot@=\count89
+LaTeX Info: Redefining \overline on input line 307.
+\classnum@=\count90
+\DOTSCASE@=\count91
+LaTeX Info: Redefining \ldots on input line 379.
+LaTeX Info: Redefining \dots on input line 382.
+LaTeX Info: Redefining \cdots on input line 467.
+\Mathstrutbox@=\box26
+\strutbox@=\box27
+\big@size=\dimen105
+LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
+\macc@depth=\count92
+\c@MaxMatrixCols=\count93
+\dotsspace@=\muskip10
+\c@parentequation=\count94
+\dspbrk@lvl=\count95
+\tag@help=\toks16
+\row@=\count96
+\column@=\count97
+\maxfields@=\count98
+\andhelp@=\toks17
+\eqnshift@=\dimen106
+\alignsep@=\dimen107
+\tagshift@=\dimen108
+\tagwidth@=\dimen109
+\totwidth@=\dimen110
+\lineht@=\dimen111
+\@envbody=\toks18
+\multlinegap=\skip44
+\multlinetaggap=\skip45
+\mathdisplay@stack=\toks19
+LaTeX Info: Redefining \[ on input line 2666.
+LaTeX Info: Redefining \] on input line 2667.
+)
+(C:\Users\Rasmus\AppData\Roaming\MiKTeX\2.8\tex\latex\listings\listings.sty
+("e:\Program Files (x86)\MiKTeX 2.8\tex\latex\graphics\keyval.sty"
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks20
+)
+\lst@mode=\count99
+\lst@gtempboxa=\box28
+\lst@token=\toks21
+\lst@length=\count100
+\lst@currlwidth=\dimen112
+\lst@column=\count101
+\lst@pos=\count102
+\lst@lostspace=\dimen113
+\lst@width=\dimen114
+\lst@newlines=\count103
+\lst@lineno=\count104
+\lst@maxwidth=\dimen115
+
+(C:\Users\Rasmus\AppData\Roaming\MiKTeX\2.8\tex\latex\listings\lstmisc.sty
+File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
+\c@lstnumber=\count105
+\lst@skipnumbers=\count106
+\lst@framebox=\box29
+)
+(C:\Users\Rasmus\AppData\Roaming\MiKTeX\2.8\tex\latex\listings\listings.cfg
+File: listings.cfg 2007/02/22 1.4 listings configuration
+))
+Package: listings 2007/02/22 1.4 (Carsten Heinz)
+
+("e:\Program Files (x86)\MiKTeX 2.8\tex\latex\graphics\graphicx.sty"
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+("e:\Program Files (x86)\MiKTeX 2.8\tex\latex\graphics\graphics.sty"
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+("e:\Program Files (x86)\MiKTeX 2.8\tex\latex\graphics\trig.sty"
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+("e:\Program Files (x86)\MiKTeX 2.8\tex\latex\00miktex\graphics.cfg"
+File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+
+("e:\Program Files (x86)\MiKTeX 2.8\tex\latex\pdftex-def\pdftex.def"
+File: pdftex.def 2010/02/14 v0.04n Graphics/color for pdfTeX
+\Gread@gobject=\count107
+))
+\Gin@req@height=\dimen116
+\Gin@req@width=\dimen117
+)
+("e:\Program Files (x86)\MiKTeX 2.8\tex\latex\graphics\color.sty"
+Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
+
+("e:\Program Files (x86)\MiKTeX 2.8\tex\latex\00miktex\color.cfg"
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: pdftex.def on input line 130.
+)
+("e:\Program Files (x86)\MiKTeX 2.8\tex\latex\ltxmisc\url.sty"
+\Urlmuskip=\muskip11
+Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
+)
+(C:\Users\Rasmus\AppData\Roaming\MiKTeX\2.8\tex\latex\caption\caption.sty
+Package: caption 2010/01/09 v3.1m Customizing captions (AR)
+
+(C:\Users\Rasmus\AppData\Roaming\MiKTeX\2.8\tex\latex\caption\caption3.sty
+Package: caption3 2010/01/14 v3.1m caption3 kernel (AR)
+\captionmargin=\dimen118
+\captionmargin@=\dimen119
+\captionwidth=\dimen120
+\caption@indent=\dimen121
+\caption@parindent=\dimen122
+\caption@hangindent=\dimen123
+)
+\c@ContinuedFloat=\count108
+Package caption Info: listings package is loaded.
+)
+(E:\Rasmus\Documents\Skola\CAS\FFR120\Projekt\code\tex\lattice.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+\c@lstlisting=\count109
+
+("e:\Program Files (x86)\MiKTeX 2.8\tex\context\base\supp-pdf.tex"
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count110
+\scratchdimen=\dimen124
+\scratchbox=\box30
+\nofMPsegments=\count111
+\nofMParguments=\count112
+\everyMPshowfont=\toks22
+\MPscratchCnt=\count113
+\MPscratchDim=\dimen125
+\MPnumerator=\count114
+\everyMPtoPDFconversion=\toks23
+)
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
+LaTeX Font Info:    Try loading font information for U+msa on input line 39.
+ ("e:\Program Files (x86)\MiKTeX 2.8\tex\latex\amsfonts\umsa.fd"
+File: umsa.fd 2009/06/22 v3.00 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 39.
+
+("e:\Program Files (x86)\MiKTeX 2.8\tex\latex\amsfonts\umsb.fd"
+File: umsb.fd 2009/06/22 v3.00 AMS symbols B
+)
+Overfull \hbox (6.90022pt too wide) in paragraph at lines 39--39
+ [][] 
+ []
+
+<figs/square-state.pdf, id=1, 202.356pt x 202.356pt>
+File: figs/square-state.pdf Graphic file (type pdf)
+
+<use figs/square-state.pdf>
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 53.
+
+("e:\Program Files (x86)\MiKTeX 2.8\tex\latex\base\omscmr.fd"
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 53.
+
+
+LaTeX Warning: Reference `fig:propagation' on page 1 undefined on input line 67
+.
+
+[1
+
+{C:/Users/Rasmus/AppData/Local/MiKTeX/2.8/pdftex/config/pdftex.map}]
+
+LaTeX Warning: Reference `fig:collision' on page 2 undefined on input line 69.
+
+
+LaTeX Warning: Reference `fig:collision-propagation' on page 2 undefined on inp
+ut line 71.
+
+[2 <E:/Rasmus/Documents/Skola/CAS/FFR120/Projekt/code/tex/figs/square-state.pdf
+>] <figs/hexwaveinit.png, id=36, 602.25pt x 602.25pt>
+File: figs/hexwaveinit.png Graphic file (type png)
+
+<use figs/hexwaveinit.png>
+<figs/hexwavestart.png, id=37, 903.375pt x 301.125pt>
+File: figs/hexwavestart.png Graphic file (type png)
+
+<use figs/hexwavestart.png>
+<figs/hexwavebounce.png, id=38, 602.25pt x 602.25pt>
+File: figs/hexwavebounce.png Graphic file (type png)
+
+<use figs/hexwavebounce.png> [3 <E:/Rasmus/Documents/Skola/CAS/FFR120/Projekt/c
+ode/tex/figs/hexwaveinit.png (PNG copy)> <E:/Rasmus/Documents/Skola/CAS/FFR120/
+Projekt/code/tex/figs/hexwavestart.png (PNG copy)>]
+<figs/hexwaveend.png, id=42, 602.25pt x 602.25pt>
+File: figs/hexwaveend.png Graphic file (type png)
+ <use figs/hexwaveend.png>
+<figs/squarewave.png, id=43, 602.25pt x 602.25pt>
+File: figs/squarewave.png Graphic file (type png)
+ <use figs/squarewave.png>
+[4 <E:/Rasmus/Documents/Skola/CAS/FFR120/Projekt/code/tex/figs/hexwavebounce.pn
+g (PNG copy)> <E:/Rasmus/Documents/Skola/CAS/FFR120/Projekt/code/tex/figs/hexwa
+veend.png (PNG copy)> <E:/Rasmus/Documents/Skola/CAS/FFR120/Projekt/code/tex/fi
+gs/squarewave.png (PNG copy)>]
+<figs/diffusioninit.png, id=47, 521.53609pt x 224.26051pt>
+File: figs/diffusioninit.png Graphic file (type png)
+
+<use figs/diffusioninit.png>
+<figs/diffusionbox2fill.png, id=48, 702.625pt x 301.125pt>
+File: figs/diffusionbox2fill.png Graphic file (type png)
+
+<use figs/diffusionbox2fill.png>
+<figs/diffusionbox3fill.png, id=49, 702.625pt x 301.125pt>
+File: figs/diffusionbox3fill.png Graphic file (type png)
+
+<use figs/diffusionbox3fill.png>
+<figs/diffusionend.png, id=50, 702.625pt x 301.125pt>
+File: figs/diffusionend.png Graphic file (type png)
+
+<use figs/diffusionend.png>
+<figs/gascount.pdf, id=51, 522.95375pt x 388.45125pt>
+File: figs/gascount.pdf Graphic file (type pdf)
+ <use figs/gascount.pdf>
+[5 <E:/Rasmus/Documents/Skola/CAS/FFR120/Projekt/code/tex/figs/diffusioninit.pn
+g (PNG copy)> <E:/Rasmus/Documents/Skola/CAS/FFR120/Projekt/code/tex/figs/diffu
+sionbox2fill.png (PNG copy)>] [6 <E:/Rasmus/Documents/Skola/CAS/FFR120/Projekt/
+code/tex/figs/diffusionbox3fill.png (PNG copy)> <E:/Rasmus/Documents/Skola/CAS/
+FFR120/Projekt/code/tex/figs/diffusionend.png (PNG copy)>] [7 <E:/Rasmus/Docume
+nts/Skola/CAS/FFR120/Projekt/code/tex/figs/gascount.pdf>]
+(E:\Rasmus\Documents\Skola\CAS\FFR120\Projekt\code\tex\lattice.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 4122 strings out of 495305
+ 59653 string characters out of 3181442
+ 124271 words of memory out of 3000000
+ 7303 multiletter control sequences out of 15000+200000
+ 13951 words of font info for 54 fonts, out of 3000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 36i,7n,38p,567b,381s stack positions out of 5000i,500n,10000p,200000b,50000s
+<e:/Program Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
+<e:/Program Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmmi10.pfb><e
+:/Program Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmmi12.pfb><e:/
+Program Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmmi6.pfb><e:/Pro
+gram Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmmi8.pfb><e:/Progra
+m Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmr10.pfb><e:/Program F
+iles (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmr12.pfb><e:/Program File
+s (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmr17.pfb><e:/Program Files (
+x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmr5.pfb><e:/Program Files (x86)
+/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmr6.pfb><e:/Program Files (x86)/MiK
+TeX 2.8/fonts/type1/public/amsfonts/cm/cmr8.pfb><e:/Program Files (x86)/MiKTeX 
+2.8/fonts/type1/public/amsfonts/cm/cmsy10.pfb><e:/Program Files (x86)/MiKTeX 2.
+8/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
+Output written on lattice.pdf (7 pages, 1653099 bytes).
+PDF statistics:
+ 139 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 56 words of extra memory for PDF output out of 10000 (max. 10000000)
+
