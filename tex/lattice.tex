@@ -53,6 +53,30 @@ The source code has been made public at \url{https://github.com/kallus/Lattice-g
 \section{Implementation details}
 \label{sec:imp}
 % describe bouncing off walls, random initializations at sources... anything else?
+\subsection{Hexagonal lattice}
+
+\subsection{Bouncing off walls}
+Bouncing off walls can be implemented in many different ways. It is possible to
+come up with specific rules that specifies a mapping between from a certain state
+on the wall before a collision to a certain state after the collision. This is, 
+however, very tiresome, especially for a hexagonal lattice. Another disadvantage
+is that one has to keep check of the orientation of the wall and not only it's 
+position. Therefore, to keep the implementation as simple as possible, the collison
+mapping just revers all particle directions.
+
+\subsection{Sources and sinks}
+A source has been implemented as setting the state of the source node to a state
+with a random number of the directions covered with particles. This happens with 
+a probability $p_{source}=0.8$ in each time step and otherwise nothing speacial
+happens. This has the side effect that particles near the source may move into the
+source and disappear. It turns out that for the chosen setting, the average flux
+out of the source is larger than the average flux into the source and thus it really
+works like a source and not a sink.
+
+The implementation of a sink is very simple. The state of the sink node is just reset
+to having no particles at all, meaning that all particles that come into the sink 
+wanishes. 
+
 
 \section{Experiments, results}
 \label{sec:exp}
@@ -203,7 +227,11 @@ $k\approx 1.4032 \cdot 10^{-4}$. With this value of $k$, the analytical solution
 as a function of time. The result can be seen in figure \ref{gascount_anal}. One can see that
 the behaviour here is similar to the one in figure \ref{gascount}, but the relative behaviour
 of the curves is different. It is to be expected that the analytical results differ from the
-simulation since the model upon which the analytical results rest is very simplistic. 
+simulation since the model upon which the analytical results rest is very simplistic, not 
+taking into account the features of the spatial geometry used in the simulation. It is
+likely that the flows in the simulations are not the same between box $1$ and $2$ as between
+box $2$ and $3$, which would possibly explain part of the difference between figure \ref{gascount}
+and figure \ref{gascount_anal}. 
 However, from the qualitative similarity one can hope that our simulation qualitatively
 captures some features of diffusion driven flow.
 
