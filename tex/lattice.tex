@@ -29,21 +29,33 @@
 % remember to use [htp] or [htpb] for placement
 
 \author{Rasmus Einarsson, Jonatan Kallus, Olof Nilsson, Joel Wilsson}
-\title{Simulation of Complex Systems\\Lattice gas automata.}
+\title{Simulation of Complex Systems\\Lattice gas automata}
 
 \begin{document}
 \maketitle
 
-\section{Introduction.}
+\section{Introduction}
+Lattice gas automata are a kind of cellular automata, which are used to model some aspects of the physics of gases, such as diffusion and waves.
 
-\section{Theory.}
+This text explores the behaviour of lattice gas automata. A number of simulations are run to qualitatively see if the model captures some phenomena expected from actual gases. The investigated phenomena are specifically waves, diffusion and currents of a flow around a cylinder. Some attempts are made to make meaningful comparisons to the theory of gas physics.
 
-\section{Implementation details.}
+The theory of lattice gas automata in general is introduced in section~\ref{sec:theory} followed by the specific details of our implementation in section~\ref{sec:imp}. The conducted experiments and their results are presented in section~\ref{sec:exp}. In the last section, section~\ref{sec:conclusion}, we conclude that the model can capture waves and diffusion, but not the typical behaviour of a compressed flow around a cylinder. There, we also discuss the benefits and disadvantages of the model.
+
+Cellular automata in general, thus also lattice gas automata, are systems that are discrete in time and in space. They are built using a small set of deterministic rules, usually a mapping from each possible spatial configuration of some small area into a spatial configuration of that area for the next time step.
+
+The mayor benefit of simulation of gases using lattice gas automata is simplicity, the model is built using only simple rules. The simulations does not require any differential equations to be solved, neither explicitly nor implicitly. The scientific interest in lattice gas automata declined drastically in the beginning of the 1990-ties, probably due to the increased interest in more sophisticated models using Lattice Boltzmann methods. The new models made it possible to capture more of the phenomena of fluid physics, and were made possible by faster computers.
+
+\section{Theory}
+\label{sec:theory}
+
+\section{Implementation details}
+\label{sec:imp}
 % describe bouncing off walls, random initializations at sources... anything else?
 
-\section{Experiments, results.}
+\section{Experiments, results}
+\label{sec:exp}
 % or should this just say ``waves''?
-\subsection{Shockwaves.}
+\subsection{Shockwaves}
 We start out with a square area, surrounded by walls, where initially each lattice site (not including walls)
 is completely filled with a probability of 0.3. Completely filled means that it contains six or
 four particles, if we use a hexagonal or a square lattice, respectively. After one time step,
@@ -115,7 +127,7 @@ This means there are fewer possible states for the system, and therefore it has 
 (such as the non-randomly initialized circle completely filled with particles) which lower the entropy would make
 a bigger relative difference than for the hexagonal lattice.
 
-\subsection{Diffusion.}
+\subsection{Diffusion}
 In this experiment, we have three boxes in a row, and the gas can spread between adjacent boxes through a small
 hole in the separating wall. Initially, all boxes are empty except for the first one, where each lattice site
 is completely filled with particles. The initial conditions are shown in figure \ref{diffusioninit}.
@@ -162,8 +174,9 @@ We modified our program to count the number of particles in each box; see figure
 \label{gascount}
 \end{figure}
 
-\subsection{Flow around cylinder.}
+\subsection{Flow around cylinder}
 
-\section{Conclusion.}
+\section{Conclusion}
+\label{sec:conclusion}
 
 \end{document}
