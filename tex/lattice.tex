@@ -7,7 +7,7 @@
 \usepackage{color}
 \usepackage{url}
 \usepackage{caption}
-
+\usepackage{subfigure}
 
 \captionsetup{width=.8\textwidth,font=small} 
 
@@ -82,7 +82,35 @@ In the propagation operation, each particle moves to the next node (see figure \
 
 In the collision operation, collisions between particles are considered. Two particles in the same node can collide with each other, so that they change directions. With the restriction that collisions must preserve momentum, one can verify that the only allowed collision rules are the ones shown in figure \ref{fig:collision}. All other states must map to themselves in the collision operation.
 
-The lattice gas model can be propagated by alternating between the collision and propagation operations. Applying both operators in sequence is equivalent to taking one time step according to equation \eqref{eqn:mapping}. For a complete example of a time step, see figure \ref{fig:collision-propagation}.
+The lattice gas model can be propagated by alternating between the collision and propagation operations. Applying both operators in sequence is equivalent to taking one time step according to equation \eqref{eqn:mapping}. This concludes a basic description of the model on a square lattice.
+
+\begin{figure}[htp]
+\centering
+\subfigure[]{
+  \includegraphics{figs/propagation-before.pdf}
+  }
+\subfigure[]{
+  \includegraphics{figs/propagation-after.pdf}
+  }
+\caption{Example of how the propagation operation works on a square lattice. To the left is the situation before propagation, and to the right after propagation.}
+\label{fig:propagation}
+\end{figure}
+
+\begin{figure}[htp]
+\centering
+\subfigure[]{
+  \includegraphics{figs/collision-before.pdf}
+  }
+\subfigure[]{
+  \includegraphics{figs/collision-after.pdf}
+  }
+\caption{Example of how collision works on a square lattice. The only configuration that actually leads to a change are the ones shown in the middle and in the lower right corner.}
+\label{fig:collision}
+\end{figure}
+
+\subsection{Extension to hexagonal lattice}
+It is possible to construct the lattice gas model on a hexagonal lattice anologous to the square lattice model. In the hexagonal lattice, each node has six neighbors instead of four, and each node has $2^6$ possible states. On the hexagonal lattice, the collision operation is slightly more complicated, and it turns out the collision rules can be chosen in more than one way. The details of our hexagonal implementation are treated briefly in section \ref{sec:imp}.
+
 
 \section{Implementation details}
 \label{sec:imp}
@@ -92,7 +120,7 @@ Unlike the square lattice, the hexagonal lattice gives us many possible collisio
 rules that preserve momentum. This is a consequence of the increased degree of freedom
 in the system. Now, two particles can collide among three degrees of freedom and a mapping
 from any of these state to another preserve the momentum. Also, collisons between
-three and four particles can be realized in more ways than the trivial way 
+two and four particles can be realized in more ways than the trivial way 
 (mapping to itself). There are two approaches to dealing with this. The first is to
 choose an allowed collision rule randomly for each collision and the second is to
 have a deterministic mapping scheme which always is the same. This implementation
