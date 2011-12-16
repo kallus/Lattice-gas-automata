@@ -46,17 +46,17 @@ This text explores the behaviour of lattice gas automata. A number of simulation
 
 The theory of lattice gas automata in general is introduced in section~\ref{sec:theory} followed by the specific details of our implementation in section~\ref{sec:imp}. The conducted experiments and their results are presented in section~\ref{sec:exp}. In the last section, section~\ref{sec:conclusion}, we conclude that the model can capture waves and diffusion, but not the typical behaviour of a compressed flow around a cylinder. There we also discuss the benefits and disadvantages of the model, and that the model can show a turbulent behaviour under certain circumstances.
 
-Cellular automata in general, thus also lattice gas automata, are systems that are discrete in time and in space. They are built using a small set of deterministic rules, usually a mapping from each possible spatial configuration of some small area into a spatial configuration of that area for the next time step.
+Cellular automata in general, thus also lattice gas automata, are systems that are discrete in time and in space. They are built using a small set of deterministic rules, which make up a mapping from each possible spatial configuration of some small area into a spatial configuration of that area for the next time step.
 
-The mayor benefit of simulation of gases using lattice gas automata is simplicity, the model is built using only simple rules. The simulations does not require any differential equations to be solved, neither explicitly nor implicitly. The scientific interest in lattice gas automata declined drastically in the beginning of the 1990-ties, probably due to the increased interest in more sophisticated models using Lattice Boltzmann methods. The new models made it possible to capture more of the phenomena of fluid physics, and were made possible by faster computers.
+The major benefit of simulation of gases using lattice gas automata is simplicity and speed, as the model is built using only simple rules. Scientific interest in lattice gas automata declined drastically in the beginning of the 1990's, probably due to the increased interest in more sophisticated models using Lattice Boltzmann methods. The new models made it possible to capture more of the phenomena of fluid physics, and were made possible by faster computers.
 
-The source code has been made public at \url{https://github.com/kallus/Lattice-gas-automata}.
+The source code for this project has been made public at \url{https://github.com/kallus/Lattice-gas-automata}.
 
 \section{Theory}
 \label{sec:theory}
 The lattice gas model describes how particles move on a lattice. Particles make discrete jumps between lattice nodes, where they may collide with each other and change directions. In the following discussion, we only consider two-dimensional lattices.
 
-Specifically, the model consists of a lattice where each node takes on one of a finite set of states. Each state represents a configuration of particles in that site. In each time step, the nodes are updated according to a rule based on the values of the nearest neighbors. The update rule corresponds to particle collisions and movements between neighboring nodes.
+Specifically, the model consists of a lattice where each node takes on one of a finite set of states. Each state represents a configuration of particles in that site (we will use ``site'' and ``node'' interchangeably). In each time step, the nodes are updated according to a rule based on its value and the values of the nearest neighbors. The update rule corresponds to particle collisions within nodes and movements between neighboring nodes.
 
 \subsection{Square lattice example}
 Consider the example of a square lattice, where each node has four neighbors. For a particle in a node, there are four possible velocities (up, down, left, right). For each lattice node, there can be at most one particle moving in each direction. Hence, the state of a node can be encoded in four binary values indicating whether there is or is not a particle moving in each direction. See figure \ref{fig:square-state} for an illustration.
@@ -78,7 +78,7 @@ f: \{0,1\}^{20} \mapsto \{0,1\}^4.
 $
 A more practical representation is divided into two operations, propagation and collision. 
 
-In the propagation operation, each particle moves to the next node (see figure \ref{fig:propagation}). All nodes are equidistant in the lattice, which means the particles all have the same speed.
+In the propagation operation, each particle moves to the next node (see figure \ref{fig:propagation}). All nodes are equidistant in the lattice, which means that the particles all have the same speed.
 
 In the collision operation, collisions between particles are considered. Two particles in the same node can collide with each other, so that they change directions. With the restriction that collisions must preserve momentum, one can verify that the only allowed collision rules are the ones shown in figure \ref{fig:collision}. All other states must map to themselves in the collision operation.
 
@@ -116,14 +116,14 @@ It is possible to construct the lattice gas model on a hexagonal lattice analogo
 \label{sec:imp}
 % describe bouncing off walls, random initializations at sources... anything else?
 
-Unlike the square lattice, the hexagonal lattice gives us many possible collision 
+Unlike the square lattice, the hexagonal lattice gives us several possible collision 
 rules that preserve momentum. This is a consequence of the increased degree of freedom
-in the system. Now, two particles can collide among three degrees of freedom and a mapping
-from any of these state to another preserve the momentum. Also, collisions between
-two and four particles can be realized in more ways than the trivial way 
-(mapping to itself). There are two approaches to dealing with this. The first is to
+in the system. Now, two particles can collide along three different axes.
+Also, collisions between
+two and four particles can be realized in more than one way.
+There are two approaches to dealing with this. The first is to
 choose an allowed collision rule randomly for each collision and the second is to
-have a deterministic mapping scheme which always is the same. This implementation
+have a deterministic mapping scheme which always is the same. Our implementation
 uses the second approach with a mapping scheme which is cyclic, meaning that by
 applying a collision rule a given number of times, an arbitrary state should map back to
 itself. The reason for this is to preserve information and making the mapping reversible.
