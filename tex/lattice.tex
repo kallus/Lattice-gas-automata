@@ -98,9 +98,12 @@ have a deterministic mapping scheme which always is the same. This implementatio
 uses the second approach with a mapping scheme which is cyclic, meaning that by
 applying a collison rule a given number of times, an arbitrary state should map back to
 itself. The reason for this is to preserve information and making the mapping reversible.
+The mapping scheme for this implementation can be seen in table \ref{collisionscheme}. 
+All remaining states map to themselves.
 
 \begin{table}\centering
-\caption{The collision scheme used for the hexagonal lattice.}
+\caption{The collision scheme used for the hexagonal lattice.
+Format: (nw,w,sw,se,e,ne), nw=northwest etc.}
 \label{collisionscheme}
 \begin{tabular}{ccc}
 (0,1,0,1,0,1)& $\mapsto$ & (1,0,1,0,1,0) \\
