@@ -126,9 +126,10 @@ choose an allowed collision rule randomly for each collision and the second is t
 have a deterministic mapping scheme which always is the same. Our implementation
 uses the second approach with a mapping scheme which is cyclic, meaning that by
 applying a collision rule a given number of times, an arbitrary state should map back to
-itself. The reason for this is to preserve information and making the mapping reversible.
-The mapping scheme for this implementation can be seen in table \ref{collisionscheme}. 
+itself.
+The mapping scheme for our implementation can be seen in table \ref{collisionscheme}. 
 All remaining states map to themselves.
+We wanted to make the collisions reversible, which is why we why we chose this mapping.
 
 \begin{table}\centering
 \caption{The collision scheme used for the hexagonal lattice.
@@ -160,26 +161,22 @@ Format: (nw,w,sw,se,e,ne), nw=northwest etc.}
 
 
 \subsection{Bouncing off walls}
-Bouncing off walls can be implemented in many different ways. It is possible to
-come up with specific rules that specifies a mapping from a certain state
-on the wall before a collision to a certain state after the collision. This is 
-however tiresome, especially for a hexagonal lattice. Another disadvantage
-is that one has to keep track of the orientation of the wall and not only it's 
-position. Therefore, to keep the implementation as simple as possible, the collision
+Bouncing off walls can be implemented in many different ways.
+To keep our implementation as simple as possible, the collision
 mapping just reverses all particle directions. This corresponds to no-slip bouncing.
 
 \subsection{Sources and sinks}
-A source has been implemented as setting the state of the source node to a state
-with a random number of the directions covered with particles. This happens with 
+Sources have been implemented by setting the state of source nodes to be fully
+filled with particles. This happens with 
 a probability $p_{source}=0.8$ in each time step and otherwise nothing special
 happens. This has the side effect that particles near the source may move into the
 source and disappear. It turns out that for the chosen setting, the average flux
 out of the source is larger than the average flux into the source and thus it really
 works like a source and not a sink, unless the particle density around the source is close to one.
 
-The implementation of a sink is simple. The state of the sink node is just reset
+The implementation of a sink is simple. In each time step, the state of the sink node is set
 to having no particles at all, meaning that all particles that come into the sink 
-vanishes. 
+vanish. 
 
 
 \section{Experiments, results}
@@ -209,7 +206,7 @@ possible). Three frames taken just after the particles were added are shown in f
 \begin{figure}[htp]
 \centering
   \includegraphics[width=300pt]{figs/hexwavestart.png}
-\caption{Frames demonstrating the initial phase of the wave.}
+\caption{Frames demonstrating the initial phase of the wave, using a hexagonal lattice.}
 \label{hexwavestart}
 \end{figure}
 
@@ -218,7 +215,7 @@ The resulting waves bounce off against the walls, figure \ref{hexwavebounce}.
 \begin{figure}[htp]
 \centering
   \includegraphics[width=100pt]{figs/hexwavebounce.png}
-\caption{Just like real waves, the lattice gas wave bounce off the walls.}
+\caption{Just like real waves, the lattice gas wave bounce off the walls, using a hexagonal lattice.}
 \label{hexwavebounce}
 \end{figure}
 
@@ -231,7 +228,7 @@ We can see no trace of the wave.
 \begin{figure}[htp]
 \centering
   \includegraphics[width=100pt]{figs/hexwaveend.png}
-\caption{Many updates later, the picture looks the same as before the wave.}
+\caption{Many updates later, the picture looks the same as before the wave, using a hexagonal lattice.}
 \label{hexwaveend}
 \end{figure}
 
@@ -246,16 +243,11 @@ If we use a square lattice instead, we still get the wave-like behaviour, figure
 \label{squarewave}
 \end{figure}
 
-However, the waves persist for much longer, possibly because there are fewer possible collisions.
+However, the waves persist for much longer. One possible explanation for this could be that there are
+fewer possible collisions.
 Even after letting the simulation run for a long time after the particles were added, traces of waves
 going back and forth can still be seen. Unfortunately, this is not clear from a static picture, so
 it is not possible to show them in this report.
-
-% the following is a hypothesis. it makes sense to me, but does it make sense to you?
-Also, there are fewer particles in total (since each site can contain at most four particles, instead of six).
-This means there are fewer possible states for the system, and therefore it has lower entropy, so patterns
-(such as the non-randomly initialized circle completely filled with particles) which lower the entropy would make
-a bigger relative difference than for the hexagonal lattice.
 
 \subsection{Diffusion}
 In this experiment, we have three boxes in a row, and the gas can spread between adjacent boxes through a small
@@ -270,7 +262,7 @@ is completely filled with particles. The initial conditions are shown in figure 
 \label{diffusioninit}
 \end{figure}
 
-As the simulation runs, the gas spreads first to the second box (figure \ref{diffusionbox2fill}.
+As the simulation runs, the gas spreads first to the second box (figure \ref{diffusionbox2fill}).
 \begin{figure}[htp]
 \centering
   \includegraphics[width=200pt]{figs/diffusionbox2fill.png}
@@ -278,7 +270,7 @@ As the simulation runs, the gas spreads first to the second box (figure \ref{dif
 \label{diffusionbox2fill}
 \end{figure}
 
-Eventually, particles also start to fill up the third box (figure \ref{diffusionbox3fill}.
+Eventually, particles also start to fill up the third box (figure \ref{diffusionbox3fill}).
 \begin{figure}[htp]
 \centering
   \includegraphics[width=200pt]{figs/diffusionbox3fill.png}
@@ -317,14 +309,15 @@ Where $c_1$ denotes the particle density in box $1$, $c_2$ denotes the particle 
 , $c_3$ denotes the particle density in box $3$ and $k$ is a constant determining the speed of
 the particle flows. This system of coupled differential equations can be solved analytically and
 the solutions are
-\[
+\begin{equation}
+\label{simplediff}
 \left\{
 \begin{array}{l}
   c_1=\frac{1}{12}(e^{-5kt}+4+7e^{-kt})\\
   c_2=\frac{1}{3}(1-e^{-3kt})\\
   c_3=\frac{1}{3}-\frac{1}{12}(e^{-5kt}+7e^{-kt}-4e^{-3kt})
 \end{array}\right.
-\]
+\end{equation}
 In an attempt to match the time $t$ with the previous time scale 
 the $c_2$-curve was fitted to the green curve in figure \ref{gascount} which gave a value of
 $k\approx 1.4032 \cdot 10^{-4}$. With this value of $k$, the analytical solutions was plotted
@@ -342,7 +335,7 @@ captures some features of diffusion driven flow.
 \begin{figure}[htp]
 \centering
   \includegraphics[width=300pt]{figs/gascount_anal.pdf}
-\caption{Analytical density in each box as a function of time.}
+\caption{Analytical solution to the simple differential equation model in eqn. \eqref{simplediff}, meant to approximate the diffusion experiment.}
 \label{gascount_anal}
 \end{figure}
 
@@ -357,34 +350,37 @@ After a short while the domain is filled with particles and a somewhat steady st
 \label{flow1}
 \end{figure}
 
-Unexpectedly and seemingly without reason, at times the density becomes higher at a certain point to the right of the cylinder. This can be seen in figure~\ref{flow2}. A wave is created and moves towards the cylinder as seen in figures~\ref{flow3} and~\ref{flow4}. This happens repeatedly, but the times between wave formations seem to be irregular. Therefor we suspect that the system shows turbulent behaviour.
+Unexpectedly and seemingly without reason, at times the density becomes higher at a certain point to the right of the cylinder. This can be seen in figure~\ref{flow2}. A wave is created and moves towards the cylinder as seen in figures~\ref{flow3} and~\ref{flow4}. This happens repeatedly, but the times between wave formations seem to be irregular. Therefore we suspect that the system shows turbulent behaviour.
+Note, however, that the source randomly spawns particles with uniform distribution. In spite of this,
+the waves show a clear structure. We find this surprising.
+
 \begin{figure}[htp]
 \centering
   \includegraphics[width=300pt]{figs/scenario3mathexprintscreen10.png}
-\caption{Waves form after the cylinder, without an obvious cause. The formation of waves does not seem to be periodic in time. The waves have a direction that goes against the flow, they move towards the cylinder.}
+\caption{Waves form after the cylinder, without any obvious cause. The formation of waves does not seem to be periodic in time. The waves have a direction that goes against the flow, they move towards the cylinder.}
 \label{flow2}
 \end{figure}
 
 \begin{figure}[htp]
 \centering
-  \includegraphics[width=300pt]{figs/scenario3mathexprintscreen5.png}
+  \includegraphics[width=270pt]{figs/scenario3mathexprintscreen5.png}
 \caption{The wave bounces against the cylinder.}
 \label{flow3}
 \end{figure}
 
 \begin{figure}[htp]
 \centering
-  \includegraphics[width=300pt]{figs/scenario3mathexprintscreen6.png}
+  \includegraphics[width=270pt]{figs/scenario3mathexprintscreen6.png}
 \caption{The wave moves away from the cylinder and diffuses. Soon the system will be back in the ``normal'' state, seen in figure~\ref{flow1}.}
 \label{flow4}
 \end{figure}
 
 \section{Conclusion}
 \label{sec:conclusion}
-As is argued above, lattice gas automata capture the qualitative behaviour of a gas when it evens out density differences by diffusion. They also capture the qualitative behavior of waves of density difference in a gas that fills a space, for example sound waves.
+As was argued above, lattice gas automata capture the qualitative behaviour of a gas when it evens out density differences by diffusion. They also capture the qualitative behavior of waves of density difference in a gas that fills a space, for example sound waves.
 
-When a gas flows through some space from one side to the other, think of a pipe for example, the gas is expected to behave in a certain way when flowing around an obstacle. Typically, the density should increase close to the obstacle on the side of the obstacle that is facing the flow, and the density should decrease on the other side of the obstacle. Also, some turbulence and strong currents are expected right after the interaction with the obstacle. The turbulent behaviour is expected to even out further away from the obstacle, making the gas behave as if it never interacted with the obstacle. Lattice gas automata does not capture this behaviour. Instead we found in experiments that the simulation became turbulent in the entire domain after the obstacle. This domain did not show an even density over different parts of the domain, and waves going against the direction of the flow formed seemingly randomly.
+%% Then a gas flows through space from one side to the other, for example in a pipe, the gas is expected to behave in a certain way when flowing around an obstacle. Typically, the density should increase close to the obstacle on the side of the obstacle that is facing the flow, and the density should decrease on the other side of the obstacle. Also, some turbulence and strong currents are expected right after the interaction with the obstacle. The turbulent behaviour is expected to even out further away from the obstacle, making the gas behave as if it never interacted with the obstacle. Lattice gas automata does not capture this behaviour. Instead we found in experiments that the simulation became turbulent in the entire domain after the obstacle. This domain did not show an even density over different parts of the domain, and waves going against the direction of the flow formed seemingly randomly.
 
-We conclude that this model can be useful for modelling diffusion and waves. The main benefits are that the relatively simple rules that the model consists of make it easy to implement and since the rules are easy to get an intuitive understanding of, the behaviour of the model is easy to discuss. Using fast computers and software that makes use of the many cores of modern processors and the speed of modern computer graphics processors, it becomes possible to watch huge simulations in a satisfactory pace at the same time as they are being computed.
+We conclude that this model can be useful for modelling diffusion and waves, but less useful for modelling flows. Our simulations showed that the model appears to be able to show turbulent behaviour. The main benefits of using cellular automata are that the relatively simple rules of the model make it easy to implement and, and the basic rules are easy to understand. Using software that makes use of the many cores of modern processors, it becomes possible simulate a huge number of particles (on the order of several hundred thousand) in a satisfactory pace as they are being computed.
 
 \end{document}
