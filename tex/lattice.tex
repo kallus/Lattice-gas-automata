@@ -54,7 +54,7 @@ The source code has been made public at \url{https://github.com/kallus/Lattice-g
 
 \section{Theory}
 \label{sec:theory}
-The lattice gas model describes how particles move around on a lattice. Particles make discrete jumps between lattice nodes, where they may collide with each other and change directions. In the following discussion, we only consider two-dimensional lattices.
+The lattice gas model describes how particles move on a lattice. Particles make discrete jumps between lattice nodes, where they may collide with each other and change directions. In the following discussion, we only consider two-dimensional lattices.
 
 Specifically, the model consists of a lattice where each node takes on one of a finite set of states. Each state represents a configuration of particles in that site. In each time step, the nodes are updated according to a rule based on the values of the nearest neighbors. The update rule corresponds to particle collisions and movements between neighboring nodes.
 
@@ -64,11 +64,11 @@ Consider the example of a square lattice, where each node has four neighbors. Fo
 \begin{figure}[htp]
 \centering
   \includegraphics{figs/square-state.pdf}
-\caption{Example showing the state of four nodes. Each node can be occupied by zero to four particles, one in each direction. The state $n_{ij}$ can be encoded using four binary values \{up, right, down, left\} as indicated the figure. For instance, in the upper right corner, there is one particle moving to the right. In the lower right corner, there are particles moving upwards and to the left, etc.}
+\caption{Example showing the state of four nodes. Each node can be occupied by zero to four particles, one in each direction. The state $n_{ij}$ can be encoded using four binary values \{up, right, down, left\} as indicated the figure. For instance, in the upper right corner, there is one particle moving to the left. In the lower right corner, there are particles moving upwards and to the left, etc.}
 \label{fig:square-state}
 \end{figure}
 
-A time step in the model is described by a mapping, where we write $n_{ij}^t$ to denote the the state of node $(i,j)$ at $t$,
+A time step in the model is described by a mapping, where we write $n_{ij}^t$ to denote the state of node $(i,j)$ at $t$,
 \begin{equation}\label{eqn:mapping}
 n^{t+1}_{ij} = f(n^t_{ij}, n^t_{i+1,j}, n^t_{i,j+1}, n^t_{i-1,j}, n^t_{i,j-1}).
 \end{equation}
@@ -78,7 +78,7 @@ f: \{0,1\}^{20} \mapsto \{0,1\}^4.
 $
 A more practical representation is divided into two operations, propagation and collision. 
 
-In the propagation operation, each particle moves to the next node (see figure \ref{fig:propagation}). All nodes are equidistant the lattice, which means the particles all have the same speed.
+In the propagation operation, each particle moves to the next node (see figure \ref{fig:propagation}). All nodes are equidistant in the lattice, which means the particles all have the same speed.
 
 In the collision operation, collisions between particles are considered. Two particles in the same node can collide with each other, so that they change directions. With the restriction that collisions must preserve momentum, one can verify that the only allowed collision rules are the ones shown in figure \ref{fig:collision}. All other states must map to themselves in the collision operation.
 
@@ -109,7 +109,7 @@ The lattice gas model can be propagated by alternating between the collision and
 \end{figure}
 
 \subsection{Extension to hexagonal lattice}
-It is possible to construct the lattice gas model on a hexagonal lattice anologous to the square lattice model. In the hexagonal lattice, each node has six neighbors instead of four, and each node has $2^6$ possible states. On the hexagonal lattice, the collision operation is slightly more complicated, and it turns out the collision rules can be chosen in more than one way. The details of our hexagonal implementation are treated briefly in section \ref{sec:imp}.
+It is possible to construct the lattice gas model on a hexagonal lattice analogous to the square lattice model. In the hexagonal lattice, each node has six neighbors instead of four, and each node has $2^6$ possible states. On the hexagonal lattice, the collision operation is slightly more complicated, and it turns out the collision rules can be chosen in more than one way. The details of our hexagonal implementation are treated briefly in section \ref{sec:imp}.
 
 
 \section{Implementation details}
@@ -119,13 +119,13 @@ It is possible to construct the lattice gas model on a hexagonal lattice anologo
 Unlike the square lattice, the hexagonal lattice gives us many possible collision 
 rules that preserve momentum. This is a consequence of the increased degree of freedom
 in the system. Now, two particles can collide among three degrees of freedom and a mapping
-from any of these state to another preserve the momentum. Also, collisons between
+from any of these state to another preserve the momentum. Also, collisions between
 two and four particles can be realized in more ways than the trivial way 
 (mapping to itself). There are two approaches to dealing with this. The first is to
 choose an allowed collision rule randomly for each collision and the second is to
 have a deterministic mapping scheme which always is the same. This implementation
 uses the second approach with a mapping scheme which is cyclic, meaning that by
-applying a collison rule a given number of times, an arbitrary state should map back to
+applying a collision rule a given number of times, an arbitrary state should map back to
 itself. The reason for this is to preserve information and making the mapping reversible.
 
 \begin{table}\centering
@@ -158,25 +158,25 @@ itself. The reason for this is to preserve information and making the mapping re
 
 \subsection{Bouncing off walls}
 Bouncing off walls can be implemented in many different ways. It is possible to
-come up with specific rules that specifies a mapping between from a certain state
-on the wall before a collision to a certain state after the collision. This is, 
-however, very tiresome, especially for a hexagonal lattice. Another disadvantage
-is that one has to keep check of the orientation of the wall and not only it's 
-position. Therefore, to keep the implementation as simple as possible, the collison
-mapping just reverses all particle directions.
+come up with specific rules that specifies a mapping from a certain state
+on the wall before a collision to a certain state after the collision. This is 
+however tiresome, especially for a hexagonal lattice. Another disadvantage
+is that one has to keep track of the orientation of the wall and not only it's 
+position. Therefore, to keep the implementation as simple as possible, the collision
+mapping just reverses all particle directions. This corresponds to no-slip bouncing.
 
 \subsection{Sources and sinks}
 A source has been implemented as setting the state of the source node to a state
 with a random number of the directions covered with particles. This happens with 
-a probability $p_{source}=0.8$ in each time step and otherwise nothing speacial
+a probability $p_{source}=0.8$ in each time step and otherwise nothing special
 happens. This has the side effect that particles near the source may move into the
 source and disappear. It turns out that for the chosen setting, the average flux
 out of the source is larger than the average flux into the source and thus it really
-works like a source and not a sink.
+works like a source and not a sink, unless the particle density around the source is close to one.
 
-The implementation of a sink is very simple. The state of the sink node is just reset
+The implementation of a sink is simple. The state of the sink node is just reset
 to having no particles at all, meaning that all particles that come into the sink 
-wanishes. 
+vanishes. 
 
 
 \section{Experiments, results}
@@ -246,7 +246,7 @@ If we use a square lattice instead, we still get the wave-like behaviour, figure
 However, the waves persist for much longer, possibly because there are fewer possible collisions.
 Even after letting the simulation run for a long time after the particles were added, traces of waves
 going back and forth can still be seen. Unfortunately, this is not clear from a static picture, so
-it's not possible to show them in this report.
+it is not possible to show them in this report.
 
 % the following is a hypothesis. it makes sense to me, but does it make sense to you?
 Also, there are fewer particles in total (since each site can contain at most four particles, instead of six).
@@ -328,7 +328,7 @@ $k\approx 1.4032 \cdot 10^{-4}$. With this value of $k$, the analytical solution
 as a function of time. The result can be seen in figure \ref{gascount_anal}. One can see that
 the behaviour here is similar to the one in figure \ref{gascount}, but the relative behaviour
 of the curves is different. It is to be expected that the analytical results differ from the
-simulation since the model upon which the analytical results rest is very simplistic, not 
+simulation since the model upon which the analytical results rest is simplistic, not 
 taking into account the features of the spatial geometry used in the simulation. It is
 likely that the flows in the simulations are not the same between box $1$ and $2$ as between
 box $2$ and $3$, which would possibly explain part of the difference between figure \ref{gascount}
@@ -354,7 +354,7 @@ After a short while the domain is filled with particles and a somewhat steady st
 \label{flow1}
 \end{figure}
 
-Unexpectedly and seemingly without reason, at times the density becomes higher at a certain point to the right of the cylinder. This can be seen in figure~\ref{flow2}. A wave is created and moves towards the cylinder as seen in figures~\ref{flow3} and~\ref{flow4}. This happens repeatedly, but the times between wave formations seem to be irregular. Therefor we suspect that the system shows a turbulent behaviour.
+Unexpectedly and seemingly without reason, at times the density becomes higher at a certain point to the right of the cylinder. This can be seen in figure~\ref{flow2}. A wave is created and moves towards the cylinder as seen in figures~\ref{flow3} and~\ref{flow4}. This happens repeatedly, but the times between wave formations seem to be irregular. Therefor we suspect that the system shows turbulent behaviour.
 \begin{figure}[htp]
 \centering
   \includegraphics[width=300pt]{figs/scenario3mathexprintscreen10.png}
@@ -382,6 +382,6 @@ As is argued above, lattice gas automata capture the qualitative behaviour of a 
 
 When a gas flows through some space from one side to the other, think of a pipe for example, the gas is expected to behave in a certain way when flowing around an obstacle. Typically, the density should increase close to the obstacle on the side of the obstacle that is facing the flow, and the density should decrease on the other side of the obstacle. Also, some turbulence and strong currents are expected right after the interaction with the obstacle. The turbulent behaviour is expected to even out further away from the obstacle, making the gas behave as if it never interacted with the obstacle. Lattice gas automata does not capture this behaviour. Instead we found in experiments that the simulation became turbulent in the entire domain after the obstacle. This domain did not show an even density over different parts of the domain, and waves going against the direction of the flow formed seemingly randomly.
 
-We conclude that this model can be useful for modelling diffusion and waves. The main benefits are that the relatively simple rules that the model consists of make it easy to implement and since the rules are easy to get an intuitive understanding of, the behaviour of the model is easy to discuss. Using fast computers and software that makes use of the many cores of modern processors and the speed of modern computer graphics processors, it becomes possible to watch huge simulations in a satifactory pace at the same time as they are being computed.
+We conclude that this model can be useful for modelling diffusion and waves. The main benefits are that the relatively simple rules that the model consists of make it easy to implement and since the rules are easy to get an intuitive understanding of, the behaviour of the model is easy to discuss. Using fast computers and software that makes use of the many cores of modern processors and the speed of modern computer graphics processors, it becomes possible to watch huge simulations in a satisfactory pace at the same time as they are being computed.
 
 \end{document}
